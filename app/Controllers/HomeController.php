@@ -12,12 +12,20 @@ class HomeController extends Controller
 
     public function index(Request $request, Response $response, $args)
     {   
-
         $view = '/pages/home/admin.twig';
         $params = [
         ];
         return $this->view->render($response, $view, $params);
     }
     
+    public function clearCache(Request $request, Response $response, $args)
+    {
+        \rrmdir("temp/");
+        return \json([
+            'message' => 'Cache removido com sucesso',
+            'result' => 1,
+            'action' => 'new'
+        ]);
+    }
 
 }

@@ -1,6 +1,5 @@
 <!-- MODAL ALTERAR TIPO !-->
-<form id="modal-change-type" data-url="usuarios/change-type" class="modal fade form-file"
-    enctype="multipart/form-data">
+<form id="modal-change-type" onsubmit="admin.sendData(this,event);" data-url="usuarios/change-type" class="modal fade form-file">
     <input type="hidden" name="token">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">

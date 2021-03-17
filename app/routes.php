@@ -73,6 +73,8 @@
     $app->get('/recuperar/{token}', \App\Controllers\LoginController::class . ':restaurar')->setName('login.restaurar');
     $app->post('/reset-password', \App\Controllers\LoginController::class . ':reset')->setName('login.reset');
 
+    $app->post('/clear-cache', \App\Controllers\HomeController::class . ':clearCache')->setName('clearCache');
+
     // Routes GET
     $app->get('/', \App\Controllers\LoginController::class . ':index')->setName('index')->add(new \App\Middlewares\AuthMiddleware);
     $app->get('/perfil', \App\Controllers\Users\ProfileController::class . ':index')->setName('perfil')->add(new \App\Middlewares\AuthMiddleware);

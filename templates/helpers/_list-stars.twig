@@ -1,9 +1,0 @@
-<ul style="display : flex;align-items: center;list-style : none;justify-content: center;padding : 0px;margin : 0px"
-    class="list-starts">
-    {% for i in 1..width %}
-        <li style="margin-right : {{i == width ? '0px' : '3px'}};font-size : 22px;">
-            <i style="{{i <= quant_stars ? "color : #f39c11" : ''}}"
-                class="{{i <= quant_stars ? "fa fa-star" : 'fa fa-star-o'}}"></i>
-        </li>
-    {% endfor %}
-</ul>

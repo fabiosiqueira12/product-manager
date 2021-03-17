@@ -3,7 +3,6 @@
 namespace App\Controllers\Config;
 
 use App\Controllers\Controller;
-use App\Core\AuthControl;
 use App\Services\Users\TypeUserService;
 use Slim\Http\Request as Request;
 use Slim\Http\Response as Response;
@@ -14,10 +13,6 @@ class TypeController extends Controller
 
     public function index(Request $request, Response $response, $args)
     {
-        $authControl = new AuthControl();
-        if (!$authControl->userLogged()){
-            return $response->withRedirect(\base_url_new().'login',301);
-        }
         if (!isset($args['type']) || $args['type'] == ""){
             throw new NotFoundException($request, $response);
         }
@@ -56,11 +51,11 @@ class TypeController extends Controller
             return \throwJsonException('A referência do tipo não foi encontrada');
         }
         $delete = $service->delete($body['ref']);
-        if (\is_bool($delete)){
-            return \json(['message' => 'Deletado com sucesso','result' => 1,'action' => 'reload']);
-        }else{
-            return $delete;
-        }
+        return \json([
+            'message' => 'Deletado com sucesso',
+            'result' => 1,
+            'action' => 'reload'
+        ]);
     }
 
     public function save(Request $request, Response $response , $args)

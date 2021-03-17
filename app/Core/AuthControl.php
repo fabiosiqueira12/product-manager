@@ -2,6 +2,7 @@
 
 namespace App\Core;
 
+use Exception;
 use App\Models\User;
 use App\Models\Company;
 use App\Services\UserService;
@@ -44,13 +45,13 @@ class AuthControl
             return \throwJsonException("O seu usuário está bloqueado");
         }
             
-        $passSave = $userService->returnPass($user->getID());
-        if ($passSave == false || $passSave == null || $passSave == ""){
-            return \throwJsonException('Erro inesperado, recarregue a página e tente novamente');
+        $passSave = $userService->returnPass($user->getId());
+        if (empty($passSave)){
+            throw new Exception("Erro inesperado, recarregue a página e tente novamente");
         }
 
-        if (!$this->verifyPassword($passSave, $senha)) {
-            return \throwJsonException('Senha Incorreta!');
+        if (!password_verify($senha, $passSave)) {
+            throw new Exception('Senha Incorreta!');
         }
                 
         $this->saveJustUser($user);

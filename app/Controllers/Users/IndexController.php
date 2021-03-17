@@ -7,7 +7,7 @@ use Slim\Http\Response;
 use App\Core\AuthControl;
 use App\Services\UserService;
 use App\Controllers\Controller;
-use App\Services\TypeUserService;
+use App\Services\Users\TypeUserService;
 use Slim\Exception\NotFoundException;
 
 class IndexController extends Controller
@@ -145,11 +145,10 @@ class IndexController extends Controller
             if ($user == null || $user == false){
                 return \throwJsonException('Não foi possível encontrar o usuário, recarregue a página');
             }
+
             $body['id'] = $user->getId();
             $edit = $userService->update($body);
-            if (!is_bool($edit)) {
-                return $edit;
-            }
+
             if ($user->getId() == user_logged()->getId()) {
                 $userSession = user_logged();
                 $userSession->setLogin($body['login']);
@@ -159,6 +158,7 @@ class IndexController extends Controller
                 $authControl = new AuthControl();
                 $authControl->saveJustUser($userSession);
             }
+            
             return json([
                 'message' => 'Atualizado com sucesso',
                 'result' => 1,
@@ -166,15 +166,13 @@ class IndexController extends Controller
             ]);
 
         } else {
+
             if ($body['login'] == "" || strlen($body['login']) > 20){
                 return \throwJsonException('Login Inválido, digite no máximo 20 caracteres');
             }
 
             //Aqui vai salvar o usuário
-            $save = $userService->save($body);
-            if (!is_string($save)) {
-                return $save;
-            }
+            $save = $userService->save($body,true);
             
             return json([
                 'message' => 'Salvo com sucesso',

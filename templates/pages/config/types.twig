@@ -21,7 +21,7 @@
 {% endblock %}
 
 {% block modals %}
-<form id="modal-new-type" method="POST" class="modal fade form-file" enctype="multipart/form-data" data-url="tipos/{{type_arg}}/save">
+<form id="modal-new-type" method="POST" class="modal fade form-file" onsubmit="admin.sendData(this,event);" data-url="tipos/{{type_arg}}/save">
     <input type="hidden" name="id">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -94,10 +94,10 @@
                             </td>
                             <td class="text-xs-center vertical-middle">
                                 <div class="btn-group">
-                                    <button class="btn btn-success" onclick="editClick(this)" data-editar="{{type|json_encode}}" data-target="#modal-new-type">
+                                    <button class="btn btn-success" onclick="admin.editClick(this)" data-editar="{{type|json_encode}}" data-target="#modal-new-type">
                                         <i data-toggle="tooltip" title="Editar" class="ti-pencil"></i>
                                     </button>
-                                    <button class="btn btn-danger" onclick="removeClick(this)" data-link="tipos/{{type_arg}}/delete" data-excluir="{{type.id}}">
+                                    <button class="btn btn-danger" onclick="admin.removeClick(this)" data-link="tipos/{{type_arg}}/delete" data-excluir="{{type.id}}">
                                         <i data-toggle="tooltip" title="Excluir" class="ti-trash"></i>
                                     </button>
                                 </div>
@@ -111,17 +111,4 @@
         </div>
     </div>
 </div>
-{% endblock %}
-
-{% block script %}
-<script>
-    $(document).ready(function () {
-        $('.btn-new').on('click', function (element) {
-            $($(this).data('target')).find('input[name="id"]').val('');
-            $($(this).data('target')).find('input').val('');
-            $($(this).data('target')).find('select').val('');
-            $($(this).data('target')).modal('toggle');
-        });
-    });
-</script>
 {% endblock %}

@@ -70,8 +70,14 @@ class UserService extends Service{
      */
     public function save($body,$returnId = false)
     {
-        $body['senha'] = \md5($body['senha']);
-        return $this->genericeSave($body,['id'],$returnId);
+        if (isset($body['senha'])){
+            $body['senha'] = \password_return($body['senha']);
+        }
+        if (isset($body['pass'])){
+            $body['senha'] = \password_return($body['pass']);
+            unset($body['pass']);
+        }
+        return $this->genericeSave($body,['id','rsenha'],$returnId);
     }
 
     /**
@@ -82,9 +88,22 @@ class UserService extends Service{
      */
     public function update($body)
     {
-        $updateQuery = "";
-        $excludeKeys = ['id','rsenha','senha','id_empresa'];
-        return $this->genericUpdate($body,$excludeKeys);
+        
+        $excludeKeys = ['id','token'];
+        
+        if (!isset($body['senha']) || empty($body['senha'])){
+            $excludeKeys[] = 'senha';
+        }else{
+            $body['senha'] = \password_return($body['senha']);
+        }
+
+        if (!isset($body['rsenha']) || empty($body['rsenha'])){
+            $excludeKeys[] = 'rsenha';
+        }else{
+            unset($body['rsenha']);
+        }
+        
+        return $this->genericUpdate($body,$excludeKeys,true,false);
     }
 
     /**

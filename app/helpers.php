@@ -1604,3 +1604,35 @@ if (!function_exists('return_type')) {
         }
     }
 }
+
+/**
+ * Remove uma pasta
+ *
+ * @param string $dir
+ * @return void
+ */
+function rrmdir($dir) {
+    if (is_dir($dir)) {
+      $objects = scandir($dir);
+      foreach ($objects as $object) {
+        if ($object != "." && $object != "..") {
+          if (filetype($dir."/".$object) == "dir") 
+             rrmdir($dir."/".$object); 
+          else unlink   ($dir."/".$object);
+        }
+      }
+      reset($objects);
+      rmdir($dir);
+    }
+}
+
+/**
+ * Retorna a senha com hash
+ *
+ * @param string $senha
+ * @return string
+ */
+function password_return($senha)
+{
+    return password_hash($senha, PASSWORD_DEFAULT,['cost' => 8]);
+}

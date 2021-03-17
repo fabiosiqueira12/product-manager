@@ -225,7 +225,7 @@ abstract class Service
         $this->checkTableAndPrefix();
         try {
             $stmt = $this->PDO->prepare(
-                " DELETE FROM {$this->table} WHERE a.id = :id "
+                " DELETE FROM {$this->table} WHERE id = :id "
             );
             $stmt->bindValue(":id",$id);
             $stmt->execute();

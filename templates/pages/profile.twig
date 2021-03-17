@@ -3,11 +3,11 @@
 {% import "forms.twig" as forms %}
 
 {% block title_page %}
-    Meu Perfil
+Meu Perfil
 {% endblock %}
 
 {% block breadcrumb %}
-    <li class="breadcrumb-item active"> Meu Perfil</li>
+<li class="breadcrumb-item active"> Meu Perfil</li>
 {% endblock %}
 
 {% block main %}
@@ -15,7 +15,8 @@
     <div class="col-lg-3 col-md-12 col-12">
         <div class="card profile-card mt-0 mb-2">
             <div class="profile-avatar">
-                <img style="width:60px;height:60px;display:block;margin: auto" src="{{asset('img/user.svg')}}" alt="User Icon">
+                <img style="width:60px;height:60px;display:block;margin: auto" src="{{asset('img/user.svg')}}"
+                    alt="User Icon">
             </div>
             <div class="card-block">
                 <h4 class="mb-0-25 text-uppercase">{{user_logged().getNome()}}</h4>
@@ -35,59 +36,58 @@
                 <i class="ti-power-off"></i>
             </div>
             Sair
-        <a>
+            <a>
     </div>
     <div class="col-lg-9 col-md-12 m-t-mobile m-t-ipad col-12">
-        <form autocomplete="off" class="form-file custom-form" method="post" data-url="usuarios/save" data-action="/perfil" enctype="multipart/form-data">
+        <form autocomplete="off" class="form-file custom-form" method="post" data-url="usuarios/save"
+            data-action="/perfil" enctype="multipart/form-data">
             <input type="hidden" name="token" value="{{user_logged().getToken()}}">
             <div class="card">
                 <div class="card-block">
                     <div class="row">
                         <div class="form-group col-md-6 col-xs-12">
                             {{ forms.label('E-mail') }}
-                            <input type="email" name="email" value="{{user_logged().getEmail()}}" required maxlength="250" class="form-control" />
+                            <input type="email" name="email" value="{{user_logged().getEmail()}}" required
+                                maxlength="250" class="form-control" />
                         </div>
                         <div class="form-group col-md-6 col-xs-12">
                             {{ forms.label('Login','No máximo 15 caracteres') }}
-                            <input type="text" name="login" required maxlength="20" value="{{user_logged().getLogin()}}" class="form-control" />
+                            <input type="text" name="login" required maxlength="20" value="{{user_logged().getLogin()}}"
+                                class="form-control" />
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-md-8 col-xs-12">
                             {{ forms.label('Nome') }}
-                            <input type="text" name="nome" required minlength="3" value="{{user_logged().getNome()}}" class="form-control text-uppercase" />
+                            <input type="text" name="nome" required minlength="3" value="{{user_logged().getNome()}}"
+                                class="form-control text-uppercase" />
                         </div>
                         <div class="form-group col-md-4 col-xs-12">
                             {{ forms.label('Celular/Whatsapp') }}
-                            <input type="text" name="telefone" value="{{user_logged().getTelefone()}}" required class="form-control mask-telefone" />
+                            <input type="text" name="telefone" value="{{user_logged().getTelefone()}}" required
+                                class="form-control mask-telefone" />
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-md-6 col-xs-12">
                             {{ forms.label('Senha','No mínimo 6 caracteres') }}
-                            <input type="password" autocomplete="off" placeholder="Não alterar para manter" name="senha" minlength="6" maxlength="20" class="form-control" />
+                            <input type="password" autocomplete="off" placeholder="Não alterar para manter" name="senha"
+                                minlength="6" maxlength="20" class="form-control" />
                         </div>
                         <div class="form-group col-md-6 col-xs-12">
                             {{ forms.label('Repita a Senha') }}
-                            <input type="password" autocomplete="off" name="rsenha" minlength="6" maxlength="20" placeholder="Repita a senha" class="form-control" />
+                            <input type="password" autocomplete="off" name="rsenha" minlength="6" maxlength="20"
+                                placeholder="Repita a senha" class="form-control" />
                         </div>
                     </div>
-                    <div class="modal-footer justify-content-between">
-                        <div>
-                            <button type="reset" class="btn btn-danger label-left" data-dismiss="modal">
-                                <div class="btn-label">
-                                    <i class="ti-close"></i>
-                                </div>
-                                Cancelar
-                            </button>
-                            <button type="submit" class="btn btn-success label-left">
-                                <div class="btn-label">
-                                    <i class="ti-save"></i>
-                                </div>
-                                Salvar
-                            </button>
+                </div>
+                <div class="card-footer text-xs-right">
+                    <button type="submit" class="btn btn-success label-left">
+                        <div class="btn-label">
+                            <i class="ti-save"></i>
                         </div>
-                    </div>
+                        Salvar
+                    </button>
                 </div>
             </div>
         </form>

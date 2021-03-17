@@ -4,6 +4,8 @@ var admin = {
 
         this.maskInputs();
 
+        checkTitleAndBreadcrumb();
+
         $(".btn-inputfile").change(function (e) {
             if (e.target.files.length > 0) {
                 console.log(e.target.files);
@@ -374,6 +376,59 @@ function IsJsonString(str) {
 
     } catch (e) {
         return false;
+    }
+}
+
+/**
+ * Limpa o cache do twig e os dados
+ */
+ function clearCache(){
+    $.ajax({
+        type: "POST",
+        url: BASE_URL + "clear-cache",
+        data: {},
+        beforeSend: function () {
+            $("#loader").show();
+        },
+        success: function (response) {
+            return admin.returnResult(response, null, null, null);
+        },
+        error: function (response) {
+            console.log(response);
+            return Swal('Erro!', response.responseJSON.message, 'error');
+        }
+    }).always(function () {
+        $("#loader").hide();
+    });
+}
+
+/**
+ * Retorna o título do menu principal e título do submenu para montar titulo e breadcrumb da página atual
+ */
+ function checkTitleAndBreadcrumb(){
+
+    var menuActive = $(".sidebar-menu li.active");
+    var item = null;
+    var listBread = [];
+    if ($(menuActive).hasClass("with-sub")){
+        var princ = $(menuActive).find('a.waves-effect.waves-light').data('item');
+        if (princ != null && princ.title != null && princ.title != undefined && princ.title != ''){
+            listBread.push(princ.title);
+        }
+        item = $(menuActive).find("ul li.active a").data('item');
+    }else{
+        item = $(menuActive).find("a").data("item");
+    }
+    if (item != null && item.title != null && item.title != undefined && item.title != '' && ( item.title.toLowerCase() != "dashboard" && item.title.toLowerCase() != "home") ){
+        listBread.push(item.title);
+        $(".breadcrumb-content h4").html(item.title);
+        $(".breadcrumb-content ol li.active").remove();
+        for(var i = 0; i < listBread.length;i++){
+            var v = listBread[i];
+            $(".breadcrumb-content ol").append(
+                '<li class="breadcrumb-item active">'+ v +'</li>'
+            );
+        }
     }
 }
 

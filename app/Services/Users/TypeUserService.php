@@ -3,6 +3,7 @@
 namespace App\Services\Users;
 
 use App\Services\Service;
+use Exception;
 
 class TypeUserService extends Service
 {
@@ -11,7 +12,8 @@ class TypeUserService extends Service
 
     function __construct() {
         parent::__construct();
-        $this->table = "type_user";
+        $this->setTable("type_user");
+        $this->setPrefix("a");
     }
 
     /**
@@ -22,7 +24,7 @@ class TypeUserService extends Service
     public function getAll()
     {
         $stmt = $this->PDO->prepare(
-            " SELECT {$this->fields} FROM {$this->table} AS a ORDER BY order_by ASC LIMIT 10000 "
+            " SELECT {$this->fields} FROM {$this->table} AS {$this->prefix} ORDER BY a.order_by ASC LIMIT 10000 "
         );
         $stmt->execute();
         return $stmt->fetchAll(\PDO::FETCH_OBJ);
@@ -37,8 +39,7 @@ class TypeUserService extends Service
     {
         $types = [];
         $stmt = $this->PDO->prepare(
-            ' SELECT '. $this->fields . ' FROM ' . $this->tableBD.
-            ' ORDER BY order_by ASC '
+            " SELECT {$this->fields} FROM {$this->table} AS {$this->prefix} ORDER BY {$this->prefix}.order_by ASC LIMIT 10000"
         );
         $stmt->execute();
         $results = $stmt->fetchAll(\PDO::FETCH_OBJ);
@@ -59,24 +60,9 @@ class TypeUserService extends Service
      */
     public function getByParan($paran,$value)
     {
-        $result = null;
         $params = ['ref','id'];
-        if (!in_array($paran,$params)){
-            return $result;
-        }
-        $stmt = $this->PDO->prepare(
-            ' SELECT ' . $this->fields . ' FROM ' . $this->tableBD.
-            ' WHERE ' . $paran . ' = :' . $paran
-        );
-        $stmt->bindValue(':'.$paran,$value);
-        $stmt->execute();
-        $v = $stmt->fetch(\PDO::FETCH_OBJ);
-        if ($v != null && $v != false){
-            $result = $v;
-        }
-        return $v;
+        return $this->genericReturnParan($paran,$value,$this->fields,$params);
     }
-
 
     /**
      * Verifica se já está cadastrado um texto com determinado REF
@@ -87,9 +73,9 @@ class TypeUserService extends Service
      */
     public function checkRef($ref,$id = "")
     {
-        $stmt = $this->PDO->prepare("SELECT id FROM " .
-            $this->tableBD .
-            " WHERE ref = :ref ");
+        $stmt = $this->PDO->prepare(
+            "SELECT id FROM {$this->table} WHERE ref = :ref "
+        );
         $stmt->bindValue(':ref', $ref);
         $stmt->execute();
         $results = $stmt->fetchAll(\PDO::FETCH_OBJ);
@@ -115,7 +101,6 @@ class TypeUserService extends Service
         }
     }
 
-
     /**
      * Salva o tipo no banco
      *
@@ -124,25 +109,10 @@ class TypeUserService extends Service
      */
     public function save($body)
     {
-
         if ($this->checkRef($body['ref'],'')){
-            return \throwJsonException('Já existe esse tipo de usuário');
+            throw new Exception('Já existe esse tipo de usuário');
         }
-
-        try {
-            $stmt = $this->PDO->prepare(
-                ' INSERT INTO ' . $this->tableBD.
-                ' (ref,title,order_by) VALUES (:ref,:title,:order_by) '
-            );
-            $stmt->bindValue(':ref',$body['ref']);
-            $stmt->bindValue(':title',$body['title']);
-            $stmt->bindValue(':order_by', isset($body['order_by']) ? $body['order_by'] : 1);
-            $stmt->execute();
-            return true;
-        } catch (\Exception $ex) {
-            return \throwJsonException($ex->getMessage());
-        }
-
+        return $this->genericeSave($body,['id'],false);
     }
 
     /**
@@ -154,23 +124,9 @@ class TypeUserService extends Service
     public function update($body)
     {
         if ($this->checkRef($body['ref'],$body['id'])){
-            return \throwJsonException('Já existe um tipo com essa referência');
+            throw new Exception('Já existe esse tipo de usuário');
         }
-        try {
-            $stmt = $this->PDO->prepare(
-                ' UPDATE ' . $this->tableBD . ' SET '.
-                ' ref = :ref,title = :title, order_by = :order_by '.
-                ' WHERE id = :id '
-            );
-            $stmt->bindValue(':ref',$body['ref']);
-            $stmt->bindValue(':title',$body['title']);
-            $stmt->bindValue(':order_by', isset($body['order_by']) ? $body['order_by'] : 1);
-            $stmt->bindValue(':id',$body['id']);
-            $stmt->execute();
-            return true;
-        } catch (\Exception $ex) {
-            return \throwJsonException($ex->getMessage());
-        }
+        return $this->genericUpdate($body,['id'],true,false);
     }
 
     /**
@@ -181,17 +137,7 @@ class TypeUserService extends Service
      */
     public function delete($id)
     {
-        try {
-            $stmt = $this->PDO->prepare(
-                'DELETE FROM ' . $this->tableBD.
-                ' WHERE id = :id '
-            );
-            $stmt->bindValue(':id',$id);
-            $stmt->execute();
-            return true;
-        } catch (\Exception $ex) {
-            return \throwJsonException($ex->getMessage());
-        }
+        return $this->genericDelete($id);
     }
 
 }

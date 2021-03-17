@@ -12,7 +12,7 @@
 {% endblock %}
 
 {% block main %}
-<form class="panel form-file" data-url="/new-smtp" enctype="multipart/form-data">
+<form class="panel form-file" onsubmit="admin.sendData(this,event);" data-url="/new-smtp" enctype="multipart/form-data">
     <div class="box bg-white">
         <div class="box-block">
             <div>
