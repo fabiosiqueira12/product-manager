@@ -1,0 +1,57 @@
+{% set menus = get_menus() %}
+<div class="site-sidebar">
+    <div class="custom-scroll custom-scroll-light">
+        <ul class="sidebar-menu">
+            <li class="menu-title">Navegação</li>
+            {% for menu in menus %}
+
+            {% if menu.principal.status_active == 1 and (user_logged().isAdmin() or ( in_array(user_logged().getType(),menu.principal.permissions) or menu.principal.permissions is empty ) ) %}
+            <li class="{{menu.submenus ? 'with-sub' : ''}}">
+                {% set linkMenu = menu.principal.controller != "#" ? path_for('index') ~ menu.principal.controller|replace({'{token_company}': company_logged().getToken(), '{token_user}': user_logged().getToken()}) : 'javascript:void(0)' %}
+                <a href="{{ linkMenu }}" class="waves-effect waves-light">
+                    <span class="s-icon">
+                        {% if menu.principal.icon != '' %}
+                        {% if 'icon-custom' in menu.principal.icon %}
+                        <div style="margin-right: -4px" class="{{menu.principal.icon}}"></div>
+                        {% else %}
+                        <i class="{{menu.principal.icon}}"></i>
+                        {% endif %}
+                        {% endif %}
+                    </span>
+                    {% if menu.submenus %}
+                    <span class="s-caret"><i class="fa fa-angle-down"></i></span>
+                    {% endif %}
+                    <span class="s-text">{{menu.principal.title}}</span>
+                </a>
+                {% if menu.submenus %}
+                <ul>
+                    {% for submenu in menu.submenus %}
+                        {% if submenu.status_active == 1 and ( in_array(user_logged().getType(),submenu.permissions) or submenu.permissions is empty ) or ( user_logged().getType() == 1 or user_logged().getType() == 4 ) %}
+                            {% set linkSubMenu = submenu.controller != "#" ? path_for('index') ~ submenu.controller|replace({'{token_company}': company_logged().getToken(), '{token_user}': user_logged().getToken()}) : 'javascript:void(0)' %}
+                            {% set subSubMenus = null %}
+                            <li class="{{subSubMenus is not empty ? 'with-sub' : ''}}">
+                                <a style="position:relative" href="{{linkSubMenu}}" class="{{subSubMenus is not empty ? 'waves-effect waves-light' : ''}}">
+                                    {% if subSubMenus is not empty %}
+                                        <i style="position: absolute;top:50%;transform: translateY(-50%);right: 18px;" class="fa fa-angle-down"></i>
+                                    {% endif %}
+                                    <span class="s-text">{{submenu.title}}</span>
+                                </a>
+                                <ul>
+                                    {% for item in subSubMenus %}
+                                        {% set linkItem = item.controller != "#" ? path_for('index') ~ item.controller|replace({'{token_company}': company_logged().getToken(), '{token_user}': user_logged().getToken()}) : 'javascript:void(0)' %}
+                                        <li>
+                                            <a href="{{linkItem}}">{{item.title}}</a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </li>
+            {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+</div>

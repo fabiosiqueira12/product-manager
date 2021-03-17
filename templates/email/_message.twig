@@ -1,0 +1,19 @@
+{% extends "email/base_emailv2.twig" %}
+
+{% block title %}{{assunto}}{% endblock %}
+
+{% block image %}
+{% if image is not empty %}
+    {% if link_image is not empty %}
+        <a href="{{link_image}}">
+        <img src="{{image}}" style="width: 100%;display:block;margin-bottom: 10px;" alt="">
+        </a>
+    {% else %}
+        <img src="{{image}}" style="width: 100%;display:block;margin-bottom: 10px;" alt="">
+    {% endif %}
+{% endif %}
+{% endblock %}
+
+{% block main %}
+{{texto|raw}}
+{% endblock %}

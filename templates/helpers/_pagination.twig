@@ -1,0 +1,15 @@
+{% set margen_direita = 2 %}
+{% set margen_esquerda = actual > 2 ? 2 : 0 %}
+{% set start  = actual - margen_esquerda %}
+{% set total = actual + margen_direita %}
+{% if totalPages > 0 %}
+<nav class="nave-pagination" style="padding-bottom : 5px !important" data-actual="{{actual}}" data-url="{{url}}" data-forpage="{{forpage}}" aria-label="Page navigation example">
+    <ul class="pagination m-0">
+        {% for page in 1..totalPages %}
+            <li class="page-item {{loop.index == actual ? 'active' : ''}}">
+                <button type="button" data-page="{{loop.index}}" class="page-link">{{loop.index}}</button>
+            </li>
+        {% endfor %}
+    </ul>
+</nav>
+{% endif %}

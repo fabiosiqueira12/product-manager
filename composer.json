@@ -1,0 +1,35 @@
+{
+    "authors": [
+        {
+            "name": "Fábio Henrique da Silva Siqueira",
+            "email": "fabio.siqueira1222@gmail.com",
+            "homepage": "https://www.github.com/fabiosiqueira12"
+        }
+    ],
+    "require": {
+        "php": ">=5.5.0",
+        "slim/slim": "^3.0",
+        "slim/twig-view": "^2.4",
+        "twig/extensions": "*",
+        "symfony/var-dumper": "^4.1",
+        "monolog/monolog": "^1.17",
+        "phpmailer/phpmailer": "^6.0",
+        "league/glide": "^1.5",
+        "league/glide-slim": "^1.0",
+        "dompdf/dompdf": "^0.8.6",
+        "phpoffice/phpspreadsheet": "^1.9",
+        "phpfastcache/phpfastcache": "^7.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/",
+            "Tests\\": "tests/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "App\\": "app/",
+            "Tests\\": "tests/"
+        }
+    }
+}

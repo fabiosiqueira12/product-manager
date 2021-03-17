@@ -1,0 +1,25 @@
+<div class="box bg-white">
+    <div class="card-body p-0 list-box">
+        {% include "/pages/config/alerts/_list.twig" with {
+            list: list
+        } %}
+    </div>
+    <div class="card-footer bg-white">
+        {% include "/helpers/_pagination-new.twig" with {
+            totalPages : totalPages, 
+            url : 'informativos/paginate',
+            actual:actual,
+            inicio : inicio,
+            fim: fim
+        } %}
+        {% if totalPages > 1 %}
+            <div class="info float-xs-right" style="margin-top: -33px;font-weight: bold;text-transform: uppercase;font-size: 13px;">
+                Exibindo de {{actual}} até {{list|length}} de {{totalCount}}
+            </div>
+        {% else %}
+            <div class="info float-xs-right" style="font-weight: bold;text-transform: uppercase;font-size: 13px;">
+                Exibindo de {{actual}} até {{list|length}} de {{list|length}}
+            </div>
+        {% endif %}
+    </div>
+</div>

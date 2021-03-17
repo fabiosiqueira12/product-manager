@@ -1,0 +1,43 @@
+{% import "forms.twig" as forms %}
+
+<form method="POST" class="box bg-white form-file mt-2" enctype="multipart/form-data" data-url="consumidores/detalhes/save-pf">
+    <input type="hidden" name="id_consumidor" value="{{consumidor.id}}">
+    <div class="card-header text-uppercase font-weight-bold">
+        Dados PF
+    </div>
+    <div class="box-block">
+        <div class="row">
+            <div class="col-md-3 col-xs-12 form-group">
+                {{forms.label('CPF:')}}
+                <input type="text" class="form-control mask-cpf" name="cpf" value="{{dadosPF.cpf}}">
+            </div>
+            <div class="col-md-9 col-xs-12 form-group">
+                {{forms.label('Nome:')}}
+                <input type="text" class="form-control" name="nome" required value="{{dadosPF.nome}}">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 col-xs-12 form-group">
+                {{forms.label('E-mail:')}}
+                <input type="email" class="form-control" name="email" value="{{dadosPF.email}}">
+            </div>
+            <div class="col-md-4 col-xs-12 form-group">
+                {{forms.label('Telefone:')}}
+                <input type="tel" class="form-control mask-telefone" name="telefone" value="{{dadosPF.telefone}}">
+            </div>
+            <div class="col-md-4 col-xs-12 form-group">
+                {{forms.label('Data de Nascimento:')}}
+                <input type="date" class="form-control" name="date_birth" value="{{dadosPF.date_birth}}">
+            </div>
+        </div>
+        {% include "fields/_address.twig" with {address: dadosPF} %}
+    </div>
+    <div class="card-footer text-xs-right">
+        <button type="submit" class="btn btn-success label-left">
+            <div class="btn-label">
+                <i class="ti-save"></i>
+            </div>
+            Salvar
+        </button>
+    </div>
+</form>

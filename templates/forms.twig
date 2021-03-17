@@ -1,0 +1,14 @@
+{% macro label(label, popover) %}
+    <label>
+        {{ label|default('Label') }}
+        {% if popover %}
+            <span class="pointer" data-toggle="tooltip" title="{{ popover }}">
+            [<i class="fa fa-question"></i>]
+            </span>
+        {% endif %}
+    </label>
+{% endmacro %}
+
+{% macro input(type,name,value,class,required,readonly,disabled,placeholder) %}
+    <input placeholder="{{placeholder}}" {{readonly == true ? 'readonly' : ''}} {{disabled == true ? 'disabled' : ''}} type="{{type is empty ? 'text' : type}}" name="{{name}}" class="{{class}}" value="{{value}}" {{required == true ? 'required' : ''}}>
+{% endmacro %}

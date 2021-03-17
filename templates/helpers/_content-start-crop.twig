@@ -1,0 +1,8 @@
+<div id="{{id_content}}" class="content-result-crop">
+    <input type="hidden" class="base_64_str" name="{{name_field_base64}}">
+    <label for="{{id_input}}" style="max-width: 100%" class="btn {{classLabel is not empty ? classLabel : ''}} label-left btn-info mr-1 btn btn-inputfile">
+        <div class="btn-label"><i class="ti-image"></i></div>
+        <span data-title="{{titleBtn is not empty ? titleBtn : 'Imagem'}}">{{titleBtn is not empty ? titleBtn : 'Imagem'}}</span>
+        <input class="file-img image-crop" {{isRound is not empty ? "data-round=true" : ''}} {{height is not empty ? "data-height=" ~ height : ''}} {{width is not empty ? "data-width=" ~ width : ''}} type="file" name="image" id="{{id_input}}" accept="image/*" class="d-none hide">
+    </label>
+</div>

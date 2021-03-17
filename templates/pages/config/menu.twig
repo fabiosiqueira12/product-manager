@@ -1,0 +1,234 @@
+{% extends "layout.twig" %}
+
+{% import 'forms.twig' as forms %}
+
+{% block title_page %}
+    Menus
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active">Configurações</li>
+    <li class="breadcrumb-item active">Menus</li>
+{% endblock %}
+
+{% block links %}
+<button type="button" class="btn btn-success btn-new label-left" data-target="#modal-new-menu">
+    <div class="btn-label">
+        <i class="ti-plus"></i>
+    </div>
+    Novo
+</button>
+{% endblock %}
+
+{% block main %}
+
+<!-- MODAL REGISTRO -->
+<form id="modal-new-menu" method="POST" class="modal fade form-file" onsubmit="admin.sendData(this,event);" data-url="menu/save">
+    <input type="hidden" name="id">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="close" data-dismiss="modal"><i class="ti-close"></i></div>
+                <h3 class="modal-title">Menu</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-4 col-xs-12 form-group">
+                        {{forms.label('Status')}}
+                        <select name="status_active" class="form-control" required>
+                            <option value="1">Ativo</option>
+                            <option value="2">Inativo</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 col-xs-12 form-group">
+                        {{forms.label('Ordem')}}
+                        <input type="number" class="form-control" name="order_by" required>
+                    </div>
+                    <div class="col-md-4 col-xs-12 form-group">
+                        {{forms.label('Controller')}}
+                        <input type="text" class="form-control" name="controller" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 col-xs-12 form-group">
+                        {{forms.label('Root')}}
+                        <select name="root" class="form-control" required>
+                            <option value="0">Principal</option>
+                            {% for menu in get_menus() %}
+                            <option value="{{menu.principal.id}}">{{menu.principal.title}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-6 col-xs-12 form-group">
+                        {{forms.label('Título')}}
+                        <input type="text" class="form-control" name="title" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 col-xs-12 form-group">
+                        {{forms.label('Ícone')}}
+                        <input type="text" class="form-control" name="icon">
+                    </div>
+                    <div class="col-md-6 col-xs-12 form-group">
+                        {{forms.label('Variáveis')}}
+                        <input type="text" class="form-control" name="variations">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 form-group">
+                        {{forms.label('Keywords')}}
+                        <input type="text" class="form-control" name="keywords">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 form-group">
+                        {{forms.label('Descrição')}}
+                        <input type="text" class="form-control" name="description">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 form-group">
+                        {{forms.label('Permissões')}}
+                        <select name="permissions[]" data-placeholder="Todas as permissões..." multiple class="chosen-select form-control">
+                            {% for key,type in types_users() %}
+                                <option value="{{key}}">{{type}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 text-xs-right">
+                        <button type="submit" class="btn btn-success label-left">
+                            <div class="btn-label">
+                                <i class="ti-save"></i>
+                            </div>
+                            Salvar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div class="box bg-white">
+    <div class="card-body list-box p-0">
+        <div class="table-responsive">
+            <table class="table table-bordered mb-md-0">
+                <thead>
+                    <tr>
+                        <th width="90" class="text-center text-uppercase">ID</th>
+                        <th width="90" class="text-center"><i class="fa fa-sort-amount-asc"></i></th>
+                        <th>Título</th>
+                        <th width="220" class="text-center">Permissões</th>
+                        <th width="160" class="text-xs-center">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for menu in menus %}
+                        <tr>
+                            <td class="text-center vertical-middle">
+                                {{menu.principal.id}}
+                            </td>
+                            <td class="text-center vertical-middle">
+                                {{menu.principal.order_by}}
+                            </td>
+                            <td class="vertical-middle font-weight-bold">
+                                {% if menu.principal.icon %}
+                                    {% if 'icon-custom' in menu.principal.icon %}
+                                        <div class="{{menu.principal.icon}}  mr-0-25"></div>
+                                    {% else %}
+                                        <i class="{{menu.principal.icon}} mr-0-25"></i>
+                                    {% endif %}
+                                {% endif %}
+                                {{menu.principal.title}}
+                            </td>
+                            <td class="vertical-middle text-xs-center font-weight-bold">
+                                {% for permission in menu.principal.permissions %}
+                                    {% if return_type(permission) is not empty %}
+                                        {{return_type(permission)}}<br>
+                                    {% endif %}
+                                {% else %}
+                                    Todos
+                                {% endfor %}
+                            </td>
+                            <td class="text-xs-center vertical-middle">
+                                <div class="btn-group">
+                                    <button class="btn btn-success" onclick="admin.editClick(this)" data-editar="{{menu.principal|json_encode}}" data-target="#modal-new-menu">
+                                        <i data-toggle="tooltip" title="Editar" class="ti-pencil"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-danger" onclick="admin.removeClick(this)" data-link="menu/delete" data-excluir="{{menu.principal.id}}">
+                                        <i data-toggle="tooltip" title="Remover" class="ti-close"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        {% if menu.submenus %}
+                            {% for submenu in menu.submenus %}
+                               <tr>
+                                    <td class="text-center vertical-middle">
+                                        {{submenu.id}}
+                                    </td>
+                                    <td class="text-center vertical-middle ">
+                                        {{submenu.order_by}}
+                                    </td>
+                                    <td class="vertical-middle font-weight-bold">
+                                        {% if submenu.icon %}
+                                            {% if 'icon-custom' in submenu.icon %}
+                                                <div class="{{submenu.icon}}  mr-0-25"></div>
+                                            {% else %}
+                                                <i class="{{submenu.icon}} mr-0-25"></i>
+                                            {% endif %}
+                                        {% endif %}
+                                       {{menu.principal.title}} / {{submenu.title}}
+                                    </td>
+                                    <td class="vertical-middle text-xs-center font-weight-bold">
+                                        {% for permission in submenu.permissions %}
+                                            {{return_type(permission)}}
+                                        {% else %}
+                                            Todas
+                                        {% endfor %}
+                                    </td>
+                                    <td class="text-xs-center vertical-middle">
+                                        <div class="btn-group">
+                                            <button class="btn btn-success" onclick="admin.editClick(this)" data-editar="{{submenu|json_encode}}" data-target="#modal-new-menu">
+                                                <i data-toggle="tooltip" title="Editar" class="ti-pencil"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-danger" onclick="admin.removeClick(this)" data-link="menu/delete" data-excluir="{{submenu.id}}">
+                                                <i data-toggle="tooltip" title="Remover" class="ti-close"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr> 
+                            {% endfor %}
+                        {% endif %}
+                    {% else %}
+                        {% include 'helpers/not_found_tr.twig' with {'colspan' : 3} %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block style %}
+<link rel="stylesheet" href="{{asset('css/chosen.min.css')}}" />
+{% endblock %}
+
+{% block script %}
+<script src="{{asset('js/chosen.jquery.min.js')}}"></script>
+<script>
+    $(document).ready(function () {
+        $('#modal-new-menu').on('shown.bs.modal', function () {
+            $('.chosen-select', this).chosen();
+            $('.chosen-select', this).chosen();
+        });
+        $('#modal-new-menu').on('shown.bs.modal', function () {
+            $('.chosen-select', this).chosen('destroy').chosen();
+        });
+        $(".chosen-select").chosen();
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,39 @@
+<nav class="nave-pagination-new" style="padding-bottom : 5px !important" data-page="{{actual}}" data-actual="{{actual}}" data-url="{{url}}" data-forpage="{{forpage}}" aria-label="Page navigation example">
+    {% if totalPages > 1 %}
+        <ul class="pagination m-0">
+            {% if actual > 1 %}
+                <li class="page-item">
+                    <button onclick="make_paginate(this)" type="button" data-page="1" class="page-link">
+                        <i class="ti-angle-double-left"></i>
+                    </button>
+                </li>
+            {% endif %}
+            {% if actual > 1 %}
+                <li class="page-item">
+                    <button onclick="make_paginate(this)" type="button" data-page="{{actual - 1}}" class="page-link">
+                        <i class="ti-angle-left"></i>
+                    </button>
+                </li>
+            {% endif %}
+            {% for page in inicio..fim %}
+                {% if page > 0 %}
+                    <li class="page-item {{page == actual ? 'active' : ''}}">
+                        <button onclick="make_paginate(this)" type="button" data-page="{{page}}" class="page-link">{{page}}</button>
+                    </li>
+                {% endif %}
+            {% endfor %}
+            {% if actual < totalPages %}
+                <li class="page-item">
+                    <button onclick="make_paginate(this)" type="button" data-page="{{actual + 1}}" class="page-link">
+                        <i class="ti-angle-right"></i>
+                    </button>
+                </li>
+                <li class="page-item">
+                    <button onclick="make_paginate(this)" type="button" data-page="{{totalPages|round(0,'ceil')}}" class="page-link">
+                        <i class="ti-angle-double-right"></i>
+                    </button>
+                </li>
+            {% endif %}
+        </ul>
+    {% endif %}
+</nav>

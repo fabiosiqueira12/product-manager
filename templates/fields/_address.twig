@@ -1,0 +1,51 @@
+{% import 'forms.twig' as forms %}
+
+<div class="endereco-group">
+    <input type="hidden" name="latitude" value="{{address.latitude}}">
+    <input type="hidden" name="longitude" value="{{address.longitude}}">
+    <input type="hidden" name="zoom">
+    <div class="row">
+        <div class="form-group col-lg-4 col-md-4 col-12">
+            {{forms.label('CEP')}}
+            <input type="text" required name="cep" value="{{address.cep}}" class="form-control mask-cep text-center" pattern="[0-9]{5}-[0-9]{3}">
+        </div>
+        <div class="form-group col-lg-8 col-md-8 col-12">
+            {{forms.label('Logradouro')}}
+            <input type="text" required value="{{address.logradouro}}" name="logradouro" class="form-control text-uppercase cnpj-logradouro end-logradouro"
+                maxlength="200">
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-lg-2 col-md-2 col-12">
+            {{forms.label('Número')}}
+            <input type="text" required value="{{address.numero}}" name="numero" class="form-control cnpj-numero end-numero" maxlength="20">
+        </div>
+        <div class="form-group col-lg-6 col-md-4 col-xs-12 col-12">
+            {{forms.label('Complemento')}}
+            <input type="text" value="{{address.complemento}}" name="complemento" class="form-control text-uppercase cnpj-complemento end-complemento"
+                maxlength="80">
+        </div>
+        <div class="form-group col-lg-4 col-md-4 col-12">
+            {{forms.label('Bairro')}}
+            <input type="text" required value="{{address.bairro}}" name="bairro" class="form-control text-uppercase cnpj-bairro end-bairro" maxlength="50">
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-lg-6 col-md-6 col-12">
+            {{forms.label('Estado')}}
+            <input type="text" class="form-control text-uppercase" value="{{address.estado}}" name="estado" required>
+        </div>
+        <div class="form-group col-lg-6 col-md-6 col-12">
+            {{forms.label('Cidade')}}
+            <input type="text" class="form-control text-uppercase" value="{{address.cidade}}" name="cidade" required>
+        </div>
+    </div>
+    {% if referencia is not empty %}
+    <div class="row">
+        <div class="col-xs-12 form-group">
+            {{forms.label('Ponto de Referência')}}
+            <input type="text" class="form-control" name="referencia" required>
+        </div>
+    </div>
+    {% endif %}
+</div>

@@ -1,0 +1,145 @@
+{% extends 'layout.twig' %}
+
+{% import 'forms.twig' as forms %}
+
+{% block title_page %}
+    Textos Sistema
+{% endblock %}
+
+{% block modals %}
+
+<form class="modal fade form-file" data-url="/textos-sistema/save" id="modal-new-texto" enctype="multipart/form-data">
+    <input type="hidden" name="id" />
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Texto</h3>
+                <button type="reset" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="ti-close"></i>
+                </button>
+            </div>
+            <div class="modal-body pb-0 clearfix">
+                <div class="row">
+                    <div class="col-md-8 col-xs-12 form-group">
+                        {{forms.label('Título')}}
+                        <input type="text" class="form-control" name="title" required>
+                    </div>
+                    <div class="col-md-4 col-xs-12 form-group">
+                        {{forms.label('REF','Referência do texto para utilizar na API')}}
+                        <input type="text" class="form-control" name="ref" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 form-group">
+                        {{forms.label('Descrição')}}
+                        <input type="text" class="form-control" name="description">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 form-group">
+                        <textarea name="texto"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <div>
+                    <button type="reset" class="btn btn-danger label-left" data-dismiss="modal">
+                        <div class="btn-label">
+                            <i class="ti-close"></i>
+                        </div>
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-success label-left">
+                        <div class="btn-label">
+                            <i class="ti-save"></i>
+                        </div>
+                        Salvar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active">Configurações</li>
+    <li class="breadcrumb-item active">Textos Sistema</li>
+{% endblock %}
+
+{% block links %}
+<button type="button" class="btn btn-success btn-new label-left" data-toggle="modal" data-target="#modal-new-texto">
+    <div class="btn-label">
+        <i class="ti-plus"></i>
+    </div>
+    Novo
+</button>
+{% endblock %}
+
+{% block main %}
+    <div class="bg-white">
+        <div class="table-responsive m-0">
+            <table class="table table-striped table-bordered table-hover m-0">
+                <thead>
+                    <tr>
+                        <th width="80" class="text-center vertical-middle">#</th>
+                        <th class="vertical-middle">Título</th>
+                        <th class="text-center" width="250">REF</th>
+                        <th width="220" class="text-center">DT de Cadastro</th>
+                        <th width="200" class="text-center">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for texto in textos %}
+                        <tr class="text-uppercase">
+                            <td class="text-center font-weight-bold vertical-middle">
+                                {{texto.id}}
+                            </td>
+                            <td class="vertical-middle text-uppercase">
+                                {{texto.title|raw}}
+                            </td>
+                            <td class="vertical-middle text-xs-center font-weight-bold">
+                                <div>{{texto.ref}}</div>
+                            </td>
+                            <td class="vertical-middle text-center">
+                                {{texto.date_insert|date('d/m/Y \\à\\s H:i')}}
+                            </td>
+                            <td class="text-center vertical-middle">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-info btn-editar" onclick="editClick(this);updateTexto(this);" data-target="#modal-new-texto" data-editar="{{texto|json_encode}}">
+                                        <i class="ti-pencil" data-toggle="tooltip" title="Editar"></i>
+                                    </button>
+                                    <button class="btn btn-danger" onclick="removeClick(this)" data-link="/textos-sistema/delete" data-excluir="{{texto.id}}">
+                                        <i class="ti-trash" data-toggle="tooltip" title="Excluír"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    {% else %}
+                        {% include 'helpers/not_found_tr.twig' with {'colspan' : 5} %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script>
+
+        function updateTexto(element){
+            var item = $(element).data('editar');
+            CKEDITOR.instances['texto'].setData(item.texto);
+        }
+    
+        $(document).ready(function(){
+            CKEDITOR.replace('texto');
+            $('.btn-new').on('click',function(){
+                var target = $(this).data('target');
+                CKEDITOR.instances['texto'].setData('');
+                $(target).find('input[name="id"]').val('');
+                $(target).find('input[type="text"]').val('');
+            });
+        });
+    </script>
+{% endblock %}

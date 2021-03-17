@@ -1,0 +1,41 @@
+{% import 'forms.twig' as forms %}
+
+<form class="modal fade form-file" data-url="atualizacoes/save" id="modal-new-update" enctype="multipart/form-data">
+    <input type="hidden" name="id">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Atualização</h3>
+                <button type="reset" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="ti-close"></i>
+                </button>
+            </div>
+            <div class="modal-body pb-0 clearfix">
+                <div class="form-group">
+                    {{forms.label('Título')}}
+                    <input type="text" class="form-control" name="title" required>
+                </div>
+                <div class="form-group">
+                    {{forms.label('Texto:')}}
+                    <textarea name="texto"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <div>
+                    <button type="reset" class="btn btn-danger label-left" data-dismiss="modal">
+                        <div class="btn-label">
+                            <i class="ti-close"></i>
+                        </div>
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-success label-left">
+                        <div class="btn-label">
+                            <i class="ti-save"></i>
+                        </div>
+                        Salvar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

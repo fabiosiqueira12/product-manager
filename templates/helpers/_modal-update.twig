@@ -1,0 +1,20 @@
+<div class="modal fade" id="modal-atualizacao">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Últimas Atualizações</h3>
+                <button type="reset" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="ti-close"></i>
+                </button>
+            </div>
+            <div style="padding:10px;" class="modal-body body-scroll">
+                {% for atualizacao in ultimas_atualizacoes() %}
+                    <small>{{atualizacao.date_insert|date('d/m/Y \\à\\s H:i')}}</small>
+                    <h5 class="font-weight-bold mt-0-25 mb-0-25">{{atualizacao.title}}</h5>
+                    <div class="texto" style="font-size: 1rem;line-height: 1.4rem">{{atualizacao.texto|raw}}</div>
+                    <hr>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>

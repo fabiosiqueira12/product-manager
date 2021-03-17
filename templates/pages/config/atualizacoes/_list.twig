@@ -1,0 +1,52 @@
+<div class="table-responsive">
+    <table class="table table-bordered mb-md-0">
+        <thead>
+            <tr>
+                <th width="70" class="text-center text-uppercase">#</th>
+                <th>Título</th>
+                <th width="180" class="text-xs-center">Data de Cadastro</th>
+                <th width="150" class="text-xs-center">Liberado</th>
+                <th width="200" class="text-xs-center">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in list %}
+            <tr>
+                <td class="text-center vertical-middle">
+                    {{item.id}}
+                </td>
+                <td class="vertical-middle">
+                    {{item.title}}
+                </td>
+                <td class="vertical-middle text-xs-center text-uppercase font-weight-bold">
+                    {{item.date_insert|date('d/m/Y \\à\\s H:i')}}
+                </td>
+                <td class="text-center text-uppercase vertical-middle">
+                    {% if item.status == 1 %}
+                        <span class="tag tag-success tag-pill">Sim</span>
+                    {% else %}
+                        <span class="tag tag-warning tag-pill">Aguardando</span>
+                    {% endif %}
+                </td>
+                <td class="vertical-middle text-xs-center">
+                    <div class="btn-group">
+                        <button class="btn btn-success" type="button" onclick="udpateClick(this);" data-target="#modal-new-update" data-editar='{{item|json_encode}}'>
+                            <i class="ti-pencil" data-toggle="tooltip" title="Editar"></i>
+                        </button>
+                        {% if button.status == 0 %}
+                            <button class="btn btn-primary" type="button" onclick="removeClick(this);" data-textalert="Deseja liberar item?" data-excluir="{{item.id}}" data-link="atualizacoes/libera">
+                                <i class="ti-check" data-toggle="tooltip" title="Liberar"></i>
+                            </button>
+                        {% endif %}
+                        <button class="btn btn-danger" type="button" onclick="removeClick(this);" data-excluir="{{item.id}}" data-link="atualizacoes/delete">
+                            <i class="ti-trash" data-toggle="tooltip" title="Remover"></i>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            {% else %}
+                {% include 'helpers/not_found_tr.twig' with {'colspan' : 5} %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

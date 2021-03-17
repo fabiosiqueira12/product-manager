@@ -1,0 +1,22 @@
+{% extends "email/base_email.twig" %}
+
+{% block title %}{{title}}{% endblock %}
+
+{% block main %}
+<div
+    style="position : relative;z-indez: 1;padding: 30px;paddding-top : 15px; background: #fff;box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);border-radius: 8px">
+    <img src="{{base_url_new()}}assets/img/logo{{extesion_image}}"
+        style="width : 200px;display : block;margin : auto;">
+    <table border="0" cellpadding="0" cellspacing="0" style="width: 100%;">
+        <tbody>
+            <tr>
+                <td>
+                    <h1 style="font-size: 18px;text-transform: uppercase;margin-bottom : 0px;margin-top : 30px">Veja abaixo uma nova oferta para você!! Caso se interesse acesse o site ou aplicativo para mais detalhes</h1>
+                    <h1 style="font-size: 18px;text-transform: uppercase;margin-bottom : 0px;margin-top : 30px">{{title|raw}}</h1>
+                    <p style="line-height : 1.6rem;font-size : 15px">{{description|raw}}</p>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{% endblock %}

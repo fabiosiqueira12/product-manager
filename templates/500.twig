@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <!-- Meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <!-- SEO -->
+    <title>500 | {{return_dados() != null ? return_dados().title : 'Portal de Notícias' }}</title>
+    <meta name="description" itemprop="description" content="{{return_dados() != null ? return_dados().description : ''}}" />
+    <meta name="keywords" content="{{return_dados() != null ? return_dados().keywords : ''}}" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta name="author" content="Grupo Adapta / Agência de Marketing Digital, Criação de Sites, Loja Vitual em Caruaru, Recife, Brasil">
+
+    <link rel="icon" href="{{base_url_new()}}assets/img/favicon.ico?v=1.1.0" />
+
+    <!-- Vendor CSS -->
+    <link rel="stylesheet" href="{{base_url_new()}}assets/plugins/bootstrap4/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{base_url_new()}}assets/plugins/themify-icons/themify-icons.css">
+    <link rel="stylesheet" href="{{base_url_new()}}assets/plugins/font-awesome/css/font-awesome.min.css">
+
+    <!-- Neptune CSS -->
+    <link rel="stylesheet" href="{{base_url_new()}}assets/css/core.css">
+
+</head>
+
+<body class="material-design bg-primary">
+
+    <div class="error-message text-xs-center">
+        <h1 class="mb-3">500<span><i class="ti-help-alt"></i></span></h1>
+        <h5 class="text-uppercase">Erro Inesperado!</h5>
+        <div class="error-message-text mb-3">{{message}}</div>
+        <a href="{{path_for('home')}}" class="btn btn-outline-white w-min-md mb-3">Voltar para dashboard</a>
+        {% for item in trace %}
+            <div>
+                <label for="">File: {{item.file}}</label>
+                <div>Line: {{item.line}}</div>
+            </div>
+            <hr>
+        {% endfor %}
+    </div>
+
+    <!-- Vendor JS -->
+    <script type="text/javascript" src="{{base_url_new()}}assets/plugins/jquery/jquery-1.12.3.min.js"></script>
+    <script type="text/javascript" src="{{base_url_new()}}assets/plugins/tether/js/tether.min.js"></script>
+    <script type="text/javascript" src="{{base_url_new()}}assets/plugins/bootstrap4/js/bootstrap.min.js"></script>
+</body>
+
+</html>

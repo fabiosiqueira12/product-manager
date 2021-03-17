@@ -1,0 +1,61 @@
+<div class="table-responsive m-0">
+    <table class="table table-striped table-bordered table-hover m-0">
+        <thead>
+            <tr>
+                <th width="70" class="text-center vertical-middle">#</th>
+                <th class="vertical-middle">Nome</th>
+                <th width="200" class="text-center">Dt. de Cadastro</th>
+                <th class="text-center" width="240">Email/Usuário</th>
+                <th class="text-center" width="150">Whatsapp</th>
+                <th width="200" class="text-center">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr class="text-uppercase {{user.getStatus() == 0 ? 'bg-danger' : ''}}">
+                <td class="text-center vertical-middle">
+                    {{user.getId()}}
+                </td>
+                <td class="vertical-middle text-uppercase">
+                    {{user.getNome()}}
+                </td>
+                <td class="vertical-middle text-center text-uppercase">
+                    {{user.getDataInsert()|date('d/m/Y \\à\\s H:i')}}
+                </td>
+                <td class="vertical-middle text-uppercase text-center">
+                    {{user.getEmail()}}
+                    <br>
+                    <span class="font-weight-bold">{{user.getLogin()}}</span>
+                </td>
+                <td class="vertical-middle text-center">
+                    <div>{{user.getTelefone()}}</div>
+                </td>
+                <td class="text-center vertical-middle">
+                    <div class="btn-group">
+                        <div class="btn btn-info btn-editar" onclick="admin.editClick(this);onEdit();" data-target="#modal-new-user" data-editar="{{user|json_encode}}">
+                            <i class="ti-pencil" data-toggle="tooltip" title="Editar"></i>
+                        </div>
+                        {% if user_logged().isAdmin() %}
+                            <button type="button" class="btn btn-warning" onclick="changeType(this)" data-token="{{user.getToken()}}">
+                                <i class="ti-reload" data-toggle="tooltip" title="Alterar Tipo"></i>
+                            </button>
+                        {% endif %}
+                        {% if user.getStatus() == 1 %}
+                            <button type="button" class="btn btn-danger" onclick="admin.removeClick(this)" data-textalert="Você tem certeza que deseja bloquear esse usuário?" data-excluir="{{user.getId()}}" data-link="/usuarios/desativar">
+                                <i class="ti-lock" data-toggle="tooltip" title="Bloquear"></i>
+                            </button>
+                        {% else %}
+                            <button type="button" class="btn btn-success" data-ref="{{user.getId()}}" onclick="activeClick(this)" data-link="/usuarios/ativar">
+                                <i class="ti-unlock" data-toggle="tooltip" title="Ativar"></i>
+                            </button>
+                        {% endif %}
+                    </div>
+                </td>
+            </tr>
+            {% else %}
+                {% include 'helpers/not_found_tr.twig' with {'colspan' : 6} %}
+            {% endfor %}
+
+        </tbody>
+    </table>
+</div>

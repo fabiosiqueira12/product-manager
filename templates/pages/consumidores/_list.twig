@@ -1,0 +1,85 @@
+<div class="table-responsive m-0">
+    <table class="table table-striped table-bordered table-hover m-0">
+        <thead>
+            <tr>
+                <th class="vertical-middle text-center" width="80">#</th>
+                <th class="vertical-middle">Nome/Status</th>
+                <th class="vertical-middle text-center" width="200">Celular</th>
+                <th width="220" class="text-center">E-mail</th>
+                <th class="text-center" width="160">Dt. de Cadastro</th>
+                {% if user_logged().isAdmin() or user_logged().isSuporte() %}
+                <th class="text-center" width="145">Observações</th>
+                {% endif %}
+                <th class="text-center" width="190">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for consumidor in list %}
+            <tr class="text-uppercase">
+                <td class="text-center vertical-middle">
+                    {{consumidor.id}}
+                </td>
+                <td class="vertical-middle">
+                    {{consumidor.nome}}
+                    <br>
+                    {% if consumidor.status == 0 %}
+                        <span class="tag tag-danger">Bloqueado</span>
+                    {% endif %}
+                    {% if consumidor.status == 1 %}
+                        <span class="tag tag-success">Ativo</span>
+                    {% endif %}
+                </td>
+                <td class="vertical-middle text-center font-weight-bold">
+                    {{consumidor.celular}}
+                </td>
+                <td class="vertical-middle text-center font-weight-bold">
+                    {{consumidor.email is not empty ? consumidor.email : '--'}}
+                </td>
+                <td class="vertical-middle text-center">
+                    {{consumidor.date_insert|date('d/m/Y H:i')}}
+                </td>
+                {% if user_logged().isAdmin() or user_logged().isSuporte() %}
+                    <td class="vertical-middle text-center">
+                        {% if consumidor.id_obs is not empty %}
+                            {{consumidor.title_obs}}
+                            <br>
+                            <strong>{{consumidor.date_obs is not empty ? consumidor.date_obs|date('d/m/Y \\-\\ H:i') : ''}}</strong>
+                        {% else %}
+                            --
+                        {% endif %}
+                    </td>
+                {% endif %}
+                <td class="vertical-middle text-center">
+                    <div class="btn-group">
+                        <a href="{{path_for('consumidores.detalhes.index',{id: consumidor.id})}}" class="btn btn-primary">
+                            <i class="ti-eye" data-toggle="tooltip" title="Detalhes"></i>
+                        </a>
+                        {% if consumidor.status == 0 %}
+                            <button type="button" onclick="removeClick(this);" data-textalert="Deseja ativar o consumidor?" class="btn btn-success" data-link="consumidores/active" data-excluir="{{consumidor.id}}">
+                                <i class="ti-unlock" data-toggle="tooltip" title="Ativar"></i>
+                            </button>
+                        {% endif %}
+                        {% if consumidor.status == 1 %}
+                            <button type="button" onclick="removeClick(this);" data-textalert="Deseja bloquear o consumidor?" class="btn btn-danger" data-link="consumidores/block" data-excluir="{{consumidor.id}}">
+                                <i class="ti-lock" data-toggle="tooltip" title="Bloquear"></i>
+                            </button>
+                        {% endif %}
+                        {% if user_logged().isAdmin() or user_logged().isSuporte() %}
+                            {% if consumidor.id_obs is not empty and consumidor.id_obs == 1 %}
+                                <button type="button" onclick="removeClick(this);" data-link="consumidores/copy-prospeccao" data-textalert="Deseja copiar os dados para prospecção?" data-excluir="{{consumidor.id}}" class="btn btn-purple">
+                                    <i class="ti-filter" data-toggle="tooltip" title="Copiar Prospecção"></i>
+                                </button>
+                            {% endif %}
+                            <button type="button" data-target="#modal-obs" onclick="openObs(this);" class="btn btn-info" data-ref="{{consumidor.id}}" data-date="{{consumidor.date_obs is not empty ? consumidor.date_obs|replace({" " : "T"}) : ''}}" data-obs="{{consumidor.id_obs}}">
+                                <i class="ti-pencil-alt" data-toggle="tooltip" title="Observações"></i>
+                            </button>
+                        {% endif %}
+                    </div>
+                </td>
+            </tr>
+            {% else %}
+                {% include 'helpers/not_found_tr.twig' with {'colspan' : user_logged().isAdmin() or user_logged().isSuporte() ? 6 : 5} %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

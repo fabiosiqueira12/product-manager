@@ -1,0 +1,37 @@
+{% import "forms.twig" as forms %}
+
+<form method="POST" class="box bg-white form-file" enctype="multipart/form-data" data-url="consumidores/update">
+    <input type="hidden" name="id" value="{{consumidor.id}}">
+    <div class="card-header text-uppercase font-weight-bold">
+        Dados Principais
+    </div>
+    <div class="box-block">
+        <div class="alert alert-info font-weight-bold">
+            Atenção, caso altere o telefone pode influenciar no login do seu cliente avise a ele da alteração!
+        </div>
+        <div class="row">
+            <div class="col-xs-12 form-group">
+                {{forms.label('Nome:')}}
+                <input type="text" class="form-control" name="nome" required value="{{consumidor.nome}}">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-xs-12 form-group">
+                {{forms.label('Telefone:')}}
+                <input type="tel" class="form-control mask-telefone" name="celular" value="{{consumidor.celular}}">
+            </div>
+            <div class="col-md-6 col-xs-12 form-group">
+                {{forms.label('E-mail:')}}
+                <input type="email" class="form-control" name="email" value="{{consumidor.email}}">
+            </div>
+        </div>
+    </div>
+    <div class="card-footer text-xs-right">
+        <button type="submit" class="btn btn-success label-left">
+            <div class="btn-label">
+                <i class="ti-save"></i>
+            </div>
+            Salvar
+        </button>
+    </div>
+</form>

@@ -1,0 +1,30 @@
+<!-- MODAL ALTERAR TIPO !-->
+<form id="modal-change-type" data-url="usuarios/change-type" class="modal fade form-file"
+    enctype="multipart/form-data">
+    <input type="hidden" name="token">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="close" data-dismiss="modal"><i class="ti-close"></i></div>
+                <h3 class="modal-title">Altere o tipo</h3>
+            </div>
+            <div class="modal-body">
+                <select name="type" class="form-control text-uppercase" required>
+                    <option value=""> -- Selecione --</option>
+                    {% for key,type in types_users() %}
+                        <option value="{{key}}">{{type}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="modal-footer">
+                <button data-dismiss class="btn btn-success label-left">
+                    <div class="btn-label">
+                        <i class="ti-check"></i>
+                    </div>
+                    Alterar
+                </button>
+            </div>
+        </div>
+    </div>
+</form>
+<!-- END MODAL !-->

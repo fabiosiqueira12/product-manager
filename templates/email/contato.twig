@@ -1,0 +1,45 @@
+{% extends "email/base_email.twig" %}
+
+{% block title %}{{title}}{% endblock %}
+
+{% block main %}
+<div
+    style="position : relative;z-indez: 1;padding: 30px;paddding-top : 15px; background: #fff;box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);border-radius: 8px">
+
+    <img src="{{base_url_new()}}assets/img/logo{{extesion_image}}" style="width : 150px;display : block;margin : auto;">
+    
+    <fieldset style="border: 1px solid #bababa; text-align: left;margin-top: 15px">
+        <legend style="letter-spacing: -1px; margin: 0 0 2px 0; line-height: 33px; text-align: left;font-size: 14px;text-transform: uppercase;">
+            <strong>Informações do Contato</strong>
+        </legend>
+        <span style="text-align: justify; display: block; margin: 0px 0 10px 0; line-height: 25px;font-size : 15px">
+            {% if nome is not empty %}
+                <div><strong>Nome:</strong> {{nome}}</div>
+            {% endif %}
+            {% if email is not empty %}
+                <div><strong>E-mail:</strong> {{email}}</div>
+            {% endif %}
+            {% if telefone is not empty %}
+                <div><strong>Telefone/Celular:</strong> {{telefone}}</div>
+            {% endif %}
+            {% if assunto is not empty %}
+                <div><strong>Assunto:</strong> {{assunto}}</div>
+            {% endif %}
+        </span>
+    </fieldset>
+
+    <fieldset style="border: 1px solid #bababa; text-align: left;margin-top: 10px">
+        <legend style="letter-spacing: -1px; margin: 0 0 2px 0; line-height: 33px; text-align: left;font-size: 14px;text-transform: uppercase;">
+            <strong>Mensagem</strong>
+        </legend>
+        <span style="text-align: justify; display: block; margin: 0px 0 10px 0; line-height: 25px;font-size : 15px">
+            {% if mensagem is not empty %}
+                <div>{{mensagem|raw}}</div>
+            {% else %}
+                <div>Nada Informado</div>
+            {% endif %}
+        </span>
+    </fieldset>
+
+</div>
+{% endblock %}

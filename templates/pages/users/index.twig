@@ -1,0 +1,84 @@
+{% extends "layout.twig" %}
+
+{% block title_page %}
+    {{typeObject.title}}
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active">Gestor de Usuários</li>
+    <li class="breadcrumb-item active">{{typeObject.title}}</li>
+{% endblock %}
+
+{% block links %}
+<button type="button" data-target="#modal-new-user" class="btn btn-success btn-new label-left">
+    <div class="btn-label">
+        <i class="ti-plus"></i>
+    </div>
+    Novo Usuário
+</button>
+{% endblock %}
+
+{% block modals %}
+
+{% include 'pages/users/new.twig' with {'type' : type} %}
+{% if user_logged().isAdmin() %}
+    {% include "pages/users/_change-type.twig" %}
+{% endif %}
+
+{% endblock %}
+
+{% block main %}
+
+{% include "pages/users/_search.twig" with {
+    type: typeObject.id
+} %}
+
+<div class="content-box-paginate">
+    {% include "helpers/_box-paginate.twig" with{
+        folderList: "pages/users/_list.twig",
+        list: users,
+        paginate: paginate,
+        paramsList: {
+            users: users.results,
+            type: type
+        },
+        urlPaginate: "users/paginate"
+    } %}
+</div>
+
+{% endblock %}
+
+{% block script %}
+<script>
+
+    function changeType(element)
+    {
+        var token = $(element).data('token');
+        if (token != "" && token != undefined){
+            $("#modal-change-type").find('input[name="token"]').val(token);
+            $("#modal-change-type").modal('show');
+        }else{
+            Swal('Erro!','A referência do usuário não foi encontrada, recarregue a página','error');
+        }
+    }
+
+    function onEdit(){
+        $("#modal-new-user").find('input[name="type"]').val({{type}});
+    }
+
+    $(document).ready(function () {
+
+        $('.select').click(function(){
+            // Select All
+            $('.chosen-select option').prop('selected', true);  
+            $('.chosen-select').trigger('chosen:updated');
+        });
+        $('.deselect').click(function(){
+                // Deselect All
+            $('.chosen-select option:selected').removeAttr('selected');
+            $('.chosen-select').trigger('chosen:updated');
+        });
+    });
+    
+</script>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "email/base_emailv2.twig" %}
+
+{% block title %}Recuperar Senha{% endblock %}
+
+{% block main %}
+<h1 style="font-size: 18px;text-transform: uppercase">Olá {{user.getFirstName()}}.</h1>
+<p>Para recuperar sua senha acesse o link abaixo e siga as instruções.</p>
+<p> <a href="{{link}}"
+        style="display: inline-block; padding: 12px 30px; font-weight : bold; font-size: 15px; color: #fff; background: #3e70c9; border-radius: 40px; text-decoration:none;">
+        Clique aqui</a></p>
+<p>Caso não tenha solicitado recuperação de senha ignore este e-mail.</p>
+<p>Mantenha seu cadastro sempre atualizado para usar todas as ferramentas.</p>
+{% endblock %}

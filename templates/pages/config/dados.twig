@@ -1,0 +1,74 @@
+{% extends "layout.twig" %}
+
+{% import 'forms.twig' as forms %}
+
+{% block title_page %}
+    Dados
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active">Configurações</li>
+    <li class="breadcrumb-item active">Dados</li>
+{% endblock %}
+
+{% block main %}
+
+<form class="mb-3 custom-form form-file" data-url="dados/save">
+    <input type="hidden" name="id" value="{{dataConfig.id}}">
+    <div class="box mb-2">
+        <div class="box-block bg-white">
+            <div class="row">
+                <div class="col-md-8 col-xs-12 form-group">
+                    {{forms.label('Título')}}
+                    <input type="text" class="form-control" name="title" value="{{dataConfig.title}}" required>
+                </div>
+                <div class="col-md-4 col-xs-12 form-group">
+                    {{forms.label('Keywords','Digite as keywords separadas por ","')}}
+                    <input type="text" value="{{dataConfig.keywords}}" class="form-control" name="keywords">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 form-group">
+                    {{forms.label('Descrição')}}
+                    <input type="text" class="form-control" value="{{dataConfig.description}}" name="description">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 col-xs-12 form-group">
+                    {{forms.label('E-mail')}}
+                    <input type="email" class="form-control" name="email" value="{{dataConfig.email}}" required>
+                </div>
+                <div class="col-md-4 col-xs-12 form-group">
+                    {{forms.label('Telefone')}}
+                    <input type="tel" class="form-control mask-telefone" value="{{dataConfig.telefone}}" name="telefone" required>
+                </div>
+                <div class="col-md-4 col-xs-12 form-group">
+                    {{forms.label('Whatsaspp','Digite seu número do Whatsapp')}}
+                    <input type="tel" class="form-control mask-telefone" value="{{dataConfig.whatsapp}}" name="whatsapp">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 col-xs-12 form-group">
+                    {{forms.label('Link Facebook')}}
+                    <input type="text" class="form-control" value="{{dataConfig.facebook}}" name="facebook">
+                </div>
+                <div class="col-md-6 col-xs-12 form-group">
+                    {{forms.label('Link Instagram')}}
+                     <input type="text" class="form-control" value="{{dataConfig.instagram}}" name="instagram">
+                </div>
+            </div>
+        </div>
+        <div class="card-footer text-xs-right" style="display : flex">
+            <div class="acoes" style="margin-left : auto">
+                <button type="submit" class="btn btn-success label-left">
+                    <div class="btn-label">
+                        <i class="ti-save"></i>
+                    </div>
+                    Salvar
+                </button>
+            </div>
+        </div>
+    </div>
+</form>
+
+{% endblock %}

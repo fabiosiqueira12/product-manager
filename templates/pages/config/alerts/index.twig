@@ -1,0 +1,154 @@
+{% extends 'layout.twig' %}
+
+
+{% block title_page %}
+    Alertas/Informativos
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active">Configurações</li>
+    <li class="breadcrumb-item active">Alertas/Informativos</li>
+{% endblock %}
+
+{% block links %}
+<button type="button" class="btn btn-success btn-new label-left" data-toggle="modal" data-target="#modal-new-alert">
+    <div class="btn-label">
+        <i class="ti-plus"></i>
+    </div>
+    Novo
+</button>
+{% endblock %}
+
+{% block modals %}
+    {% include "pages/config/alerts/_info.twig" %}
+    {% include "pages/config/alerts/_new.twig" %}
+{% endblock %}
+
+{% block main %}
+
+{% include "pages/config/alerts/_search.twig" %}
+
+<div class="content-box-paginate mb-2">
+    {% include "pages/config/alerts/_box.twig" with {
+        list : list,
+        totalPages : totalPages,
+        totalCount : totalCount,
+        actual : 1,
+        inicio : 1,
+        fim : fim
+    } %}
+</div>
+
+{% endblock %}
+
+{% block style %}
+<link rel="stylesheet" href="{{base_url_new()}}/assets/css/chosen.min.css" />
+<style>
+    .chosen-container-multi .chosen-choices li.search-choice{
+        text-transform : uppercase !important;
+    }
+    .chosen-container-multi .chosen-choices li.search-choice span{
+        text-transform : uppercase !important;
+    }
+    .chosen-container .chosen-results li.active-result{
+        text-transform : uppercase !important;
+    }
+    .chosen-container-multi .chosen-choices{
+        padding-top : 5px !important;
+        height : 38px !important;
+        box-shadow : none !important;
+        background : #fff !important;
+        border: 1px solid rgba(0,0,0,.15) !important;
+    }
+    .chosen-container-single .chosen-single{
+        height : 38px !important;
+        box-shadow : none !important;
+        border: 1px solid rgba(0,0,0,.15) !important;
+    }
+    .chosen-container-single .chosen-single span{
+        margin-top : 5px !important;
+    }
+    .chosen-container-single .chosen-single div{
+        padding-top : 8px !important;
+    }
+    .chosen-container-active.chosen-with-drop .chosen-single div{
+        padding-top : 8px !important;
+    }
+</style>
+{% endblock %}
+
+{% block script %}
+    <script src="{{base_url_new()}}/assets/js/chosen.jquery.min.js"></script>
+    <script>
+
+        function showMessage(el){
+            var text = $(el).data('text');
+            console.log(text);
+            $("#modal-info-message").find('.get-message').html(text);
+            $("#modal-info-message").modal('show');
+        }
+
+        function searchUsers(){
+            $.ajax({
+                type: "POST",
+                url: BASE_URL + 'informativos/search-users',
+                data: {
+                    types : $('.chosen-select').val()
+                },
+                dataType: 'json',
+                beforeSend: function () {
+                    $("#loader").show();
+                },
+                success: function (response) {
+                    $("#modal-new-alert").find('input[name="users"]').val(response.ids);
+                    $("#modal-new-alert").find('.quant_users').html(response.ids.length);
+                },
+                error: function (response) {
+                    console.log(response);
+                    return Swal('Erro!',response.responseJSON.message,'error');
+                }
+            }).always(function () {
+                $("#loader").hide();
+            });
+        }
+
+        $(document).ready(function(){
+            $('#modal-new-alert').on('shown.bs.modal', function () {
+                $('.chosen-select', this).chosen();
+                $('.chosen-select', this).chosen();
+            });
+            $('#modal-new-alert').on('shown.bs.modal', function () {
+                $('.chosen-select', this).chosen('destroy').chosen();
+            });
+            $(".chosen-select").chosen();
+            CKEDITOR.replace('message');
+            $('.btn-new').on('click',function(){
+                var target = $(this).data('target');
+                CKEDITOR.instances['message'].setData('');
+                $(target).find('input[name="id"]').val('');
+                $(target).find('input[type="text"]').val('');
+            });
+            $('.select').click(function(){
+                // Select All
+                $(this).closest('.form-group').find('.chosen-select option').each(function(key,value){
+                    if (!$(value).is(':disabled')){
+                        $(value).prop('selected', true);
+                    }
+                });
+                $(this).closest('.form-group').find('.chosen-select').trigger('chosen:updated');
+                searchUsers();
+            });
+            $('.deselect').click(function(){
+                // Deselect All
+                $(this).closest('.form-group').find('.chosen-select option:selected').removeAttr('selected');
+                $(this).closest('.form-group').find('.chosen-select').trigger('chosen:updated');
+                searchUsers();
+            });
+            $('.chosen-select').on('change', function(evt, params) {
+                searchUsers(); 
+            });
+        });
+    </script>
+{% endblock %}
+
+

@@ -1,0 +1,10 @@
+vendor/
+temp/
+assets/uploads/*
+assets/import/*
+assets/files/*
+assets/cache/*
+assets/watermarks/*
+composer.lock
+result_gollog.txt
+notification_adapta.txt

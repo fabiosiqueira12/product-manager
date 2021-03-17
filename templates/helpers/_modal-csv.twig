@@ -1,0 +1,30 @@
+{% import 'forms.twig' as forms %}
+
+<form id="modal-register-csv" class="modal fade form-file" data-url="{{url}}" enctype="multipart/form-data">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="close" data-dismiss="modal"><i class="ti-close"></i></div>
+                <h3 class="modal-title">Importar Arquivo</h3>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-warning mb-0">
+                    <strong>O tamanho do arquivo deve ser no máximo de 2MB e de extensão .csv</strong>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <label for="inputfile_5c051fa1a9933" class="btn mr-1 mb-0 label-left btn-info btn btn-inputfile">
+                    <div class="btn-label"><i class="ti-file"></i></div>
+                    <span>Adicionar Arquivo</span>
+                    <input class="file-csv" required type="file" name="upcsv" id="inputfile_5c051fa1a9933" accept=".csv" class="d-none hide">
+                </label>
+                <button type="submit" class="btn btn-success label-left">
+                    <div class="btn-label">
+                        <i class="ti-save"></i>
+                    </div>
+                    Enviar
+                </button>
+            </div>
+        </div>
+    </div>
+</form>

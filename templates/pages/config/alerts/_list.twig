@@ -1,0 +1,45 @@
+<div class="table-responsive">
+    <table class="table table-bordered mb-md-0">
+        <thead>
+            <tr>
+                <th width="80" class="text-center text-uppercase">#</th>
+                <th width="220">Título/Assunto</th>
+                <th width="150" class="text-center">Quantidade de Usuários</th>
+                <th width="200" class="text-xs-center">Data de Cadastro</th>
+                <th width="200" class="text-xs-center">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in list %}
+            <tr>
+                <td class="text-center vertical-middle">
+                    {{item.id}}
+                </td>
+                <td class="text-center text-uppercase vertical-middle">
+                    {{item.title}}
+                    <br>
+                    <strong>Assunto: {{item.subject}}</strong>
+                </td>
+                <td class="text-center text-uppercase vertical-middle">
+                    {{item.users|length}}
+                </td>
+                <td class="vertical-middle text-xs-center text-uppercase font-weight-bold">
+                    {{item.date_insert|date('d/m/Y \\à\\s H:i')}}
+                </td>
+                <td class="vertical-middle text-xs-center">
+                    <div class="btn-group">
+                        <button type="button" data-text='{{item.message}}' onclick="showMessage(this);" class="btn btn-primary">
+                            <i class="ti-info" data-toggle="tooltip" title="Ver Mensagem"></i>
+                        </button>
+                        <button class="btn btn-danger" type="button" onclick="removeClick(this);" data-excluir="{{item.id}}" data-link="informativos/delete">
+                            <i class="ti-trash" data-toggle="tooltip" title="Remover"></i>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            {% else %}
+                {% include 'helpers/not_found_tr.twig' with {'colspan' : 5} %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

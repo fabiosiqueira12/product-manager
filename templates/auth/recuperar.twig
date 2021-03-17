@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <link rel="icon" href="{{asset('img/favicon.ico?v=1.0.5')}}" />
+
+    <!-- SEO -->
+    <title>Resetar Senha | {{return_dados().title}}</title>
+    <meta name="description" itemprop="description" content="{{return_dados().description}}" />
+    <meta name="keywords" content="{{return_dados().keywords}}" />
+    <meta property="og:locale" content="pt_BR" />
+
+    <link rel="stylesheet" href="{{base_url_new()}}/assets/plugins/bootstrap4/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{base_url_new()}}/assets/plugins/themify-icons/themify-icons.css">
+    <link rel="stylesheet" href="{{base_url_new()}}/assets/plugins/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{{base_url_new()}}/assets/plugins/animate.css/animate.min.css">
+    <link rel="stylesheet" href="{{base_url_new()}}/assets/plugins/jscrollpane/jquery.jscrollpane.css">
+    <link rel="stylesheet" href="{{base_url_new()}}/assets/plugins/waves/waves.min.css">
+    <link rel="stylesheet" href="{{base_url_new()}}/assets/plugins/switchery/dist/switchery.min.css">
+    <link rel="stylesheet" href="{{base_url_new()}}/assets/plugins/morris/morris.css">
+    <link rel="stylesheet" href="{{base_url_new()}}/assets/plugins/jvectormap/jquery-jvectormap-2.0.3.css">
+    <link rel="stylesheet" href="{{base_url_new()}}/assets/css/auth.css" />
+    <link rel="stylesheet" href="{{base_url_new()}}/assets/css/loading.css?v=1.2.0" />
+    <link rel="stylesheet" href="{{base_url_new()}}/assets/css/auth-update.css" />
+    
+    <style>
+        input,select{
+            outline : none !important;
+            box-shadow : none !important;
+        }
+        .back-effect{
+            position:fixed;
+            background: rgba(17, 63, 125, 0.9);
+            top: 0px;
+            left: 0px;
+            width: 100%;
+            height: 100%;
+        }
+        .container-fluid{
+            position: relative;
+            z-index:1;
+        }
+        @media screen and (max-width: 650px){
+            .back-effect{
+                background: #fff !important;
+            }
+        }
+    </style>
+
+</head>
+
+<body style="background-color: #f2f2f2">
+
+    {% include '/helpers/_loader.twig' %}
+
+    <div class="container-fluid p-0">
+        <div class="row m-0 justify-content-end">
+            <div class="p-0 col col-md-auto col-12 text-center">
+                <div class="login-box text-center">
+
+                    <div class="content">
+                        <div class="row justify-content-center">
+                            <div class="col-md-auto col-10 col-md-8 m-b-20">
+                                <img style="width : 120px" src="{{base_url_new()}}/assets/img/logo.png" class="img-fluid"/>
+                            </div>
+                        </div>
+
+                        <p class="text-center text-uppercase m-b-30">
+                            <strong>PAINEL ADMINISTRATIVO</strong>
+                        </p>
+
+                        <form class="m-b-20 form-login" data-url="/reset-password" onsubmit="submitData(event,this)"
+                            method="post" autocomplete="off">
+                            <input type="hidden" name="token" value="{{objectRecover.token}}">
+                            <div class="form-group">
+                                <i class="ti-email"></i>
+                                <input type="text" name="email" value="{{objectRecover.email}}" readonly class="form-control rounded-0 form-control-lg"
+                                    placeholder="E-mail" required="required" />
+                            </div>
+                            <div class="form-group m-b-30">
+                                <i class="ti-key"></i>
+                                <input type="password" name="password" class="form-control rounded-0 form-control-lg"
+                                    placeholder="Nova Senha" required="required" />
+                            </div>
+                            <button type="submit" class="btn btn-lg btn-info rounded-0 btn-block">
+                                <span>
+                                    <i class="ti-check"></i>
+                                    Enviar</span>
+                            </button>
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPTS !-->
+    <script>
+        window.BASE_URL = '{{base_url_new()}}';
+    </script>
+    <script type="text/javascript" src="{{base_url_new()}}/assets/plugins/jquery/jquery-1.12.3.min.js"></script>
+    <script type="text/javascript" src="{{base_url_new()}}/assets/plugins/tether/js/tether.min.js"></script>
+    <script type="text/javascript" src="{{base_url_new()}}/assets/plugins/bootstrap4/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="{{base_url_new()}}/assets/js/sweetalert2.all.min.js"></script>
+    <script src="{{asset('js/axios.min.js')}}"></script>
+    <script src="{{asset('js/forms.js?v=2.2.0')}}"></script>
+
+</body>
+
+</html>

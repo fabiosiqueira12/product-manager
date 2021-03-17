@@ -1,0 +1,114 @@
+{% extends "layout.twig" %}
+
+{% import "forms.twig" as forms %}
+
+{% block title_page %}
+    Gestor de Clientes | Inativos
+{% endblock %}
+
+{% block links %}
+    <button type="button" onclick="javascript:window.history.back()" class="btn btn-danger label-left">
+        <div class="btn-label">
+            <i class="ti-arrow-left"></i>
+        </div>
+        Voltar
+    </button>
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active">Gestor de Clientes</li>
+    <li class="breadcrumb-item active">Inativos</li>
+{% endblock %}
+
+{% block modals %}
+    {% include "pages/consumidores/_obs.twig" with {
+        observacoes: observacoes
+    } %}
+{% endblock %}
+
+{% block main %}
+
+    <div class="alert alert-info font-weight-bold">
+        Aqui você pode ver clientes que acessaram seu link na Faz Agilizar e não fizeram pedidos!
+    </div>
+
+    {% include "pages/consumidores/inativos/_search.twig" with {
+        companies: companies
+    } %}
+
+    <div class="content-box-paginate">
+        {% include "pages/consumidores/inativos/_box.twig" with {
+            list : list,
+            totalPages : totalPages,
+            totalCount : totalCount,
+            actual : 1,
+            inicio : 1,
+            fim : fim
+        } %}
+    </div>
+
+{% endblock %}
+
+{% block style %}
+    <link rel="stylesheet" href="{{asset('plugins/choices/choices.min.css')}}">
+{% endblock %}
+
+{% block script %}
+    <script src="{{asset('plugins/choices/choices.min.js')}}"></script>
+    <script>
+
+        function openExport(){
+            var data = $('.form-search-new').serializeArray();
+            var url = "";
+            data.forEach(function(e){
+                if (e.value != null && e.value != undefined && e.value != ''){
+                    url += e.name + "=" + e.value + "&";
+                }
+            });
+           
+            url = url.trim("&");
+            window.location.href = BASE_URL + 'consumidores/inativos/export?' + url;
+        }
+
+        function selectObs(el){
+            var target = $(el).closest("form");
+            var val = $(el).val();
+            if (val == 2 || val == 7){
+                $(target).find('.show-date').hide();
+            }else{
+                $(target).find('.show-date').show();
+            }
+        }
+
+        function openObs(el){
+            var target = $(el).data('target');
+            var ref = $(el).data('ref');
+            var obs = $(el).data("obs");
+            var date = $(el).data('date');
+            $(target).find("input[name='ref']").val(ref);
+            if (obs != null && obs != undefined){
+                $(target).find("[name='obs_id']").val(obs);
+            }else{
+                $(target).find("[name='obs_id']").val("");
+            }
+            if ( (date != null && date != undefined && date != '') && (obs != 2 && obs != 7) ){
+                $(target).find('.show-date').show();
+                $(target).find('[name="date_obs"]').val(date);
+            }else{
+                $(target).find('.show-date').hide();
+                $(target).find('[name="date_obs"]').val("");
+            }
+            $(target).modal('show');
+        }
+
+        $(document).ready(function(){
+
+            if ($("#choices-single-default").length > 0){
+                var choiceSelect = new Choices(document.getElementById('choices-single-default'));
+            }
+
+        });
+
+    </script>
+
+{% endblock %}

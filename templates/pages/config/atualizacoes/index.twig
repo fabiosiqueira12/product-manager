@@ -1,0 +1,68 @@
+{% extends 'layout.twig' %}
+
+{% block title_page %}
+    Atualizações | Configurações
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active">Configurações</li>
+    <li class="breadcrumb-item active">Atualizações</li>
+{% endblock %}
+
+{% block links %}
+<button type="button" class="btn btn-success btn-new label-left" data-target="#modal-new-update">
+    <div class="btn-label">
+        <i class="ti-plus"></i>
+    </div>
+    Nova Atualização
+</button>
+{% endblock %}
+
+{% block modals %}
+    {% include "pages/config/atualizacoes/_new.twig" %}
+{% endblock %}
+
+{% block main %}
+
+{% include "pages/config/atualizacoes/_search.twig" %}
+
+<div class="content-box-paginate mb-2">
+    {% include "pages/config/atualizacoes/_box.twig" with {
+        list : list,
+        actual : 1,
+        inicio : 1,
+        fim : fim
+    } %}
+</div>
+
+{% endblock %}
+
+{% block script %}
+    <script>
+    
+        function udpateClick(el){
+            var target = $(el).data('target');
+            var item = $(el).data('editar');
+            $(target).find('[name="id"]').val(item.id);
+            $(target).find('[name="title"]').val(item.title);
+            CKEDITOR.instances['texto'].setData(item.texto);
+            $(target).modal('show');
+        }
+
+        $(document).ready(function(){
+
+            CKEDITOR.replace('texto');
+
+            $('.btn-new').on('click',function(){
+                var target = $(this).data("target");
+                CKEDITOR.instances['texto'].setData('');
+                $(target).find('input[type="text"]').val("");
+                $(target).find('select').val("");
+                $(target).find('input[name="id"]').val("");
+                $(target).find('input[type="file"]').val("");
+                $(target).modal('show');
+            });
+        });
+    </script>
+{% endblock %}
+

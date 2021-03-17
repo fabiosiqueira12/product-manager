@@ -1,0 +1,55 @@
+@import "../scss/preboot";
+@import "../scss/helpers";
+@import "../scss/vars";
+
+html, body {
+  min-height: 100%;
+}
+
+body {
+  background-image: url(../img/background.jpg);
+  background-position: center;
+  background-size: cover;
+}
+
+.login-box {
+  color: #111;
+  a {
+    color: black;
+  }
+  box-sizing: border-box;
+  width: 500px;
+  padding: 50px 30px;
+  min-height: 100vh;
+  background-color: rgba(#ededed, 0.8);
+  .form-control {
+    color: black;
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid #c0c0c0;
+    @include placeholder(#333)
+  }
+  @media (max-width: map_get($grid-breakpoints, md)) {
+    width: 100%;
+  }
+}
+
+.font {
+  font-family: 'Vollkorn SC', serif;
+}
+
+.ptsans {
+  font-family: 'Open Sans', sans-serif;
+}
+
+.font-light {
+  font-weight: 300;
+}
+
+.font-bold {
+  font-weight: bold;
+}
+
+.font-normal {
+  font-weight: 400;
+}

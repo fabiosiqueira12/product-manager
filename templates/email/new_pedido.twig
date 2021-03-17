@@ -1,0 +1,98 @@
+{% extends "email/base_email.twig" %}
+
+{% block title %}{{title}}{% endblock %}
+
+{% block main %}
+<div
+    style="position : relative;z-indez: 1;padding: 30px;paddding-top : 15px; background: #fff;box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);border-radius: 8px">
+    <img src="{{base_url_new()}}assets/img/logo{{extesion_image}}"
+        style="width : 200px;display : block;margin : auto;">
+    <table border="0" cellpadding="0" cellspacing="0" style="width: 100%;">
+        <tbody>
+            <tr>
+                <td>
+                    <h1 style="font-size: 18px;text-transform: uppercase;margin-bottom : 0px;margin-top : 30px">Você
+                        recebeu um novo pedido.</h1>
+                    <h1 style="font-size: 17px;text-transform: uppercase;margin-top : 3px">Cód do Pedido: {{pedido.getCodigo()}}.</h1>
+                    <p style="line-height : 1.4rem;font-size : 15px">O usuário <strong>{{user.getFirstName()}}</strong> de <strong>CPF:
+                            {{user.getCpf()}}</strong> acabou de fazer um novo pedido no valor de
+                        {{price_format(pedido.getValorTotal())}} com {{pedido.getProdutos()|length}} de itens.</p>
+                    <p style="margin-bottom : 6px;font-size : 15px"><strong>Forma de Receber</strong>: {{pedido.getTypeEntrega()}}</p>
+                    <p style="margin-bottom : 6px;margin-top : 2px;font-size : 15px"><strong>Forma de Pagamento</strong>:
+                        {{pedido.getTypePagamentoDesc()}}</p>
+                    <p style="margin-bottom : 6px;margin-top : 2px;font-size : 15px"><strong>Previsão de entrega</strong>:
+                        {{pedido.getPrevisao()}}</p>
+                    <p style="margin-top :0px;margin-bottom : 0px;font-size : 15px"><strong>Data de Solicitação</strong>:
+                        {{pedido.getDataInsert()|date('d/m/Y \\à\\s H:i')}}</p>
+                    <p style="margin-top : 25px;margin-bottom : 2px;font-size : 15px"><strong>Produtos</strong></p>
+                    <hr>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table mb-0 table-bordered table-produtos">
+        <thead>
+            <tr>
+                <th style="text-align: center;font-size : 15px" width="15%;">
+                    #
+                </th>
+                <th width="40%" style="text-align: left;font-size : 15px">
+                    Título/Departamento
+                </th>
+                <th width="20%" style="text-align: center;font-size : 15px">
+                    Valor Unitário
+                </th>
+                <th width="15%" style="text-align: center;font-size : 15px">
+                    Quant
+                </th>
+                <th width="30%" style="text-align: center;font-size : 15px">
+                    Valor Total
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for produto in pedido.getProdutos() %}
+                {% set break = false %}
+                {% set valor = 0 %}
+                {% set quantidade = 0 %}
+                {% for preco in produto.getPrecos() if not break %}
+                {% if preco.id_produto == produto.getId() %}
+                    {% set valor = preco.valor %}
+                    {% set quantidade = preco.quantidade %}
+                    {% set break = true %}
+                {% endif %}
+            {% endfor %}
+            <tr id="tr-produto-{{produto.getId()}}">
+                <td style="text-align: center;vertical-align : middle;font-size : 15px;line-height : 1.4rem">
+                    {% if produto.getImagens() is empty %}
+                    <img src="{{base_url_new()}}/assets/img/default.jpg" width="40" height="40" alt="">
+                    {% else %}
+                    <img style="object-fit : cover"
+                        src="{{image(produto.getImagens()[0].src,{w : 40,h: 40,fit : 'crop'})}}" width="50" height="50"
+                        alt="{{produto.getImagens()[0].title}}">
+                    {% endif %}
+                </td>
+                <td style="text-align: left;vertical-align : middle;font-size : 15px;line-height : 1.4rem">
+                    {{produto.getTitle()}}
+                    <br>
+                    <span class="tag tag-primary tag-pill">{{produto.getCategoria().title}}</span>
+                </td>
+                <td style="text-align: center;vertical-align : middle;font-size : 15px;line-height : 1.4rem">
+                    {{price_format(valor)}}
+                </td>
+                <td style="text-align: center;vertical-align : middle;font-size : 15px;line-height : 1.4rem">
+                    x{{quantidade}}
+                </td>
+                <td style="text-align: center;vertical-align : middle;font-size : 15px;line-height : 1.4rem">
+                    {% if produto.getQuantidadeDisponivel() > 0 %}
+                        {{price_format( valor * produto.getQuantidadeDisponivel() )}}
+                    {% else %}
+                        {{price_format( valor * quantidade )}}
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

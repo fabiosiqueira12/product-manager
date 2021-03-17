@@ -1,0 +1,23 @@
+<div class="box bg-white">
+    <div class="card-body p-0 list-box">
+        {% include folderList with paramsList %}
+    </div>
+    <div class="card-footer bg-white">
+        {% include "/helpers/_pagination-new.twig" with {
+            totalPages : list.totalPages, 
+            url : urlPaginate,
+            actual: paginate.actual,
+            inicio : paginate.inicio,
+            fim: paginate.fim
+        } %}
+        {% if list.totalPages > 1 %}
+            <div class="info float-xs-right" style="margin-top: -33px;font-weight: bold;text-transform: uppercase;font-size: 13px;">
+                Exibindo página de {{paginate.actual}} até {{list.results|length}} de {{totalCount}}
+            </div>
+        {% else %}
+            <div class="info float-xs-right" style="font-weight: bold;text-transform: uppercase;font-size: 13px;">
+                Exibindo de {{paginate.actual}} até {{list.results|length}} de {{list.results|length}}
+            </div>
+        {% endif %}
+    </div>
+</div>

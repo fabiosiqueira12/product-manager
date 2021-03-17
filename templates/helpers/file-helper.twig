@@ -1,0 +1,5 @@
+<label for="file-helper" class="btn label-left btn-info btn btn-inputfile">
+    <div class="btn-label"><i class="ti-file"></i></div>
+    <span data-title="{{title}}">{{title}}</span>
+    <input type="file" name="upfile{{is_multiple == true ? '[]' : ''}}" {{is_multiple == true ? 'multiple' : ''}} id="file-helper" class="d-none hide">
+</label>

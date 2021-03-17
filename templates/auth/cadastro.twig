@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <link rel="icon" href="{{base_url_new()}}assets/img/favicon.ico?v=1.1.0" />
+
+    <!-- SEO -->
+    <title>Cadastro | {{return_dados(save_company).title}}</title>
+    <meta name="description" itemprop="description" content="{{return_dados().description}}" />
+    <meta name="keywords" content="{{return_dados().keywords}}" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta name="author" content="Grupo Adapta / Agência de Marketing Digital, Criação de Sites, Loja Vitual em Caruaru, Recife, Brasil">
+
+    <link rel="stylesheet" href="{{base_url_new()}}assets/plugins/bootstrap4/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{base_url_new()}}assets/plugins/themify-icons/themify-icons.css">
+    <link rel="stylesheet" href="{{base_url_new()}}assets/plugins/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{{base_url_new()}}assets/plugins/animate.css/animate.min.css">
+    <link rel="stylesheet" href="{{base_url_new()}}assets/plugins/jscrollpane/jquery.jscrollpane.css">
+    <link rel="stylesheet" href="{{base_url_new()}}assets/plugins/waves/waves.min.css">
+    <link rel="stylesheet" href="{{base_url_new()}}assets/plugins/switchery/dist/switchery.min.css">
+    <link rel="stylesheet" href="{{base_url_new()}}assets/plugins/morris/morris.css">
+    <link rel="stylesheet" href="{{base_url_new()}}assets/plugins/jvectormap/jquery-jvectormap-2.0.3.css">
+    <link rel="stylesheet" href="{{base_url_new()}}assets/css/auth.css" />
+    <link rel="stylesheet" href="{{base_url_new()}}assets/css/loading.css?v=1.2.0" />
+    <link rel="stylesheet" href="{{base_url_new()}}/assets/css/auth-update.css?v=1.5.5"/>
+
+</head>
+
+<body style="background-image : url('{{base_url_new() ~ '/assets/img/back-login.jpg' }}');background-size : cover !important">
+
+    {% include '/helpers/_loader.twig' %}
+
+    <div class="container p-0">
+        <div class="row m-0 justify-content-end" style="display: flex;justify-content: center;flex-wrap : wrap">
+            <div class="p-0 col col-md-10 col-12 text-center">
+                <div style="width : 100%;max-width : none !important" class="login-box text-center">
+                    <div  class="content container">
+                        <div class="row justify-content-center">
+                            <div class="col-md-auto col-10 col-md-8 m-b-20">
+                                <a href="./">
+                                    <img style="width : 160px" src="{{base_url_new()}}/assets/img/logo.png" class="img-fluid"/>                   
+                                </a>
+                            </div>
+                        </div>
+
+                        <p class="text-center text-uppercase">
+                            <strong>Cadastre-se e comece a divulgar suas ofertas!</strong>
+                        </p>
+
+                        <form class="m-b-20 form-login" data-url="/auth/cadastro/save" onsubmit="submitData(event,this)" method="post" autocomplete="off">
+                            <input type="hidden" name="type_company" value="{{type_object_company.id}}">
+                            <input type="hidden" name="type_user" value="{{type_object_user.id}}">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <h5 class="text-xs-left">Informações Básicas</h5>
+                                </div>
+                            </div>
+                            <div class="row m-t-10 text-uppercase">
+                                <div class="col-md-4 col-12 form-group text-left">
+                                    <input type="text" placeholder="CNPJ" name="cnpj" class="form-control mask-cnpj text-xs-left" required>
+                                </div>
+                                <div class="col-md-4 col-12 form-group text-left">
+                                    <input type="text" placeholder="Razão Social" name="razao_social" maxlength="150"
+                                        class="form-control text-uppercase" required>
+                                </div>
+                                <div class="col-md-4 col-12 form-group text-left">
+                                    <input type="text" name="nome_fantasia" required placeholder="Nome Fantasia"
+                                        maxlength="55" class="form-control text-uppercase" required>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4 col-xs-12 form-group">
+                                    <input type="email" placeholder="E-mail" class="form-control text-uppercase" required name="email_company">
+                                </div>
+                                <div class="col-md-4 col-xs-12 form-group">
+                                    <input type="text" placeholder="Telefone" class="form-control mask-telefone text-uppercase" required name="telefone">
+                                </div>
+                                <div class="col-md-4 col-xs-12 form-group">
+                                    <input type="text" style="height : 38px" onfocus="(this.type='date')" placeholder="Data de Abertura" class="form-control text-uppercase" required name="data_abertura">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <h5 class="text-xs-left mt-2 mb-1">Dados do Administrador</h5>
+                                </div>
+                            </div>
+                            <div class="row text-uppercase">
+                                <div class="col-md-4 col-xs-12 form-group">
+                                    <input placeholder="CPF" type="text" class="form-control mask-cpf text-uppercase" name="cpf" required>
+                                </div>
+                                <div class="col-md-4 col-xs-12 form-group">
+                                    <input type="text" class="form-control text-uppercase" placeholder="Nome" name="first_name" required>
+                                </div>
+                                <div class="col-md-4 col-xs-12 form-group">
+                                    <input type="text" class="form-control text-uppercase" placeholder="Sobrenome" name="last_name" required> 
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4 col-xs-12 form-group">
+                                    <input type="text" style="height : 38px" onfocus="(this.type='date')" placeholder="Data de Nascimento" class="form-control text-uppercase" required name="date_birth">
+                                </div>
+                                <div class="col-md-4 col-xs-12 form-group">
+                                    <input type="email" class="form-control text-uppercase" placeholder="Email" name="email" required>
+                                </div>
+                                <div class="col-md-4 col-xs-12 form-group">
+                                    <input type="text" class="form-control text-uppercase mask-telefone" placeholder="Telefone/Celular" name="celphone">
+                                </div>
+                            </div>
+                            <div class="row mt-2 mb-3">
+                                <div class="col-xs-12">
+                                    <button type="submit" class="btn btn-block btn-lg btn-primary">
+                                        <span><i class="ti-save"></i>
+                                        Salvar</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                        <small class="ptsans" style="color: #333 !important">
+                            ©{{ 'now'|date('Y') }}
+                            {{ dados.getTitle() }}.
+                            <br />
+                            Desenvolvido por
+                            <a href="https://www.grupoadapta.com.br/" target="_blank" style="color: #333 !important">
+                                <strong>Grupo Adapta</strong>
+                            </a>.
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPTS !-->
+    <script>
+        window.BASE_URL = '{{base_url()}}';
+    </script>
+    <script type="text/javascript" src="{{base_url_new()}}assets/plugins/jquery/jquery-1.12.3.min.js"></script>
+    <script type="text/javascript" src="{{base_url_new()}}assets/plugins/tether/js/tether.min.js"></script>
+    <script type="text/javascript" src="{{base_url_new()}}assets/plugins/bootstrap4/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="{{base_url_new()}}assets/js/jquery.mask.min.js"></script>
+    <script type="text/javascript" src="{{base_url_new()}}assets/js/sweetalert2.all.min.js"></script>
+    <script type="text/javascript" src="{{base_url_new()}}assets/js/location.js"></script>
+    <script src="{{base_url_new()}}assets/js/axios.min.js"></script>
+    <script src="{{base_url_new()}}assets/js/forms.js?v=2.2.0"></script>
+    
+    <script>
+        $(document).ready(function(){
+            $('.mask-cpf').mask('000.000.000-00', {reverse: true});
+            $('.mask-telefone').mask('(00) 00000-0000');
+            $(".mask-cnpj").mask("00.000.000/0000-00");
+            $('.mask-cep').mask('00000-000');
+        });
+    </script>
+</body>
+
+</html>

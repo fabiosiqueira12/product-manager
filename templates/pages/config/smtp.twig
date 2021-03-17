@@ -1,0 +1,85 @@
+{% extends 'layout.twig' %}
+
+{% import 'forms.twig' as forms %}
+
+{% block title_page %}
+    SMTP
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active">Configurações</li>
+    <li class="breadcrumb-item active">SMTP</li>
+{% endblock %}
+
+{% block main %}
+<form class="panel form-file" data-url="/new-smtp" enctype="multipart/form-data">
+    <div class="box bg-white">
+        <div class="box-block">
+            <div>
+                <div class="row">
+                    <div class="col-md-4 col-xs-12 form-group">
+                        {{forms.label('Nome')}}
+                        <input name="name" value="{{smtp.name}}" required type="text" required class="form-control" />
+                    </div>
+                    <div class="col-md-8 col-xs-12 form-group">
+                        {{forms.label('E-mail')}}
+                        <input name="email" value="{{smtp.email}}" required type="email" required class="form-control" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-10 col-xs-12 form-group">
+                        {{forms.label('Host')}}
+                        <input name="host" value="{{smtp.host}}" required type="text" class="form-control" />
+                    </div>
+                    <div class="col-md-2 col-xs-12 form-group">
+                        {{forms.label('Porta')}}
+                        <input name="port" value="{{smtp.port}}" required type="text" class="form-control" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 col-xs-12 form-group">
+                        {{forms.label('Username')}}
+                        <input name="username" value="{{smtp.username}}" required type="text" class="form-control" />
+                    </div>
+                    <div class="col-md-4 col-xs-12 form-group">
+                        {{forms.label('Senha')}}
+                        <input name="pass" value="{{smtp.pass}}" required type="text" placeholder="Mater senha atual"
+                            class="form-control" />
+                    </div>
+                    <div class="col-md-2 col-xs-12 form-group">
+                        {{forms.label('Autenticar')}}
+                        <select name="autenticar" required class="form-control">
+                            <option value="1">Sim</option>
+                            <option value="0">Não</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2 col-xs-12 form-group">
+                        {{forms.label('Protocolo')}}
+                        <select name="protocol" class="form-control">
+                            <option {{smtp.protocol == '' ? 'selected' : ''}} value="">Nenhum</option>
+                            <option {{smtp.protocol == 'ssl' ? 'selected' : ''}} value="ssl">SSL</option>
+                            <option {{smtp.protocol == 'tls' ? 'selected' : ''}} value="tls">TLS</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer text-right">
+            <div>
+                <div class="row">
+                    <div class="col-md-12 text-xs-right">
+                        <div class="btn-group">
+                            <button type="submit" class="btn btn-success label-left">
+                                <div class="btn-label">
+                                    <i class="fa fa-save"></i>
+                                </div>
+                                Salvar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock %}

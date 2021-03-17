@@ -1,0 +1,53 @@
+{% import "forms.twig" as forms %}
+
+<form method="POST" class="box bg-white form-file mt-2" enctype="multipart/form-data" data-url="consumidores/detalhes/save-pj">
+    <input type="hidden" name="id_consumidor" value="{{consumidor.id}}">
+    <div class="card-header text-uppercase font-weight-bold">
+        Dados PJ
+    </div>
+    <div class="box-block">
+        <div class="row">
+            <div class="col-md-3 col-xs-12 form-group">
+                {{forms.label('CNPJ:')}}
+                <input type="text" class="form-control mask-cnpj" name="cnpj" value="{{dadosPJ.cnpj}}">
+            </div>
+            <div class="col-md-6 col-xs-12 form-group">
+                {{forms.label('Nome Fantasia:')}}
+                <input type="text" class="form-control" name="nome_fantasia" required value="{{dadosPJ.nome_fantasia}}">
+            </div>
+            <div class="col-md-3 col-xs-12 form-group">
+                {{forms.label('Inscrição Estadual:')}}
+                <input type="text" class="form-control" name="inscricao_estadual">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 form-group">
+                {{forms.label('Razão Social:')}}
+                <input type="text" class="form-control" name="razao_social" required value="{{dadosPJ.razao_social}}">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 col-xs-12 form-group">
+                {{forms.label('E-mail:')}}
+                <input type="email" class="form-control" name="email" value="{{dadosPJ.email}}">
+            </div>
+            <div class="col-md-4 col-xs-12 form-group">
+                {{forms.label('Telefone:')}}
+                <input type="tel" class="form-control mask-telefone" name="telefone" value="{{dadosPJ.telefone}}">
+            </div>
+            <div class="col-md-4 col-xs-12 form-group">
+                {{forms.label('Data de Abertura:')}}
+                <input type="date" class="form-control" name="date_abertura" value="{{dadosPJ.date_abertura}}">
+            </div>
+        </div>
+        {% include "fields/_address.twig" with {address: dadosPJ} %}
+    </div>
+    <div class="card-footer text-xs-right">
+        <button type="submit" class="btn btn-success label-left">
+            <div class="btn-label">
+                <i class="ti-save"></i>
+            </div>
+            Salvar
+        </button>
+    </div>
+</form>
