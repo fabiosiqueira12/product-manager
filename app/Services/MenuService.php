@@ -35,7 +35,7 @@ class MenuService extends Service
     public function get()
     {
         $stmt = $this->PDO->prepare(
-            "SELECT * FROM {$this->table} ORDER BY id ASC "
+            "SELECT * FROM {$this->table} ORDER BY order_by ASC "
         );
 		$stmt->execute();
         $results = $stmt->fetchAll(\PDO::FETCH_OBJ);

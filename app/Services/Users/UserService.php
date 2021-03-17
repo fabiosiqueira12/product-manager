@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Users;
 use Exception;
 use App\Models\User;
 use App\Services\Service;

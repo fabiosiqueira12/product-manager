@@ -5,7 +5,7 @@ namespace App\Core;
 use Exception;
 use App\Models\User;
 use App\Models\Company;
-use App\Services\UserService;
+use App\Services\Users\UserService;
 use App\Services\EmpresaService;
 
 class AuthControl

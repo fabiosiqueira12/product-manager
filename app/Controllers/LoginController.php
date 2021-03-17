@@ -5,7 +5,7 @@ namespace App\Controllers;
 use App\Core\SendMail;
 use App\Core\AuthControl;
 use App\Services\SMTPService;
-use App\Services\UserService;
+use App\Services\Users\UserService;
 use Slim\Http\Request as Request;
 use Slim\Http\Response as Response;
 use Slim\Exception\NotFoundException;

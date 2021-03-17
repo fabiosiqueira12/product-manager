@@ -5,7 +5,7 @@ namespace App\Controllers\Users;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use App\Core\AuthControl;
-use App\Services\UserService;
+use App\Services\Users\UserService;
 use App\Controllers\Controller;
 use App\Services\Users\TypeUserService;
 use Slim\Exception\NotFoundException;

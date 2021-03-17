@@ -54,7 +54,7 @@
                         {{forms.label('Root')}}
                         <select name="root" class="form-control" required>
                             <option value="0">Principal</option>
-                            {% for menu in get_menus() %}
+                            {% for menu in menus %}
                             <option value="{{menu.principal.id}}">{{menu.principal.title}}</option>
                             {% endfor %}
                         </select>
