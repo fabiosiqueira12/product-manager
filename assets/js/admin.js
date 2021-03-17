@@ -355,7 +355,17 @@ var admin = {
                 break;
         }
 
+    },
+
+    /**
+     * Limpa a busca atual e volta para a default da paginação
+     * @param {*} el 
+     */
+    clearPage: function(el) {
+        var form = $(el).closest('body').find('.form-search-admin').find('[name="page"]').val("1");
+        $(form).trigger('submit');
     }
+
 };
 
 function CKupdate() {

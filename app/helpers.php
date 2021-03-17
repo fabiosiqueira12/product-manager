@@ -81,38 +81,6 @@ if (!function_exists('price_format2')) {
     }
 }
 
-if (!function_exists('status_payment')) {
-    function status_payment($number, $withTag)
-    {
-        $status = [
-            0 => 'Aguardando Pagamento',
-            1 => 'Pago',
-            2 => 'Cancelado'
-        ];
-        $tags = [
-            0 => 'tag-warning',
-            1 => 'tag-success',
-            2 => 'tag-danger'
-        ];
-        if ($withTag) {
-            return '<span class="tag tag-pill ' . $tags[$number] . '" >' . $status[$number] . '</span>';
-        }
-        return $status[$number];
-    }
-}
-
-if (!function_exists('tipo_conta_banco')) {
-    function tipo_conta_banco($number)
-    {
-        $status = [
-            0 => 'Poupança',
-            1 => 'Conta Corrente'
-        ];
-        return $status[$number];
-    }
-}
-
-
 if (!function_exists('return_months')) {
     function return_months($month = -1)
     {
@@ -198,45 +166,6 @@ function DOMinnerHTML(DOMNode $element)
     return $innerHTML; 
 }
 
-if (!function_exists('is_whatsapp')) {
-    function is_whatsapp($number)
-    {
-        $baseUrl = 'https://www.qual-operadora.net/';
-        // Iniciamos a função do CURL:
-        $ch = curl_init($baseUrl);
-        curl_setopt_array($ch, [
-            CURLOPT_CUSTOMREQUEST => 'POST',
-            CURLOPT_RETURNTRANSFER => 1,
-        ]);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-        curl_setopt(
-            $ch,
-            CURLOPT_POSTFIELDS,
-            "numero=" . $number . "&opt=0"
-        );
-        $resposta = curl_exec($ch);
-        curl_close($ch);
-        $dom = new DOMDocument;
-        @$dom->loadHTML($resposta);
-        if ($dom) {
-            $xpath = new DOMXpath($dom);
-            $search = $xpath->query('//img[@src="img/whatsapp.png"]/..');
-            if (count($search) > 0) {
-                $nodeValue = isset($search[1]->nodeValue) ? $search[1]->nodeValue : '';
-                if ($nodeValue == '') {
-                    return null;
-                }
-                return mb_strtolower(str_replace(' ', '', $nodeValue), 'UTF-8');
-            } else {
-                return null;
-            }
-        } else {
-            return null;
-        }
-    }
-}
-
 if (!function_exists('user_logged')) {
     /**
      *
@@ -258,13 +187,6 @@ if (!function_exists('getTypesUsers')) {
     {
         $service = new TypeUserService();
         return $service->getPermissoes();
-    }
-}
-
-if (!function_exists('password_md5')) {
-    function password_md5($password)
-    {
-        return md5($password);
     }
 }
 
@@ -1588,7 +1510,7 @@ function validate_data($key,$value){
 if (!function_exists('getTypesUsers')) {
     function getTypesUsers()
     {
-        $service = new App\Services\TypeUserService();
+        $service = new TypeUserService();
         return $service->getPermissoes();
     }
 }

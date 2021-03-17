@@ -7,14 +7,15 @@ use App\Services\Service;
 
 class UserService extends Service{
 
-    private $tableBD = 'usuario';
     private $fields = 'a.id,a.token,a.login,a.nome,a.telefone,a.email,a.senha,a.date_insert,a.status,
     b.id as id_type,b.title as title_type,b.ref as ref_type';
     private $forpage = 20;
+    private $tableRecover = "user_recover_password";
 
     function __construct() {
         parent::__construct();
-        $this->table = "usuario";
+        $this->setTable("user");
+        $this->setPrefix("a");
     }
 
     /**
@@ -115,8 +116,12 @@ class UserService extends Service{
      */
     public function updateStatus($status,$id_user)
     {
-        if (!in_array($status,[0,1])){
-            return \throwJsonException('Status inválido');
+        $listStatus = [
+            User::STATUS_BLOQUEADO,
+            User::STATUS_ATIVO
+        ];
+        if (!in_array($status,$listStatus)){
+            throw new Exception("Status inválido");
         }
         return $this->genericUpdateStatus($status,$id_user);
     }
@@ -132,16 +137,14 @@ class UserService extends Service{
     {
         try{
             $stmt = $this->PDO->prepare(
-                ' UPDATE ' . $this->tableBD . ' SET '.
-                ' id_type = :type '.
-                ' WHERE token = :token '
+                " UPDATE {$this->table} SET id_type = :type WHERE token = :token "
             );
             $stmt->bindValue(':token',$token);
             $stmt->bindValue(':type',$type);
             $stmt->execute();
             return true;
         }catch (\Exception $ex) {
-            return \throwJsonException($ex->getMessage());
+            throw new Exception($ex->getMessage());
         }
     }
 
@@ -153,17 +156,7 @@ class UserService extends Service{
      */
     public function delete($id_user)
     {
-        try {
-            $stmt = $this->PDO->prepare(
-                ' DELETE FROM ' . $this->tableBD.
-                ' WHERE id = :id '
-            );
-            $stmt->bindValue(':id',$id_user);
-            $stmt->execute();
-            return true;
-        } catch (\Exception $ex) {
-            return \throwJsonException($ex->getMessage());
-        }
+        return $this->genericDelete($id_user);
     }
 
     /**
@@ -175,8 +168,7 @@ class UserService extends Service{
     public function returnPass($id_user){
         $pass = null;
         $stmt = $this->PDO->prepare(
-            ' SELECT senha FROM '. $this->tableBD.
-            ' WHERE id = :id_user '
+            " SELECT senha FROM {$this->table} WHERE id = :id_user "
         );
         $stmt->bindValue(':id_user',$id_user);
         $stmt->execute();
@@ -196,37 +188,11 @@ class UserService extends Service{
      */
     public function returnByParan($paran,$value)
     {
-
-        if (!in_array($paran,['token','login','id','email'])){
-            return null;
-        }
-
-        $stmt = $this->PDO->prepare(
-            ' SELECT ' . $this->fields . ' FROM ' . $this->tableBD . ' AS a '.
-            ' LEFT JOIN type_user AS b ON a.id_type = b.id '.
-            ' WHERE a.'.$paran.' = :'.$paran
-        );
-        $stmt->bindValue(':'.$paran,$value);
-        $stmt->execute();
-        $result = $stmt->fetch(\PDO::FETCH_OBJ);
-        return $this->transformResult($result);
-    }
-
-    /**
-     * Retorna o último 
-     *
-     * @return void
-     */
-    public function getLast()
-    {
-        $stmt = $this->PDO->prepare(
-            ' SELECT ' . $this->fields . ' FROM ' . $this->tableBD . ' AS a '.
-            ' LEFT JOIN type_user AS b ON a.id_type = b.id '.
-            ' ORDER BY a.id DESC LIMIT 1 '
-        );
-        $stmt->execute();
-        $result = $stmt->fetch(\PDO::FETCH_OBJ);
-        return $this->transformResult($result);
+        $params = ['token','login','id','email'];
+        $innerTables = [
+            " LEFT JOIN type_user AS b ON a.id_type = b.id "
+        ];
+        return $this->transformResult($this->genericReturnParan($paran,$value,$this->fields,$params,$innerTables));
     }
 
     /**
@@ -237,8 +203,11 @@ class UserService extends Service{
      */
     public function checkUser($login,$token = "")
     {
-        $stmt = $this->PDO->prepare('SELECT id,token FROM ' . $this->tableBD . ' WHERE login = :login and status = 1');
+        $stmt = $this->PDO->prepare(
+            " SELECT id,token FROM {$this->table} WHERE login = :login AND status = :status_ativo "
+        );
         $stmt->bindValue(':login',$login);
+        $stmt->bindValue(':status_ativo',User::STATUS_ATIVO);
         $stmt->execute();
         $results = $stmt->fetchAll(\PDO::FETCH_OBJ);
         if ($token != ""){
@@ -271,8 +240,11 @@ class UserService extends Service{
      */
     public function checkEmail($email,$token = "")
     {
-        $stmt = $this->PDO->prepare('SELECT id,token FROM ' . $this->tableBD . ' WHERE email = :email and status = 1');
+        $stmt = $this->PDO->prepare(
+            " SELECT id,token FROM {$this->table} WHERE email = :email and status = :status_ativo "
+        );
         $stmt->bindValue(':email',$email);
+        $stmt->bindValue(':status_ativo',User::STATUS_ATIVO);
         $stmt->execute();
         $results = $stmt->fetchAll(\PDO::FETCH_OBJ);
         if ($token != ""){
@@ -305,8 +277,9 @@ class UserService extends Service{
      */
     public function getRecoverToken($token)
     {
-        $stmt = $this->PDO->prepare('SELECT token,email,id_user FROM recover_password '.
-        ' WHERE date_expire > CURRENT_TIMESTAMP AND token = :token '
+        $stmt = $this->PDO->prepare(
+            " SELECT token,email,id_user FROM {$this->tableRecover} ".
+            ' WHERE date_expire > CURRENT_TIMESTAMP AND token = :token '
         );
         $stmt->bindValue(':token',$token);
         $stmt->execute();
@@ -323,8 +296,9 @@ class UserService extends Service{
     public function removeRecoverToken($token)
     {
         try{
-            $stmt = $this->PDO->prepare('DELETE FROM recover_password ' .
-            ' WHERE token = :token ');
+            $stmt = $this->PDO->prepare(
+                " DELETE FROM {$this->tableRecover} WHERE token = :token "
+            );
             $stmt->bindValue(':token', $token);
             $stmt->execute();
             return true;
@@ -342,8 +316,9 @@ class UserService extends Service{
      */
     public function createRecoverToken($email,$id_user){
         
-        $stmt = $this->PDO->prepare('SELECT token,email FROM recover_password '.
-        ' WHERE date_expire > CURRENT_TIMESTAMP AND email = :email '
+        $stmt = $this->PDO->prepare(
+            " SELECT token,email FROM {$this->tableRecover} ".
+            ' WHERE date_expire > CURRENT_TIMESTAMP AND email = :email '
         );
         $stmt->bindValue(':email',$email);
         $stmt->execute();
@@ -355,9 +330,11 @@ class UserService extends Service{
 
         $token = bin2hex(random_bytes(50));
         try{
-            $stmt = $this->PDO->prepare('INSERT INTO recover_password ' .
-            ' (token,email,id_user,date_expire) '.
-            ' VALUES ( :token,:email,:id_user,DATE_ADD(now() , INTERVAL 1 HOUR) )');
+            $stmt = $this->PDO->prepare(
+                " INSERT INTO {$this->tableRecover} " .
+                ' (token,email,id_user,date_expire) '.
+                ' VALUES ( :token,:email,:id_user,DATE_ADD(now() , INTERVAL 1 HOUR) )'
+            );
             $stmt->bindValue(':token', $token);
             $stmt->bindValue(':email', $email);
             $stmt->bindValue(':id_user', $id_user);
@@ -379,15 +356,15 @@ class UserService extends Service{
     public function updatePass($token,$pass)
     {
         try{
-            $stmt = $this->PDO->prepare('UPDATE ' . $this->tableBD . ' SET ' .
-            'senha = :pass '.
-            ' WHERE token = :token ');
-            $stmt->bindValue(':pass', md5($pass));
+            $stmt = $this->PDO->prepare(
+                " UPDATE {$this->table} SET senha = :pass WHERE token = : token "
+            );
+            $stmt->bindValue(':pass', password_return($pass));
             $stmt->bindValue(':token', $token);
             $stmt->execute();
             return true;
         } catch (Exception $ex){
-            return \throwJsonException($ex->getMessage());
+            throw new Exception($ex->getMessage());
         }
     }
 
@@ -466,50 +443,44 @@ class UserService extends Service{
         if (!\is_array($body) || count($body) == 0){
             return $completeWhere;
         }
-        $keys = array_keys($body);
-        foreach($keys as $k => $v){
-            switch($v){
+
+        foreach($body as $k => $v){
+            switch($k){
                 case 'status':
-                    if ($body[$v] != ''){
-                        $completeWhere .= " AND a.status = ". $body[$v];
-                    }
+                    $completeWhere .= $v != '' ? " AND a.status = {$v} " : "";
                     break;
                 case 'exclude_status':
-                    if ($body[$v] != ''){
-                        $completeWhere .= " AND a.status != {$body[$v]}";
-                    }
+                    $completeWhere .= $v != '' ? " AND a.status != {$v} " : "";
                     break;
                 case 'id_type':
-                    if ($body[$v] != ''){
-                        $completeWhere .= " AND a.id_type = " . $body[$v];
-                    }
+                    $completeWhere .= $v != '' ? " AND a.id_type = {$v} " : "";
                     break;
                 case 'search':
-                    if ($body[$v] != ''){
-                        $search = $body[$v];
+                    if (!empty($v)){
+                        $search = $v;
                         if (!preg_match('#[^0-9]#',$search)){
-                            $searchHelper = \mask_cpf($body[$v]);
+                            $searchHelper = \mask_cpf($v);
                         }else{
-                            $searchHelper = $body[$v];
+                            $searchHelper = $v;
                         }
-                        $completeWhere .= " AND ( a.nome LIKE '%".$searchHelper."%' OR a.email LIKE '%".$searchHelper."%' )";
+                        $completeWhere .= " AND ( a.nome LIKE '%{$searchHelper}%' OR a.email LIKE '%{$searchHelper}%' )";
                     }
                     break;
                 case 'date_insert':
-                    if ($body[$v] != ''){
-                        $completeWhere .= " AND DATE(a.date_insert) >= " .  "'".strval($body[$v]) ."'";
+                    if (!empty($v)){
+                        $completeWhere .= " AND DATE(a.date_insert) >= '{$v}' ";
                     }
                     break;
                 case 'date_final':
-                    if ($body[$v] != ''){
-                        $completeWhere .= " AND DATE(a.date_insert) <= " . "'".strval($body[$v])."'";
+                    if (!empty($v)){
+                        $completeWhere .= " AND DATE(a.date_insert) <= '{$v}' ";
                     }
                     break;
                 default :
                     break;
             }
         }
-        return $completeWhere;   
+        return $completeWhere;
     }
 
 }
