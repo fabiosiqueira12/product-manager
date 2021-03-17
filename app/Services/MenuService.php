@@ -9,7 +9,8 @@ class MenuService extends Service
 
     function __construct() {
         parent::__construct();
-        $this->table = "menu";
+        $this->setTable("menu");
+        $this->setPrefix("a");
     }
 
     /**
@@ -33,7 +34,6 @@ class MenuService extends Service
 
     public function get()
     {
-        dump("SELECT * FROM {$this->table} ORDER BY order_by ASC ");
         $stmt = $this->PDO->prepare(
             "SELECT * FROM {$this->table} ORDER BY id ASC "
         );

@@ -15,6 +15,13 @@ $(document).ready(function(){
 
 	/* Scroll */
 	if(jQuery.browser.mobile == false) {
+		function initScroll(){
+			$('.custom-scroll').jScrollPane({
+				autoReinitialise: true,
+				autoReinitialiseDelay: 100
+			});
+		}
+		initScroll();
 		$(window).resize(function() {
 			initScroll();
 		});

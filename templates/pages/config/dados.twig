@@ -13,7 +13,7 @@
 
 {% block main %}
 
-<form class="mb-3 custom-form form-file" data-url="dados/save">
+<form class="mb-3 custom-form form-file" onsubmit="admin.sendData(this,event)" data-url="dados/save">
     <input type="hidden" name="id" value="{{dataConfig.id}}">
     <div class="box mb-2">
         <div class="box-block bg-white">

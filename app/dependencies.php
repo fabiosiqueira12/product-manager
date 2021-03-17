@@ -115,11 +115,6 @@ $container['view'] = function ($container) {
     });
     $view->getEnvironment()->addFunction($function);
 
-    $function = new Twig_SimpleFunction('get_types_points', function () {
-        return \get_types_points();
-    });
-    $view->getEnvironment()->addFunction($function);
-
     $function = new Twig_SimpleFunction('asset', function ($file) {
         return \asset($file);
     });
