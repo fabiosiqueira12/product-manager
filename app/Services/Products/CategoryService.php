@@ -12,7 +12,7 @@ class CategoryService extends Service{
 
     function __construct() {
         parent::__construct();
-        $this->setTable("produto_categoria");
+        $this->setTable("product_category");
         $this->setPrefix("a");
     }
 

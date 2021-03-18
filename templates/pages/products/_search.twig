@@ -1,0 +1,54 @@
+{% import "forms.twig" as forms %}
+
+<form class="custom-form mb-3 form-search-admin box bg-white" method="post" onsubmit="admin.search(this,event);"
+    data-url="produtos/search">
+    <input type="hidden" name="page" value="1">
+    <div class="box-block">
+        <div class="row">
+            <div class="col-md-4 col-xs-12 form-group">
+                {{forms.label("Código:")}}
+                <input type="text" class="form-control" name="code">
+            </div>
+            <div class="col-md-8 col-xs-12 form-group">
+                {{forms.label("Buscar por título ou descrição:")}}
+                <input type="text" class="form-control" name="search">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3 col-xs-12 form-group">
+                {{forms.label("Categoria:")}}
+                <select name="id_categoria" class="form-control chosen-select">
+                    <option value=""> -- TODAS --</option>
+                    {% for category in categories %}
+                        <option value="{{category.id}}">{{category.title|upper}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-3 col-xs-12 form-group">
+                {{forms.label("Status:")}}
+                <select name="status" class="form-control text-uppercase">
+                    <option value="">-- TODOS --</option>
+                    {% for key,item in list_status %}
+                    <option value="{{key}}">{{item|upper}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-12 form-group">
+                {{forms.label('DT/Inicial')}}
+                <input type="date" class="form-control" name="date_insert">
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-12 form-group">
+                {{forms.label('DT/Final')}}
+                <input type="date" class="form-control" name="date_final">
+            </div>
+        </div>
+    </div>
+    <div class="card-footer text-xs-right">
+        <button type="submit" class="btn btn-primary label-left">
+            <div class="btn-label">
+                <i class="ti-filter"></i>
+            </div>
+            Filtrar
+        </button>
+    </div>
+</form>

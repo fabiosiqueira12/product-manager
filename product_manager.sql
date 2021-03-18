@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Tempo de geração: 07/03/2021 às 06:17
+-- Tempo de geração: 18/03/2021 às 05:50
 -- Versão do servidor: 10.1.37-MariaDB
 -- Versão do PHP: 7.3.1
 
@@ -49,7 +49,7 @@ CREATE TABLE `data_system` (
 --
 
 INSERT INTO `data_system` (`id`, `title`, `description`, `keywords`, `email`, `telefone`, `date_insert`, `date_update`, `facebook`, `instagram`, `twitter`, `token_access`, `whatsapp`) VALUES
-(2, 'Forte Ferragens', 'Forte Ferragens', 'Forte Ferragens', 'contato@forteferragens.com.br', '(81) 99999-9999', '2019-11-26 16:39:06', '2021-03-07 04:53:30', '#', '#', '', 'Y7IcZrKN7DmTrHU36ZSsmVJd27NGPDHamrTjhRvjNMBL0J227Ipb9ayy14Q5hVSdQd7gXQbVlzlcDRX59WZx08jsp0qMQqiW95hZmtGUkhQELonetjcjSrItmAOOtiCffJquvakjtCoXgRrhUmNdqx', '(23) 1231-31231');
+(2, 'Forte Ferragens', 'Forte Ferragens', 'Forte Ferragens', 'contato@forteferragens.com.br', '(81) 99999-9999', '2019-11-26 16:39:06', '2021-03-07 04:53:30', '#', '#', '', 'Y7IcZrKN7DmTrHU36ZSsmVJd27NGPDHamrTjhRvjNMBL0J227Ipb9ayy14Q5hVSdQd7gXQbVlzlcDRX59WZx08jsp0qMQqiW95hZmtGUkhQELonetjcjSrItmAOOtiCffJquvakjtCoXgRrhUmNdqx', '(23) 12313-1231');
 
 -- --------------------------------------------------------
 
@@ -141,7 +141,74 @@ INSERT INTO `menu` (`id`, `root`, `title`, `order_by`, `controller`, `icon`, `de
 (199, 197, 'Tipos de Conta', 8, 'financeiro/tipos-conta', 'ti-money', '', '', '', '1,4,8', NULL, 1, '2020-12-15 02:46:22', '2020-12-15 02:46:22'),
 (201, 197, 'Contas', 1, '#', 'ti-money', '', '', '', '1,4,8', NULL, 1, '2020-12-17 04:17:16', '2020-12-17 04:19:49'),
 (202, 201, 'Pagar', 1, 'financeiro/contas/pagar', 'ti-money', '', '', '', '1,4,8', NULL, 1, '2020-12-17 04:18:10', '2020-12-17 04:19:33'),
-(203, 201, 'Receber', 2, 'financeiro/contas/receber', 'ti-money', '', '', '', '1,4,8', NULL, 1, '2020-12-17 04:18:40', '2020-12-17 04:19:42');
+(203, 201, 'Receber', 2, 'financeiro/contas/receber', 'ti-money', '', '', '', '1,4,8', NULL, 1, '2020-12-17 04:18:40', '2020-12-17 04:19:42'),
+(204, NULL, 'Gestor de Produtos', 20, '#', 'ti-package', NULL, NULL, NULL, '1,4', NULL, 1, '2021-03-17 05:03:23', '2021-03-17 05:03:23'),
+(205, 204, 'Categorias', 1, 'produtos/categorias', 'ti-package', NULL, NULL, NULL, '1,4', NULL, 1, '2021-03-17 05:04:27', '2021-03-17 05:04:27'),
+(206, 204, 'Criar ou Editar', 3, 'produtos', 'ti-package', NULL, NULL, NULL, '1,4', NULL, 1, '2021-03-18 03:36:56', '2021-03-18 03:36:56');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `product`
+--
+
+CREATE TABLE `product` (
+  `id` int(11) NOT NULL,
+  `token` varchar(190) NOT NULL,
+  `title` varchar(250) DEFAULT NULL,
+  `description` varchar(250) DEFAULT NULL,
+  `date_insert` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `inventory` mediumint(5) DEFAULT '0',
+  `id_category` int(11) DEFAULT NULL,
+  `status` tinyint(1) DEFAULT '1',
+  `image` varchar(250) DEFAULT NULL,
+  `code` varchar(50) DEFAULT NULL,
+  `price_cost` float DEFAULT NULL,
+  `price_seller` float DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Despejando dados para a tabela `product`
+--
+
+INSERT INTO `product` (`id`, `token`, `title`, `description`, `date_insert`, `inventory`, `id_category`, `status`, `image`, `code`, `price_cost`, `price_seller`) VALUES
+(2, 'G2rTDjdCIx8AHwDtMbRrxoWUu9jZmL3qjLsszfSeIgTAG2Wkx3CAcbx3NUpT2VjWZlFaSUEfBzihGSTF7ky1vmAarCbRWhalfdc8iTrpvWAzWXVcDihAhZGOCC0aJSr5aXMVQRMaN6yECkNHhuil4N', 'teste', 'dsad', '2021-03-18 04:22:04', 0, 2, 1, NULL, 'EQOEMWFZFM', 20.2, 50);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `product_category`
+--
+
+CREATE TABLE `product_category` (
+  `id` int(11) NOT NULL,
+  `slug` varchar(190) NOT NULL,
+  `order_by` mediumint(5) DEFAULT '0',
+  `title` varchar(250) DEFAULT NULL,
+  `date_insert` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Despejando dados para a tabela `product_category`
+--
+
+INSERT INTO `product_category` (`id`, `slug`, `order_by`, `title`, `date_insert`) VALUES
+(2, 'teste', 1, 'teste', '2021-03-18 02:52:02');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `product_history`
+--
+
+CREATE TABLE `product_history` (
+  `id` int(11) NOT NULL,
+  `description` varchar(250) DEFAULT NULL,
+  `id_product` int(11) NOT NULL,
+  `id_user` int(11) NOT NULL,
+  `quant` int(11) DEFAULT NULL,
+  `date_insert` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -199,18 +266,15 @@ CREATE TABLE `type_user` (
 INSERT INTO `type_user` (`id`, `ref`, `order_by`, `title`, `date_insert`) VALUES
 (1, 'master', 1, 'Master', '2019-11-26 13:50:45'),
 (4, 'desenvolvedor', 2, 'Desenvolvedor', '2019-11-26 13:59:07'),
-(5, 'cliente', 3, 'Cliente', '2020-05-24 03:15:21'),
-(6, 'vendedor', 4, 'Vendedor', '2020-07-28 01:06:14'),
-(7, 'parceiro', 5, 'Parceiro', '2020-08-25 02:52:27'),
-(8, 'suporte', 6, 'Suporte', '2020-09-12 04:42:01');
+(6, 'vendedor', 4, 'Vendedor', '2020-07-28 01:06:14');
 
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `usuario`
+-- Estrutura para tabela `user`
 --
 
-CREATE TABLE `usuario` (
+CREATE TABLE `user` (
   `id` int(11) NOT NULL,
   `id_type` int(11) DEFAULT NULL,
   `token` varchar(200) DEFAULT NULL,
@@ -224,25 +288,20 @@ CREATE TABLE `usuario` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Despejando dados para a tabela `usuario`
+-- Despejando dados para a tabela `user`
 --
 
-INSERT INTO `usuario` (`id`, `id_type`, `token`, `nome`, `email`, `login`, `telefone`, `senha`, `date_insert`, `status`) VALUES
-(1, 4, '5ubBffMlxkM1GLcZD9cI', 'Fábio Henrique DA sILVA SIQUEIRA', 'fabio.siqueira1222@gmail.com', 'fabiosiqueira12', '(87) 99811-1645', 'a03c32ff8a4da40b9684ec0df2442a40', '2020-05-21 03:00:00', 1),
-(2, 1, '1EtPYWYmUzb4sKbVMZl11MzND4yKD64wVoEtklRUFmo4phO82sX9vx9Yx1xJ0gC4Uvy2K1vPpAniRQseHThAzvbGDh9dof1yjnTyJCR8nKW1ugfw1ZMWTD715ecvMHTBVJLZmUhCZeJuiBFX3WOASy', 'Welliton Alves', 'wellitonalves@gmail.com', 'welliton', '(81) 99999-9999', '4badaee57fed5610012a296273158f5f', '2020-05-24 03:06:40', 1),
-(3, 1, 'jjSaA5XLcp7583gY3uKcfVkHKwJmGqxq2jp1HUmQmLeGGZWpcpsFpeotdWoAxN2ZUHr6rAwxp7QVCgTMVb8TJZsY7ZpR6rvCDTW6VZ65Pi4b6TLhxZPTOzjlEDxAgsD3hqn3iZ6yVC1rtcWotaS3wI', 'Cliente 01', 'Cliente01@teste.com', 'cliente01', '(12) 31312-3123', '4badaee57fed5610012a296273158f5f', '2020-05-26 03:40:07', 1),
-(6, 6, 'qp9fPy2PyEvIixZkqkNo3Rp0hxHdTQXD6KxXV48pfMY5ArkMXK8LnmF4cpLfFD0rM5p4CsZ58tjHufDSDDvxHU775J9oIsB8y5lBDIwZ87BTThpUYIWO1ne2kvp2jHsiXsXv966C3Vea77vaEfCbZT', 'Vendedor 01', '5f3c7d1f05786@fazagilizar.com.br', 'vendedor-01', '(81) 99999-9999', '4badaee57fed5610012a296273158f5f', '2020-08-19 06:15:11', 0),
-(9, 6, 'MG1eQwcrza4VXR8OLZlMvP3BeCxrkxB4nvE3u33MkkrvDMg1ZzmxKDZGJV4qL6A3SnlivrPNTMb8zQwWY4ylxispnefQNv54SWROPlYc4Jvxw2Dp8x6kL3aFVl1zbCbFDAVL7Mj994gIW2IVe0CHFG', 'Vendedor Usuário 02', 'vendedor02@teste.com', 'vendedor-02', '(81) 99999-9999', '4badaee57fed5610012a296273158f5f', '2020-08-19 03:48:27', 1),
-(10, 7, 'CRKQkgaicDlXcOfQw906goXgcfblWa333PUSPg1kb4ai05b1IbLm926Nrrpown49V49ybUKHsq3z31L1zTSoVJVWf2XLhMZ7WVVi4BmNDzgvXn2VvHE0zjdPtJarlqJm7yiLDKV2cOpGEUi6Bg8QGK', 'Parceiro 01', 'parceiro@fazagilizar.com.br', 'parceiro-01', '(81) 99999-9999', '4badaee57fed5610012a296273158f5f', '2020-08-25 03:18:10', 1),
-(11, 5, '9tjliXrac9GHLnmj9jSoYuBiVmct8eBiKBkUgXhJtn6M5x4xpJXAXRaHgela4wkOGrEVTZWgFSOJ4R3cpN0iQMkfXMOgXY8bDGbzbaBamQ9FomNaDNv5WF52sljtFG3hQyEtYhlJ5vfrF0QrKjA6Do', 'Cliente teste', 'cliente@teste.com', 'teste', '(81) 99999-9999', '4badaee57fed5610012a296273158f5f', '2020-09-01 02:37:05', 1);
+INSERT INTO `user` (`id`, `id_type`, `token`, `nome`, `email`, `login`, `telefone`, `senha`, `date_insert`, `status`) VALUES
+(1, 4, '5ubBffMlxkM1GLcZD9cI', 'Fábio Henrique DA sILVA SIQUEIRA', 'fabio.siqueira1222@gmail.com', 'fabiosiqueira12', '(87) 99811-1645', '$2y$08$XJQ28lD24.5eeBMz3Z/3JupdfDGiMaV5U4sacND8AbGRaJLRVuPai', '2020-05-21 03:00:00', 1),
+(12, 1, NULL, 'Weydson Thiago', 'weydsonthiago@hotmail.com', 'weydson', '(87) 99290-9090', '$2y$08$3tn8/Viq7t11FQGod7/5l.8KluY/7M0noI1d8spCr0nYw4Wo0FCdO', NULL, 1);
 
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `usuario_recover_password`
+-- Estrutura para tabela `user_recover_password`
 --
 
-CREATE TABLE `usuario_recover_password` (
+CREATE TABLE `user_recover_password` (
   `id` int(11) NOT NULL,
   `token` varchar(255) NOT NULL,
   `id_user` int(11) DEFAULT NULL,
@@ -252,10 +311,10 @@ CREATE TABLE `usuario_recover_password` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Despejando dados para a tabela `usuario_recover_password`
+-- Despejando dados para a tabela `user_recover_password`
 --
 
-INSERT INTO `usuario_recover_password` (`id`, `token`, `id_user`, `email`, `date_insert`, `date_expire`) VALUES
+INSERT INTO `user_recover_password` (`id`, `token`, `id_user`, `email`, `date_insert`, `date_expire`) VALUES
 (2, '1e8a4c4af41b1110b0c6ba1abdb518a75f079a50ff1d480c5f7e7583bc2f89adae7e0542198873598c0e0b7c4bf37e203761', 1, 'fabio.siqueira1222@gmail.com', '2020-10-13 02:51:07', '2020-10-13 03:51:07'),
 (3, '9acd4cdb9c83a1b6b083fb3fb554b278117279b8c3534f371c01ef0ef2668dcf267f372fcd827dfae564be269cb4ea0d5f32', 1, 'fabio.siqueira1222@gmail.com', '2020-11-25 02:48:58', '2020-11-25 03:48:58'),
 (4, '0c10f1aa10f87e85678b3fbc6deb623bfd286bcb8c996a0f67e326246365e99a5b9a91c5d699f71ae49533279b8c2031cfbc', 1, 'fabio.siqueira1222@gmail.com', '2020-11-27 01:02:00', '2020-11-27 02:02:00');
@@ -283,6 +342,30 @@ ALTER TABLE `menu`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Índices de tabela `product`
+--
+ALTER TABLE `product`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `token` (`token`),
+  ADD UNIQUE KEY `codigo` (`code`),
+  ADD KEY `id_categoria` (`id_category`);
+
+--
+-- Índices de tabela `product_category`
+--
+ALTER TABLE `product_category`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `slug` (`slug`);
+
+--
+-- Índices de tabela `product_history`
+--
+ALTER TABLE `product_history`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id_product` (`id_product`),
+  ADD KEY `id_user` (`id_user`);
+
+--
 -- Índices de tabela `smtp`
 --
 ALTER TABLE `smtp`
@@ -296,18 +379,18 @@ ALTER TABLE `type_user`
   ADD UNIQUE KEY `ref` (`ref`);
 
 --
--- Índices de tabela `usuario`
+-- Índices de tabela `user`
 --
-ALTER TABLE `usuario`
+ALTER TABLE `user`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `login` (`login`),
   ADD UNIQUE KEY `token` (`token`),
   ADD KEY `id_type` (`id_type`);
 
 --
--- Índices de tabela `usuario_recover_password`
+-- Índices de tabela `user_recover_password`
 --
-ALTER TABLE `usuario_recover_password`
+ALTER TABLE `user_recover_password`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `token` (`token`),
   ADD KEY `id_user` (`id_user`);
@@ -332,7 +415,25 @@ ALTER TABLE `log_system`
 -- AUTO_INCREMENT de tabela `menu`
 --
 ALTER TABLE `menu`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=204;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=207;
+
+--
+-- AUTO_INCREMENT de tabela `product`
+--
+ALTER TABLE `product`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT de tabela `product_category`
+--
+ALTER TABLE `product_category`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT de tabela `product_history`
+--
+ALTER TABLE `product_history`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de tabela `smtp`
@@ -344,19 +445,36 @@ ALTER TABLE `smtp`
 -- AUTO_INCREMENT de tabela `type_user`
 --
 ALTER TABLE `type_user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
--- AUTO_INCREMENT de tabela `usuario`
+-- AUTO_INCREMENT de tabela `user`
 --
-ALTER TABLE `usuario`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+ALTER TABLE `user`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
--- AUTO_INCREMENT de tabela `usuario_recover_password`
+-- AUTO_INCREMENT de tabela `user_recover_password`
 --
-ALTER TABLE `usuario_recover_password`
+ALTER TABLE `user_recover_password`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- Restrições para dumps de tabelas
+--
+
+--
+-- Restrições para tabelas `product`
+--
+ALTER TABLE `product`
+  ADD CONSTRAINT `product_ibfk_1` FOREIGN KEY (`id_category`) REFERENCES `product_category` (`id`) ON DELETE SET NULL;
+
+--
+-- Restrições para tabelas `product_history`
+--
+ALTER TABLE `product_history`
+  ADD CONSTRAINT `product_history_ibfk_1` FOREIGN KEY (`id_product`) REFERENCES `product` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `product_history_ibfk_2` FOREIGN KEY (`id_user`) REFERENCES `user` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

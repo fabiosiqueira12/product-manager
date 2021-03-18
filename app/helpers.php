@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Product;
 use App\Core\AuthControl;
 use App\Core\CacheControl;
 use App\Services\MenuService;
@@ -1559,7 +1560,24 @@ function password_return($senha)
     return password_hash($senha, PASSWORD_DEFAULT,['cost' => 8]);
 }
 
-
+/**
+ * Retorna o folder padrão de paginação
+ *
+ * @return string
+ */
 function folder_paginate_box(){
     return "helpers/_box-paginate.twig";
+}
+
+/**
+ * Retorna a list de status produtos 
+ *
+ * @return array
+ */
+function list_status_product()
+{
+    return [
+        Product::STATUS_ACTIVE => "Ativo",
+        Product::STATUS_BLOCK => "Bloqueado"
+    ];
 }

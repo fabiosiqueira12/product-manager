@@ -1,0 +1,117 @@
+{% extends "layout.twig" %}
+
+{% block title_page %}
+    Criar ou Editar
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active">Gestor de Produtos</li>
+    <li class="breadcrumb-item active">Criar ou Editar</li>
+{% endblock %}
+
+{% block links %}
+<button type="button" data-target="#modal-new-product" class="btn btn-success btn-new label-left">
+    <div class="btn-label">
+        <i class="ti-plus"></i>
+    </div>
+    Novo
+</button>
+{% endblock %}
+
+{% block modals %}
+
+{% include "pages/products/_new.twig" %}
+{% include "pages/products/_set-inventory.twig" %}
+
+{% endblock %}
+
+{% block main %}
+
+{% include "pages/products/_search.twig" with {
+    list_status: list_status,
+    categories: categories
+} %}
+
+<div class="content-box-paginate">
+    {% include folder_paginate_box() with{
+        folderList: "pages/products/_list.twig",
+        list: list,
+        paramsList: {
+            list: list.results,
+        },
+        urlPaginate: urlPaginate
+    } %}
+</div>
+
+{% endblock %}
+
+{% block script %}
+    <link rel="stylesheet" href="{{asset('css/chosen.min.css')}}">
+    <script src="{{asset("js/chosen.jquery.min.js")}}"></script>
+    <style>
+        .chosen-container-single .chosen-single{
+            height: 38px !important;
+            border: 1px solid #cecece !important;
+            background: #fff !important;
+            box-shadow: none !important;
+            padding-top: 6px !important;
+        }
+        .chosen-container-single .chosen-single div{
+            padding-top: 6px !important;
+        }
+    </style>
+    <script>
+
+        function openInventory(el){
+            var ref = $(el).data('ref');
+            var actual = $(el).data('actual');
+            $("#modal-set-inventory").find('input[name="id"]').val(ref);
+            $("#modal-set-inventory").find('.atual').html(actual);
+            $("#modal-set-inventory").find('input[name="quant"]').val(actual);
+            $("#modal-set-inventory").modal('show');
+        }
+
+        function updateItem(el){
+            var target = $(el).data("target");
+            var item = $(el).data("editar");
+            $(target).find('[name="id"]').val(item.id);
+            $(target).find('[name="title"]').val(item.title);
+            $(target).find('[name="description"]').val(item.description);
+            $(target).find('[name="code"]').val(item.code);
+            if (item.price_cost != null && item.price_cost != undefined){
+                $(target).find('[name="price_cost"]').val(admin.numberToReal(parseFloat(item.price_cost)));
+            }else{
+                $(target).find('[name="price_cost"]').val("");
+            }
+            if (item.price_seller != null && item.price_seller != undefined){
+                $(target).find('[name="price_seller"]').val(admin.numberToReal(parseFloat(item.price_seller)));
+            }else{
+                $(target).find('[name="price_seller"]').val("");
+            }
+            if (item.category != null && item.category != undefined){
+                $(target).find('[name="id_category"]').val(item.category.id);
+            }else{
+                $(target).find('[name="id_category"]').val("");
+            }
+            $(target).find(".chosen-select").trigger("chosen:updated");
+            $(target).modal("show");
+        }
+
+        function gerarCodigo(el){
+            var chars = 'abcdefghijklmnopqrstuvxwyz123456789'.toString().toUpperCase();
+            var codigo = '';
+            while (codigo.length < 10) {
+                var random = Math.floor((Math.random() * 32) + 1);
+                codigo += chars[random];
+            }
+            $(el).closest(".modal-body").find("input[name='code']").val(codigo);
+        }
+
+        $(document).ready(function(){
+
+            $(".chosen-select").chosen();
+
+        });
+        
+    </script>
+{% endblock %}

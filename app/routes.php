@@ -137,6 +137,16 @@
     //APP GROUP PRODUTOS
     $app->group('/produtos', function() use ($app) {
 
+        $this->get('', \App\Controllers\Products\IndexController::class . ':index')->setName('products.index');
+        $this->post('/search', \App\Controllers\Products\IndexController::class . ':search')->setName('products.search');
+        $this->post('/paginate', \App\Controllers\Products\IndexController::class . ':paginate')->setName('products.paginate');
+        $this->post('/save', \App\Controllers\Products\IndexController::class . ':save')->setName('products.save');
+        $this->post('/delete', \App\Controllers\Products\IndexController::class . ':delete')->setName('products.delete');
+        $this->post('/active', \App\Controllers\Products\IndexController::class . ':active')->setName('products.active');
+        $this->post('/block', \App\Controllers\Products\IndexController::class . ':block')->setName('products.block');
+        $this->post('/inventory/add', \App\Controllers\Products\IndexController::class . ':setInventory')->setName('produtos.inventory.set');
+
+        //ROUTES CATEGORIAS GROUP
         $app->group("/categorias",function(){
             $this->get('', \App\Controllers\Products\CategoryController::class . ':index')->setName('products.categories.index');
             $this->post('/search', \App\Controllers\Products\CategoryController::class . ':search')->setName('products.categories.search');

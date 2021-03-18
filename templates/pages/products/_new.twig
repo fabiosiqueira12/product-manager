@@ -1,0 +1,73 @@
+{% import "forms.twig" as forms %}
+
+<form class="modal fade form-file" data-url="produtos/save" id="modal-new-product">
+    <input type="hidden" name="id" />
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Produto</h3>
+                <button type="reset" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="ti-close"></i>
+                </button>
+            </div>
+            <div class="modal-body clearfix">
+                <div class="row">
+                    <div class="col-md-4 col-xs-12 form-group">
+                        {{forms.label("Código:")}}
+                        <div class="input-control-flex" style="display : flex">
+                            <button type="button" onclick="gerarCodigo(this);" class="btn btn-primary">
+                                <i class="ti-reload" data-toggle="tooltip" title="Gerar Código"></i>
+                            </button>
+                            <input type="text" class="form-control" required name="code">
+                        </div>
+                    </div>
+                    <div class="col-md-8 col-xs-12 form-group">
+                        {{forms.label("Título:")}}
+                        <input type="text" class="form-control" name="title" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 col-xs-12 form-group">
+                        {{forms.label("Descrição:")}}
+                        <input type="text" class="form-control" name="description">
+                    </div>
+                    <div class="col-md-6 col-xs-12 form-group">
+                        {{forms.label("Categoria:")}}
+                        <select name="id_category" class="form-control chosen-select">
+                            <option value="">-- SEM --</option>
+                            {% for category in categories %}
+                            <option value="{{category.id}}">{{category.title|upper}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 col-xs-12 form-group">
+                        {{forms.label("Preço de custo:")}}
+                        <input type="tel" class="form-control money" name="price_cost">
+                    </div>
+                    <div class="col-md-6 col-xs-12 form-group">
+                        {{forms.label("Preço de venda:")}}
+                        <input type="tel" class="form-control money" name="price_seller" required>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <div>
+                    <button type="reset" class="btn btn-danger mr-1 label-left" data-dismiss="modal">
+                        <div class="btn-label">
+                            <i class="ti-close"></i>
+                        </div>
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-success label-left">
+                        <div class="btn-label">
+                            <i class="ti-save"></i>
+                        </div>
+                        Salvar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

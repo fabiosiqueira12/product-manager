@@ -14,6 +14,7 @@ abstract class Model
     }
     public function setId($id){
         $this->id = $id;
+        return $this;
     }
     public function getDataInsert()
     {
@@ -42,6 +43,7 @@ abstract class Model
     public function setStatus($status)
     {
         $this->status = $status;
+        return $this;
     }
 
 }
