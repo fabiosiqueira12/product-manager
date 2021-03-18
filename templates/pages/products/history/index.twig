@@ -1,0 +1,39 @@
+{% extends "layout.twig" %}
+
+{% block title_page %}
+Histórico | Gestor de Produtos
+{% endblock %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item active">Gestor de Produtos</li>
+<li class="breadcrumb-item active">Histórico</li>
+{% endblock %}
+
+{% block links %}
+    <a href="javascript:window.history.back()" class="btn btn-danger label-left">
+        <div class="btn-label">
+            <i class="ti-arrow-left"></i>
+        </div>
+        Voltar
+    </a>
+{% endblock %}
+
+{% block main %}
+
+    {% include "pages/products/history/_search.twig" with {
+        query_params: query_params
+    } %}
+
+    <div class="content-box-paginate">
+        {% include folder_paginate_box() with{
+            folderList: "pages/products/history/_list.twig",
+            list: list,
+            paramsList: {
+                list: list.results,
+            },
+            urlPaginate: urlPaginate
+        } %}
+    </div>
+
+{% endblock %}
+

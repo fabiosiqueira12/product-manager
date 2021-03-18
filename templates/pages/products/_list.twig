@@ -7,7 +7,7 @@
                 <th width="100" class="text-center">Estoque</th>
                 <th width="150" class="text-center">Preço Custo/Venda</th>
                 <th width="180" class="text-center">Dt. de Cadastro/Status</th>
-                <th width="200" class="text-center">Ações</th>
+                <th width="240" class="text-center">Ações</th>
             </tr>
         </thead>
         <tbody>
@@ -57,6 +57,9 @@
                                 <i class="ti-unlock" data-toggle="tooltip" title="Ativar"></i>
                             </button>
                         {% endif %}
+                        <a href="{{path_for('products.history.index',{code: product.getCode()})}}" class="btn btn-default">
+                            <i class="ti-server" data-toggle="tooltip" title="Histórico"></i>
+                        </a>
                         <button type="button" class="btn btn-purple" data-actual="{{product.getInventory()}}" data-ref="{{product.getId()}}" onclick="openInventory(this);">
                             <i class="ti-shopping-cart-full" data-toggle="tooltip" title="Estoque"></i>
                         </button>

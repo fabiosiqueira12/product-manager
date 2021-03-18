@@ -155,6 +155,13 @@
             $this->post('/delete', \App\Controllers\Products\CategoryController::class . ':delete')->setName('products.categories.delete');    
         });
 
+        //ROUTES HISTÓRICO GROUP
+        $app->group("/historico",function(){
+            $this->get('/{code}', \App\Controllers\Products\HistoryController::class . ':index')->setName('products.history.index');
+            $this->post('/search', \App\Controllers\Products\HistoryController::class . ':search')->setName('products.categories.search');
+            $this->post('/paginate', \App\Controllers\Products\HistoryController::class . ':paginate')->setName('products.categories.paginate');
+        });
+
     })->add(new \App\Middlewares\AuthMiddleware);
 
 ?>

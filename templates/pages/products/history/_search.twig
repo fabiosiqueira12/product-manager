@@ -1,0 +1,8 @@
+{% import "forms.twig" as forms %}
+
+<form style="display:none" class="mb-3 custom-form form-search-admin" onsubmit="admin.search(this,event);" data-url="produtos/historico/search">
+    <input type="hidden" name="page" value="1">
+    {% for key,item in query_params %}
+        <input type="hidden" name="{{key}}" value="{{item}}">
+    {% endfor %}
+</form>
