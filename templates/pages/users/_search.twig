@@ -1,6 +1,6 @@
 {% import "forms.twig" as forms %}
 
-<form class="mb-3 custom-form form-search-admin" data-url="usuarios/search">
+<form class="mb-3 custom-form form-search-admin" method="post" onsubmit="admin.search(this,event);" data-url="usuarios/search">
     <input type="hidden" name="id_type" value="{{type}}">
     <div class="box mb-2">
         <div class="box-block bg-white">

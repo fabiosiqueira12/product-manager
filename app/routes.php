@@ -134,4 +134,17 @@
 
     })->add(new \App\Middlewares\AuthMiddleware);
 
+    //APP GROUP PRODUTOS
+    $app->group('/produtos', function() use ($app) {
+
+        $app->group("/categorias",function(){
+            $this->get('', \App\Controllers\Products\CategoryController::class . ':index')->setName('products.categories.index');
+            $this->post('/search', \App\Controllers\Products\CategoryController::class . ':search')->setName('products.categories.search');
+            $this->post('/paginate', \App\Controllers\Products\CategoryController::class . ':paginate')->setName('products.categories.paginate');
+            $this->post('/save', \App\Controllers\Products\CategoryController::class . ':save')->setName('products.categories.save');
+            $this->post('/delete', \App\Controllers\Products\CategoryController::class . ':delete')->setName('products.categories.delete');    
+        });
+
+    })->add(new \App\Middlewares\AuthMiddleware);
+
 ?>

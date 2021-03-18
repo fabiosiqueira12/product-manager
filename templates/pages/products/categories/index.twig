@@ -1,0 +1,42 @@
+{% extends "layout.twig" %}
+
+{% block title_page %}
+    Categorias
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active">Gestor de Produtos</li>
+    <li class="breadcrumb-item active">Categorias</li>
+{% endblock %}
+
+{% block links %}
+<button type="button" data-target="#modal-new-category" class="btn btn-success btn-new label-left">
+    <div class="btn-label">
+        <i class="ti-plus"></i>
+    </div>
+    Novo
+</button>
+{% endblock %}
+
+{% block modals %}
+
+{% include "pages/products/categories/_new.twig" %}
+
+{% endblock %}
+
+{% block main %}
+
+{% include "pages/products/categories/_search.twig" %}
+
+<div class="content-box-paginate">
+    {% include folder_paginate_box() with{
+        folderList: "pages/products/categories/_list.twig",
+        list: list,
+        paramsList: {
+            list: list.results,
+        },
+        urlPaginate: urlPaginate
+    } %}
+</div>
+
+{% endblock %}

@@ -140,6 +140,11 @@ $container['view'] = function ($container) {
     });
     $view->getEnvironment()->addFunction($function);
 
+    $function = new Twig_SimpleFunction('folder_paginate_box', function () {
+        return \folder_paginate_box();
+    });
+    $view->getEnvironment()->addFunction($function);
+
     return $view;
 
 };

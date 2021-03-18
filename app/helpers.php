@@ -1558,3 +1558,8 @@ function password_return($senha)
 {
     return password_hash($senha, PASSWORD_DEFAULT,['cost' => 8]);
 }
+
+
+function folder_paginate_box(){
+    return "helpers/_box-paginate.twig";
+}

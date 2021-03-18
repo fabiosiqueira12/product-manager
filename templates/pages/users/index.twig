@@ -34,15 +34,14 @@
 } %}
 
 <div class="content-box-paginate">
-    {% include "helpers/_box-paginate.twig" with{
+    {% include folder_paginate_box() with{
         folderList: "pages/users/_list.twig",
         list: users,
-        paginate: paginate,
         paramsList: {
             users: users.results,
             type: type
         },
-        urlPaginate: "users/paginate"
+        urlPaginate: urlPaginate
     } %}
 </div>
 

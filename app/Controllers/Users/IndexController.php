@@ -14,6 +14,7 @@ class IndexController extends Controller
 {
 
     private $folder = "pages/users";
+    private $urlPaginate = "usuarios/paginate";
 
     public function index(Request $request, Response $response, $args)
     {
@@ -33,14 +34,13 @@ class IndexController extends Controller
         }
 
         $userService = new UserService();
-        $page = 1;
         $users = $userService->paginate(['id_type' => $typeObject->id]);
-        $paginate = \mount_paginate($users['totalPages'],1);
+
         return $this->view->render($response,"{$this->folder}/index.twig",[
             'users' => $users,
-            'paginate' => $paginate,
             'typeObject' => $typeObject,
-            'type' => $typeObject->id
+            'type' => $typeObject->id,
+            'urlPaginate' => $this->urlPaginate
         ]);
         
     }
@@ -190,17 +190,15 @@ class IndexController extends Controller
         $body['page'] = $page;
         $userService = new UserService();
         $users = $userService->paginate($body);
-        $paginate = \mount_paginate($users['totalPages'],$page);
         
-        return $this->view->render($response, 'helpers/_box-paginate.twig', [
+        return $this->view->render($response, \folder_paginate_box(), [
             "folderList" => "{$this->folder}/_list.twig",
             "paramsList" => [
                 'users' => $users['results'],
                 'type' => $body['id_type']
             ],
             'list' => $users,
-            'paginate' => $paginate,
-            "urlPaginate" => "usuarios/paginate"
+            "urlPaginate" => $this->urlPaginate
         ]);
 
     }
@@ -213,17 +211,15 @@ class IndexController extends Controller
         $body['page'] = $page;
         $userService = new UserService();
         $users = $userService->paginate($body);
-        $paginate = \mount_paginate($users['totalPages'],$page);
-
-        return $this->view->render($response, 'helpers/_box-paginate.twig', [
+        
+        return $this->view->render($response, \folder_paginate_box(), [
             "folderList" => "{$this->folder}/_list.twig",
-            "listParams" => [
+            "paramsList" => [
                 'users' => $users['results'],
                 'type' => $body['id_type']
             ],
             'list' => $users,
-            'paginate' => $paginate,
-            "urlPaginate" => "usuarios/paginate"
+            "urlPaginate" => $this->urlPaginate
         ]);
         
     }
