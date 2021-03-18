@@ -306,6 +306,20 @@ class ProductService extends Service{
 
         foreach($body as $k => $v){
             switch($k){
+                case 'with_estoque':
+                    if ($v != ''){
+                        switch($v){
+                            case 1:
+                                $completeWhere .= " AND ( a.inventory IS NOT NULL AND a.inventory > 0 ) ";
+                                break;
+                            case 2:
+                                $completeWhere .= " AND ( a.inventory IS NULL OR a.inventory <= 0 ) ";
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    break;
                 case 'code':
                     $completeWhere .= $v != '' ? " AND a.code = '{$v}' " : "";
                     break;

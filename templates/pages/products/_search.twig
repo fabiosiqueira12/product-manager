@@ -5,11 +5,19 @@
     <input type="hidden" name="page" value="1">
     <div class="box-block">
         <div class="row">
-            <div class="col-md-4 col-xs-12 form-group">
+            <div class="col-md-3 col-xs-12 form-group">
                 {{forms.label("Código:")}}
                 <input type="text" class="form-control" name="code">
             </div>
-            <div class="col-md-8 col-xs-12 form-group">
+            <div class="col-md-3 col-xs-12 form-group">
+                {{forms.label("Com estoque:")}}
+                <select name="with_estoque" class="form-control text-uppercase">
+                    <option value="">-- TODOS --</option>
+                    <option value="1">SIM</option>
+                    <option value="2">NÃO</option>
+                </select>
+            </div>
+            <div class="col-md-6 col-xs-12 form-group">
                 {{forms.label("Buscar por título ou descrição:")}}
                 <input type="text" class="form-control" name="search">
             </div>
