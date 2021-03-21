@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Tempo de geração: 21/03/2021 às 05:25
+-- Tempo de geração: 21/03/2021 às 07:36
 -- Versão do servidor: 10.1.37-MariaDB
 -- Versão do PHP: 7.3.1
 
@@ -21,6 +21,30 @@ SET time_zone = "+00:00";
 --
 -- Banco de dados: `product_manager`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `consumer`
+--
+
+CREATE TABLE `consumer` (
+  `id` int(11) NOT NULL,
+  `token` varchar(50) NOT NULL,
+  `cpf` varchar(15) DEFAULT NULL,
+  `cnpj` varchar(15) DEFAULT NULL,
+  `name` varchar(250) DEFAULT NULL,
+  `phone` varchar(20) DEFAULT NULL,
+  `email` varchar(200) DEFAULT NULL,
+  `date_insert` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Despejando dados para a tabela `consumer`
+--
+
+INSERT INTO `consumer` (`id`, `token`, `cpf`, `cnpj`, `name`, `phone`, `email`, `date_insert`) VALUES
+(1, 'vtABNuUTruKrYKSz0wMGMGAk4MZZ1GvK1AQgXBPz3vojGgUXn8', '115.723.264-76', NULL, 'Teste', NULL, 'teste@teste.com', '2021-03-21 06:21:36');
 
 -- --------------------------------------------------------
 
@@ -144,7 +168,8 @@ INSERT INTO `menu` (`id`, `root`, `title`, `order_by`, `controller`, `icon`, `de
 (203, 201, 'Receber', 2, 'financeiro/contas/receber', 'ti-money', '', '', '', '1,4,8', NULL, 1, '2020-12-17 04:18:40', '2020-12-17 04:19:42'),
 (204, NULL, 'Gestor de Produtos', 20, '#', 'ti-package', NULL, NULL, NULL, '1,4', NULL, 1, '2021-03-17 05:03:23', '2021-03-17 05:03:23'),
 (205, 204, 'Categorias', 1, 'produtos/categorias', 'ti-package', NULL, NULL, NULL, '1,4', NULL, 1, '2021-03-17 05:04:27', '2021-03-17 05:04:27'),
-(206, 204, 'Criar ou Editar', 3, 'produtos', 'ti-package', NULL, NULL, NULL, '1,4', NULL, 1, '2021-03-18 03:36:56', '2021-03-18 03:36:56');
+(206, 204, 'Criar ou Editar', 3, 'produtos', 'ti-package', NULL, NULL, NULL, '1,4', NULL, 1, '2021-03-18 03:36:56', '2021-03-18 03:36:56'),
+(207, NULL, 'Gestor de Consumidores', 20, 'consumidores', 'ti-user', NULL, NULL, NULL, '1,4', NULL, 1, '2021-03-21 06:35:41', '2021-03-21 06:35:41');
 
 -- --------------------------------------------------------
 
@@ -334,6 +359,13 @@ INSERT INTO `user_recover_password` (`id`, `token`, `id_user`, `email`, `date_in
 --
 
 --
+-- Índices de tabela `consumer`
+--
+ALTER TABLE `consumer`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `token` (`token`);
+
+--
 -- Índices de tabela `data_system`
 --
 ALTER TABLE `data_system`
@@ -410,6 +442,12 @@ ALTER TABLE `user_recover_password`
 --
 
 --
+-- AUTO_INCREMENT de tabela `consumer`
+--
+ALTER TABLE `consumer`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT de tabela `data_system`
 --
 ALTER TABLE `data_system`
@@ -425,7 +463,7 @@ ALTER TABLE `log_system`
 -- AUTO_INCREMENT de tabela `menu`
 --
 ALTER TABLE `menu`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=207;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=208;
 
 --
 -- AUTO_INCREMENT de tabela `product`

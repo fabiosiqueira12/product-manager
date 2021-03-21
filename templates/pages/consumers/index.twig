@@ -1,0 +1,44 @@
+{% extends "layout.twig" %}
+
+{% block title_page %}
+    Gestor de Consumidores
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active">Gestor de Consumidores</li>
+{% endblock %}
+
+{% block links %}
+<button type="button" data-target="#modal-new-consumer" class="btn btn-success btn-new label-left">
+    <div class="btn-label">
+        <i class="ti-plus"></i>
+    </div>
+    Novo
+</button>
+{% endblock %}
+
+{% block modals %}
+
+{% include "pages/consumers/_new.twig" %}
+
+{% endblock %}
+
+{% block main %}
+
+{% include "pages/consumers/_search.twig" with {
+    list_status: list_status,
+    categories: categories
+} %}
+
+<div class="content-box-paginate">
+    {% include folder_paginate_box() with{
+        folderList: "pages/consumers/_list.twig",
+        list: list,
+        paramsList: {
+            list: list.results,
+        },
+        urlPaginate: urlPaginate
+    } %}
+</div>
+
+{% endblock %}

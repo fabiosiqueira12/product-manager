@@ -164,4 +164,15 @@
 
     })->add(new \App\Middlewares\AuthMiddleware);
 
+    //APP CONSUMIDORES SERVICE
+    $app->group('/consumidores', function (){
+
+        $this->get('', \App\Controllers\ConsumerController::class . ':index')->setName('consumers.index');
+        $this->post('/paginate', \App\Controllers\ConsumerController::class . ':paginate')->setName('consumers.paginate');
+        $this->post('/search', \App\Controllers\ConsumerController::class . ':search')->setName('consumers.search');
+        $this->post('/save', \App\Controllers\ConsumerController::class . ':save')->setName('consumers.save');
+        $this->post('/delete', \App\Controllers\ConsumerController::class . ':delete')->setName('consumers.delete');
+
+    })->add(new \App\Middlewares\AuthMiddleware);
+
 ?>

@@ -1,0 +1,56 @@
+<div class="table-responsive m-0">
+    <table class="table table-striped table-bordered table-hover m-0">
+        <thead>
+            <tr>
+                <th width="90" class="text-center vertical-middle">#</th>
+                <th class="vertical-middle">Nome/Tipo</th>
+                <th width="140" class="text-center">Documento</th>
+                <th width="200" class="text-center">E-mail/Telefone</th>
+                <th width="140" class="text-center">Dt. Criação</th>
+                <th width="180" class="text-center">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for consumer in list %}
+            <tr class="text-uppercase">
+                <td class="text-center font-weight-bold text-uppercase vertical-middle">
+                    {{consumer.getId()}}
+                </td>
+                <td class="vertical-middle text-uppercase">
+                    {{consumer.getName()}}
+                    <br>
+                    <strong>{{consumer.isPerson() ? "Pessoa" : "Empresa"}}</strong>
+                </td>
+                <td class="vertical-middle text-center text-uppercase font-weight-bold">
+                    {% if consumer.isPerson() %}
+                        {{consumer.getCpf()}}
+                    {% else %}
+                        {{consumer.getCnpj()}}
+                    {% endif %}
+                </td>
+                <td class="vertical-middle text-center text-uppercase font-weight-bold">
+                    {{consumer.getEmail() is not empty ? consumer.getEmail() : '--'}}
+                    <br>
+                    {{consumer.getPhone() is not empty ? consumer.getPhone() : "--"}}
+                </td>
+                <td class="vertical-middle text-center text-uppercase">
+                    {{consumer.getDataInsert()|date('d/m/Y \\à\\s H:i')}}
+                </td>
+                <td class="text-center vertical-middle">
+                    <div class="btn-group">
+                        <button class="btn btn-primary btn-editar" onclick="admin.editClick(this);" data-target="#modal-new-consumer" data-editar="{{consumer|json_encode}}">
+                            <i class="ti-pencil" data-toggle="tooltip" title="Editar"></i>
+                        </button>
+                        <button class="btn btn-black" type="button" onclick="admin.removeClick(this);" data-link="consumidores/delete" data-excluir="{{consumer.getId()}}">
+                            <i class="ti-trash" data-toggle="tooltip" title="Excluir"></i>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            {% else %}
+                {% include 'helpers/not_found_tr.twig' with {'colspan' : 5} %}
+            {% endfor %}
+
+        </tbody>
+    </table>
+</div>
