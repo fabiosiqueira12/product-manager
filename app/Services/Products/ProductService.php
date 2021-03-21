@@ -8,7 +8,7 @@ use Exception;
 
 class ProductService extends Service{
 
-    private $fields = "a.id,a.token,a.code,a.title,a.description,a.date_insert,a.inventory,a.status,a.image,a.price_cost,a.price_seller,
+    private $fields = "a.id,a.token,a.code,a.title,a.description,a.date_insert,a.inventory,a.status,a.image,a.price_cost,a.price_seller,a.price_money,a.specification,
     b.id AS id_category,b.title AS title_category,b.slug AS slug_category";
     private $forpage = 20;
     private $tableCategory = "product_category";
@@ -274,6 +274,8 @@ class ProductService extends Service{
         ->setPriceCost($result->price_cost)
         ->setPriceSeller($result->price_seller)
         ->setStatusDesc($list_status[$result->status])
+        ->setPriceMoney($result->price_money)
+        ->setSpecification($result->specification)
         ->setId($result->id)
         ->setDataInsert($result->date_insert)
         ->setStatus($result->status);
@@ -347,6 +349,9 @@ class ProductService extends Service{
                         $completeWhere .= " AND DATE(a.date_insert) <= '{$v}' ";
                     }
                     break;
+                case 'specification':
+                    $completeWhere .= !empty($v) ? " AND a.specification LIKE '%{$v}%' " : "";
+                    break; 
                 default:
                     break;
             }

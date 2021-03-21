@@ -17,6 +17,8 @@ class Product extends Model implements JsonSerializable{
     private $code;
     private $price_cost;
     private $price_seller;
+    private $specification;
+    private $price_money;
 
     public const STATUS_ACTIVE = 1;
     public const STATUS_BLOCK = 99;
@@ -245,6 +247,57 @@ class Product extends Model implements JsonSerializable{
         $this->price_seller = $price_seller;
         return $this;
     }
+
+    /**
+     * Retorna a especificação do produto
+     * @return string
+     */ 
+    public function getSpecification()
+    {
+        return $this->specification;
+    }
+
+    /**
+     * Define a especificação do produto
+     * @param string $specification
+     * @return  self
+     */ 
+    public function setSpecification($specification)
+    {
+        $this->specification = $specification;
+        return $this;
+    }
+
+    /**
+     * Get the value of price_money
+     * @return float
+     */ 
+    public function getPriceMoney()
+    {
+        return $this->price_money;
+    }
+
+    /**
+     * Set the value of price_money
+     * @param float $price_money
+     * @return  self
+     */ 
+    public function setPriceMoney($price_money)
+    {
+        $this->price_money = $price_money;
+        return $this;
+    }
+
+    /**
+     * Verifica se o produto tem estoque
+     *
+     * @return boolean
+     */
+    public function isInStock()
+    {
+        return $this->getInventory() > 0;
+    }
+    
 }
 
 ?>

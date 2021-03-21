@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Tempo de geração: 18/03/2021 às 05:50
+-- Tempo de geração: 21/03/2021 às 05:25
 -- Versão do servidor: 10.1.37-MariaDB
 -- Versão do PHP: 7.3.1
 
@@ -164,15 +164,17 @@ CREATE TABLE `product` (
   `image` varchar(250) DEFAULT NULL,
   `code` varchar(50) DEFAULT NULL,
   `price_cost` float DEFAULT NULL,
-  `price_seller` float DEFAULT NULL
+  `price_seller` float DEFAULT NULL,
+  `specification` varchar(150) DEFAULT NULL,
+  `price_money` float DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Despejando dados para a tabela `product`
 --
 
-INSERT INTO `product` (`id`, `token`, `title`, `description`, `date_insert`, `inventory`, `id_category`, `status`, `image`, `code`, `price_cost`, `price_seller`) VALUES
-(2, 'G2rTDjdCIx8AHwDtMbRrxoWUu9jZmL3qjLsszfSeIgTAG2Wkx3CAcbx3NUpT2VjWZlFaSUEfBzihGSTF7ky1vmAarCbRWhalfdc8iTrpvWAzWXVcDihAhZGOCC0aJSr5aXMVQRMaN6yECkNHhuil4N', 'teste', 'dsad', '2021-03-18 04:22:04', 0, 2, 1, NULL, 'EQOEMWFZFM', 20.2, 50);
+INSERT INTO `product` (`id`, `token`, `title`, `description`, `date_insert`, `inventory`, `id_category`, `status`, `image`, `code`, `price_cost`, `price_seller`, `specification`, `price_money`) VALUES
+(2, 'G2rTDjdCIx8AHwDtMbRrxoWUu9jZmL3qjLsszfSeIgTAG2Wkx3CAcbx3NUpT2VjWZlFaSUEfBzihGSTF7ky1vmAarCbRWhalfdc8iTrpvWAzWXVcDihAhZGOCC0aJSr5aXMVQRMaN6yECkNHhuil4N', 'teste', 'dsad', '2021-03-18 04:22:04', 2, 2, 1, NULL, 'EQOEMWFZFM', 20.2, 50, NULL, 40);
 
 -- --------------------------------------------------------
 
@@ -209,6 +211,14 @@ CREATE TABLE `product_history` (
   `quant` int(11) DEFAULT NULL,
   `date_insert` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Despejando dados para a tabela `product_history`
+--
+
+INSERT INTO `product_history` (`id`, `description`, `id_product`, `id_user`, `quant`, `date_insert`) VALUES
+(1, 'O usuário alterou o estoque para: 5', 2, 1, 5, '2021-03-18 04:50:46'),
+(2, 'O usuário alterou o estoque para: -3', 2, 1, -3, '2021-03-18 05:06:59');
 
 -- --------------------------------------------------------
 
@@ -427,13 +437,13 @@ ALTER TABLE `product`
 -- AUTO_INCREMENT de tabela `product_category`
 --
 ALTER TABLE `product_category`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de tabela `product_history`
 --
 ALTER TABLE `product_history`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de tabela `smtp`

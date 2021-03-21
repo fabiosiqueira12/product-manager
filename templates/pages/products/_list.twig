@@ -4,9 +4,9 @@
             <tr>
                 <th width="90" class="text-center vertical-middle">Cód</th>
                 <th class="vertical-middle">Título/Categoria</th>
-                <th width="100" class="text-center">Estoque</th>
-                <th width="150" class="text-center">Preço Custo/Venda</th>
-                <th width="180" class="text-center">Dt. de Cadastro/Status</th>
+                <th width="150" class="text-center">Estoque/Preço Custo</th>
+                <th width="150" class="text-center">Preço Venda/Dinheiro</th>
+                <th width="160" class="text-center">Dt. Criação/Status</th>
                 <th width="240" class="text-center">Ações</th>
             </tr>
         </thead>
@@ -24,12 +24,14 @@
                     {% endif %}
                 </td>
                 <td class="vertical-middle text-center text-uppercase font-weight-bold">
-                    {{product.getInventory()}}
+                    <span class="tag {{product.isInStock() ? "tag-success" : "tag-danger"}}">{{product.getInventory()}}</span>
+                    <br>
+                    {{product.getPriceCost() is not empty ? price_format(product.getPriceCost()) : "--"}}
                 </td>
                 <td class="vertical-middle text-center text-uppercase font-weight-bold">
-                    {{product.getPriceCost() is not empty ? price_format(product.getPriceCost()) : "--"}}
-                    <br>
                     {{product.getPriceSeller() is not empty ? price_format(product.getPriceSeller()) : "--"}}
+                    <br>
+                    {{product.getPriceMoney() is not empty ? price_format(product.getPriceMoney()) : "--"}}
                 </td>
                 <td class="vertical-middle text-center text-uppercase">
                     {{product.getDataInsert()|date('d/m/Y \\à\\s H:i')}}

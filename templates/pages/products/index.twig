@@ -77,6 +77,7 @@
             $(target).find('[name="id"]').val(item.id);
             $(target).find('[name="title"]').val(item.title);
             $(target).find('[name="description"]').val(item.description);
+            $(target).find('[name="specification"]').val(item.specification);
             $(target).find('[name="code"]').val(item.code);
             if (item.price_cost != null && item.price_cost != undefined){
                 $(target).find('[name="price_cost"]').val(admin.numberToReal(parseFloat(item.price_cost)));
@@ -87,6 +88,11 @@
                 $(target).find('[name="price_seller"]').val(admin.numberToReal(parseFloat(item.price_seller)));
             }else{
                 $(target).find('[name="price_seller"]').val("");
+            }
+            if (item.price_money != null && item.price_money != undefined){
+                $(target).find('[name="price_money"]').val(admin.numberToReal(parseFloat(item.price_money)));
+            }else{
+                $(target).find('[name="price_money"]').val("");
             }
             if (item.category != null && item.category != undefined){
                 $(target).find('[name="id_category"]').val(item.category.id);

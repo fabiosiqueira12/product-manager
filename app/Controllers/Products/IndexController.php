@@ -102,6 +102,12 @@ class IndexController extends Controller{
             $body['price_seller'] = null;
         }
 
+        if (isset($body['price_money']) && !empty($body['price_money'])){
+            $body['price_money'] = str_to_float($body['price_money']);
+        }else{
+            $body['price_seller'] = null;
+        }
+
         if (isset($body['price_cost']) && !empty($body['price_cost'])){
             $body['price_cost'] = str_to_float($body['price_cost']);
         }else{

@@ -28,8 +28,8 @@
                 </div>
                 <div class="row">
                     <div class="col-md-6 col-xs-12 form-group">
-                        {{forms.label("Descrição:")}}
-                        <input type="text" class="form-control" name="description">
+                        {{forms.label("Especificação:")}}
+                        <input type="text" class="form-control" name="specification">
                     </div>
                     <div class="col-md-6 col-xs-12 form-group">
                         {{forms.label("Categoria:")}}
@@ -41,14 +41,22 @@
                         </select>
                     </div>
                 </div>
+                <div class="form-group">
+                    {{forms.label("Descrição:")}}
+                    <input type="text" class="form-control" name="description">
+                </div>
                 <div class="row">
-                    <div class="col-md-6 col-xs-12 form-group">
+                    <div class="col-md-4 col-xs-12 form-group">
                         {{forms.label("Preço de custo:")}}
                         <input type="tel" class="form-control money" name="price_cost">
                     </div>
-                    <div class="col-md-6 col-xs-12 form-group">
+                    <div class="col-md-4 col-xs-12 form-group">
                         {{forms.label("Preço de venda:")}}
                         <input type="tel" class="form-control money" name="price_seller" required>
+                    </div>
+                    <div class="col-md-4 col-xs-12 form-group">
+                        {{forms.label("Preço em dinheiro:")}}
+                        <input type="tel" class="form-control money" name="price_money">
                     </div>
                 </div>
             </div>
