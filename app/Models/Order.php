@@ -18,11 +18,18 @@ class Order extends Model implements JsonSerializable
     private $statusDesc;
     private $quantProducts;
     private $products;
+    private $type_payment;
+    private $parcels;
 
     public const STATUS_CREATED = 0;
     public const STATUS_PAYED = 1;
     public const STATUS_FINISH = 2;
     public const SATTUS_BLOCK = 3;
+
+    public const TYPE_MONEY = 0;
+    public const TYPE_DEPOSIT = 1;
+    public const TYPE_CHECK = 2;
+    public const TYPE_CREDIT_CARD = 3;
 
     public function jsonSerialize()
     {
@@ -191,5 +198,44 @@ class Order extends Model implements JsonSerializable
         return $this;
     }
 
+    /**
+     * Retorna o tipo de pagamento
+     * @return int
+     */ 
+    public function getTypePayment()
+    {
+        return $this->type_payment;
+    }
+
+    /**
+     * Define o tipo de pagamento do pedido
+     * @param int $type_payment
+     * @return  self
+     */ 
+    public function setTypePayment($type_payment)
+    {
+        $this->type_payment = $type_payment;
+        return $this;
+    }
+
+    /**
+     * Retorna o número de parcelas
+     * @return int
+     */ 
+    public function getParcels()
+    {
+        return $this->parcels;
+    }
+
+    /**
+     * Define o número de parcelas
+     * @param int $parcels
+     * @return  self
+     */ 
+    public function setParcels($parcels)
+    {
+        $this->parcels = $parcels;
+        return $this;
+    }
 }
 ?>
