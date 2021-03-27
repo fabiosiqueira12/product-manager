@@ -175,4 +175,16 @@
 
     })->add(new \App\Middlewares\AuthMiddleware);
 
+    //APP ORDERS SERVICE
+    $app->group("/pedidos",function(){
+
+        $this->get('', \App\Controllers\Orders\IndexController::class . ':index')->setName('orders.index');
+        $this->post('/paginate', \App\Controllers\Orders\IndexController::class . ':paginate')->setName('orders.paginate');
+        $this->post('/search', \App\Controllers\Orders\IndexController::class . ':search')->setName('orders.search');
+        $this->post('/save', \App\Controllers\Orders\IndexController::class . ':save')->setName('orders.save');
+        $this->post('/delete', \App\Controllers\Orders\IndexController::class . ':delete')->setName('orders.delete');
+        $this->get('/detalhes/{code}', \App\Controllers\Orders\IndexController::class . ':details')->setName('orders.details');
+
+    });
+
 ?>

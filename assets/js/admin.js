@@ -298,9 +298,7 @@ var admin = {
                     allowOutsideClick: false,
                     confirmButtonColor: '#3085d6'
                 }).then((resultSwal) => {
-                    if (resultSwal.value) {
-                        window.location.href = BASE_URL + response.link;
-                    }
+                    window.location.href = BASE_URL + response.link;
                 });
                 break;
             case 'list':

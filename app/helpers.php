@@ -3,6 +3,7 @@
 use App\Models\Product;
 use App\Core\AuthControl;
 use App\Core\CacheControl;
+use App\Models\Order;
 use App\Services\MenuService;
 use App\Services\Users\TypeUserService;
 
@@ -1579,5 +1580,32 @@ function list_status_product()
     return [
         Product::STATUS_ACTIVE => "Ativo",
         Product::STATUS_BLOCK => "Bloqueado"
+    ];
+}
+
+/**
+ * Retorna a lista de status do pedido
+ *
+ * @return array
+ */
+function list_status_order(){
+    return [
+        Order::STATUS_CREATED => "Criado",
+        Order::STATUS_FINISH => "Finalizado",
+        Order::SATTUS_BLOCK => "Cancelado"
+    ];
+}
+
+/**
+ * Retorna a lista de formas de pagamento
+ *
+ * @return array
+ */
+function list_type_payment(){
+    return [
+        Order::TYPE_MONEY => "Dinheiro",
+        Order::TYPE_CREDIT_CARD => "Cartão de Crédito",
+        Order::TYPE_CHECK => "Cheque",
+        Order::TYPE_DEPOSIT => "Depósito/Transferência"
     ];
 }

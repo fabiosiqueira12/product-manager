@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Tempo de geração: 21/03/2021 às 07:36
+-- Tempo de geração: 27/03/2021 às 07:08
 -- Versão do servidor: 10.1.37-MariaDB
 -- Versão do PHP: 7.3.1
 
@@ -169,7 +169,42 @@ INSERT INTO `menu` (`id`, `root`, `title`, `order_by`, `controller`, `icon`, `de
 (204, NULL, 'Gestor de Produtos', 20, '#', 'ti-package', NULL, NULL, NULL, '1,4', NULL, 1, '2021-03-17 05:03:23', '2021-03-17 05:03:23'),
 (205, 204, 'Categorias', 1, 'produtos/categorias', 'ti-package', NULL, NULL, NULL, '1,4', NULL, 1, '2021-03-17 05:04:27', '2021-03-17 05:04:27'),
 (206, 204, 'Criar ou Editar', 3, 'produtos', 'ti-package', NULL, NULL, NULL, '1,4', NULL, 1, '2021-03-18 03:36:56', '2021-03-18 03:36:56'),
-(207, NULL, 'Gestor de Consumidores', 20, 'consumidores', 'ti-user', NULL, NULL, NULL, '1,4', NULL, 1, '2021-03-21 06:35:41', '2021-03-21 06:35:41');
+(207, NULL, 'Gestor de Consumidores', 30, 'consumidores', 'ti-user', NULL, NULL, NULL, '1,4', NULL, 1, '2021-03-21 06:35:41', '2021-03-21 06:35:41'),
+(208, NULL, 'Gestor de Pedidos', 20, 'pedidos', 'ti-receipt', NULL, NULL, NULL, '1,4', NULL, 1, '2021-03-25 01:58:46', '2021-03-25 01:58:46');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `pedido`
+--
+
+CREATE TABLE `pedido` (
+  `id` int(11) NOT NULL,
+  `code` varchar(50) NOT NULL,
+  `id_consumer` int(11) DEFAULT NULL,
+  `date_insert` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `date_payment` timestamp NULL DEFAULT NULL,
+  `date_finish` timestamp NULL DEFAULT NULL,
+  `status` tinyint(1) DEFAULT '0',
+  `type_payment` tinyint(1) DEFAULT '0',
+  `id_user` int(11) DEFAULT NULL,
+  `parcels` tinyint(1) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `pedido_product`
+--
+
+CREATE TABLE `pedido_product` (
+  `id` int(11) NOT NULL,
+  `id_pedido` int(11) DEFAULT NULL,
+  `id_product` int(11) DEFAULT NULL,
+  `price` float DEFAULT NULL,
+  `quant` mediumint(5) DEFAULT NULL,
+  `date_insert` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -384,6 +419,23 @@ ALTER TABLE `menu`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Índices de tabela `pedido`
+--
+ALTER TABLE `pedido`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `code` (`code`),
+  ADD KEY `id_consumer` (`id_consumer`),
+  ADD KEY `id_user` (`id_user`);
+
+--
+-- Índices de tabela `pedido_product`
+--
+ALTER TABLE `pedido_product`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id_pedido` (`id_pedido`),
+  ADD KEY `id_product` (`id_product`);
+
+--
 -- Índices de tabela `product`
 --
 ALTER TABLE `product`
@@ -463,7 +515,19 @@ ALTER TABLE `log_system`
 -- AUTO_INCREMENT de tabela `menu`
 --
 ALTER TABLE `menu`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=208;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=209;
+
+--
+-- AUTO_INCREMENT de tabela `pedido`
+--
+ALTER TABLE `pedido`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de tabela `pedido_product`
+--
+ALTER TABLE `pedido_product`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de tabela `product`
@@ -510,6 +574,20 @@ ALTER TABLE `user_recover_password`
 --
 -- Restrições para dumps de tabelas
 --
+
+--
+-- Restrições para tabelas `pedido`
+--
+ALTER TABLE `pedido`
+  ADD CONSTRAINT `pedido_ibfk_1` FOREIGN KEY (`id_consumer`) REFERENCES `consumer` (`id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `pedido_ibfk_2` FOREIGN KEY (`id_user`) REFERENCES `user` (`id`) ON DELETE SET NULL;
+
+--
+-- Restrições para tabelas `pedido_product`
+--
+ALTER TABLE `pedido_product`
+  ADD CONSTRAINT `pedido_product_ibfk_1` FOREIGN KEY (`id_pedido`) REFERENCES `pedido` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `pedido_product_ibfk_2` FOREIGN KEY (`id_product`) REFERENCES `product` (`id`) ON DELETE CASCADE;
 
 --
 -- Restrições para tabelas `product`

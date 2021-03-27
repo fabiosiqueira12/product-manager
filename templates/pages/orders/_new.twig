@@ -1,0 +1,76 @@
+{% import "forms.twig" as forms %}
+
+<form class="modal fade form-file" data-url="pedidos/save" id="modal-new-order">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Novo Pedido</h3>
+                <button type="reset" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="ti-close"></i>
+                </button>
+            </div>
+            <div class="modal-body clearfix">
+                <div class="form-group">
+                    {{forms.label("Consumidor:")}}
+                    <select onchange="selectConsumer(this);" name="id_consumer" id="choices-single-default" class="form-control">
+                        <option value="">-- NOVO CONSUMIDOR --</option>
+                        {% for consumer in consumers %}
+                            <option value="{{consumer.getId()}}">{{consumer.getName()|upper}} - {{consumer.isPerson() ? "CPF:" : "CNPJ:"}} {{consumer.isPerson() ? consumer.getCpf() : consumer.getCnpj()}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="info-new">
+                    <div class="row">
+                        <div class="col-md-6 col-xs-12 form-group">
+                            {{forms.label("Nome ou Razão Social:")}}
+                            <input type="text" class="form-control" name="name">
+                        </div>
+                        <div class="col-md-3 col-xs-12 form-group">
+                            {{forms.label("CNPJ:")}}
+                            <input type="tel" class="form-control mask-cnpj" name="cnpj">
+                        </div>
+                        <div class="col-md-3 col-xs-12 form-group">
+                            {{forms.label("CPF:")}}
+                            <input type="tel" class="form-control mask-cpf" name="cpf">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 col-xs-12 form-group">
+                            {{forms.label("E-mail:")}}
+                            <input type="email" class="form-control" name="email">
+                        </div>
+                        <div class="col-md-6 col-xs-12 form-group">
+                            {{forms.label("Telefone:")}}
+                            <input type="tel" class="form-control mask-telefone" name="phone">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    {{forms.label("Forma de Pagamento:")}}
+                    <select name="type_payment" class="form-control" required>
+                        <option value="">--SELECIONE--</option>
+                        {% for key,item in list_type_payment %}
+                            <option value="{{key}}">{{item|upper}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <div>
+                    <button type="reset" class="btn btn-danger mr-1 label-left" data-dismiss="modal">
+                        <div class="btn-label">
+                            <i class="ti-close"></i>
+                        </div>
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-success label-left">
+                        <div class="btn-label">
+                            <i class="ti-save"></i>
+                        </div>
+                        Salvar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

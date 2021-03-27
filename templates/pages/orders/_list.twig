@@ -1,0 +1,63 @@
+<div class="table-responsive m-0">
+    <table class="table table-striped table-bordered table-hover m-0">
+        <thead>
+            <tr>
+                <th width="90" class="text-center vertical-middle">Cód</th>
+                <th class="text-center vertical-middle">Consumidor</th>
+                <th width="180" class="text-center">Qtde Produtos/Forma</th>
+                <th width="200" class="text-center">Valor Produtos/DT Pagamento</th>
+                <th width="160" class="text-center">DT Criação/Status</th>
+                <th width="150" class="text-center">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in list %}
+            <tr class="text-uppercase">
+                <td class="text-center font-weight-bold vertical-middle">
+                    {{order.getCode()}}
+                </td>
+                <td class="vertical-middle">
+                    {{order.getConsumer().getName()}}
+                    <br>
+                    <strong>
+                        {{order.getConsumer().isPerson() ? "CPF:" : "CNPJ:"}}
+                        {{order.getConsumer().isPerson() ? order.getConsumer().getCpf() : order.getConsumer().getCnpj()}}
+                    </strong>
+                </td>
+                <td class="text-center vertical-middle">
+
+                </td>
+                <td class="text-center vertical-middle"></td>
+                <td class="text-center vertical-middle">
+                    {{order.getDataInsert()|date("d/m/Y \\à\\s H:i")}}
+                    <br>
+                    {% if order.isCreated() %}
+                    {% set tagClass = "tag-primary" %}
+                    {% endif %}
+                    {% if order.isFinish() %}
+                    {% set tagClass = "tag-success" %}
+                    {% endif %}
+                    {% if order.isBlock() %}
+                    {% set tagClass = "tag-danger" %}
+                    {% endif %}
+                    <span class="tag tag-pill {{tagClass}}">{{order.getStatusDesc()}}</span>
+                </td>
+                <td class="text-center vertical-middle">
+                    <div class="btn-group">
+                        <a href="{{path_for("orders.details",{code: order.getCode()})}}" class="btn btn-primary">
+                            <i class="ti-receipt" data-toggle="tooltip" title="Detalhes"></i>
+                        </a>
+                        {% if order.isFinish() == false %}
+                            <button class="btn btn-black" onclick="admin.removeClick(this);" data-excluir="{{order.getId()}}" data-link="pedidos/delete" type="button">
+                                <i class="ti-trash" data-toggle="tooltip" title="Excluir"></i>
+                            </button>
+                        {% endif %}
+                    </div>
+                </td>
+            </tr>
+            {% else %}
+                {% include 'helpers/not_found_tr.twig' with {'colspan' : 7} %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

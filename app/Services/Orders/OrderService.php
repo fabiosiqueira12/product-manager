@@ -9,20 +9,64 @@ use App\Services\Service;
 
 class OrderService extends Service{
     
-    private $fields = "a.id,a.code,a.date_insert,a.date_payment,a.date_finish,a.status,a.type_payment,
+    private $fields = "a.id,a.code,a.date_insert,a.date_payment,a.date_finish,a.status,a.type_payment,a.parcels,
     b.id as id_consumer,b.token AS token_consumer,b.cpf AS cpf_consumer,b.cnpj AS cnpj_consumer,b.name AS name_consumer,b.phone AS phone_consumer,b.email AS email_consumer,
     c.id AS id_user,c.login AS login_user,c.token AS token_user,c.nome AS nome_user";
     private $forpage = 20;
     private $innerTables = [];
 
     public function __construct(){
-        self::__construct();
+        parent::__construct();
         $this->setTable("pedido");
         $this->setPrefix("a");
         $this->innerTables = [
             " LEFT JOIN consumer AS b ON a.id_consumer = b.id ",
             " LEFT JOIN user AS c ON a.id_user = c.id "
         ];
+    }
+
+    /**
+     * Salva o pedido
+     *
+     * @param array $body
+     * @param boolean $returnId
+     * @return object
+     */
+    public function save($body,$returnId = false)
+    {
+        return $this->genericeSave($body,['id'],$returnId);
+    }
+
+    /**
+     * Remove o pedido do banco
+     *
+     * @param int $id
+     * @return object
+     */
+    public function delete($id)
+    {
+        return $this->genericDelete($id);
+    }
+
+    /**
+     * Faz paginação dos pedidos
+     *
+     * @param array $body
+     * @param string $order
+     * @param boolean $isApi
+     * @return array
+     */
+    public function paginate($body,$order = "a.id DESC",$isApi = false)
+    {
+        $completeWhere = $this->mountWhere($body);
+        $page = isset($body['page']) ? $body['page'] : 1;
+        $forpageApi = isset($body['forpage']) && $body['forpage'] != '' ? \intval($body['forpage']) : $this->forpage;
+        
+        $paginateResults = $this->genericPaginate($this->fields,$this->innerTables,$completeWhere,$page,$forpageApi,$order);
+        $paginateResults['results'] = $this->transformResults($paginateResults['results']);
+
+        return $paginateResults;
+
     }
 
     /**
@@ -86,6 +130,9 @@ class OrderService extends Service{
         ->setDataInsert($result->date_insert)
         ->setStatus($result->status);
 
+        $list_status = \list_status_order();
+        $order->setStatusDesc($list_status[$result->status]);
+
         if (isset($result->id_consumer) && !empty($result->id_consumer)){
             $consumer = new Consumer();
             $consumer->setToken($result->token_consumer)
@@ -139,6 +186,9 @@ class OrderService extends Service{
                     break;
                 case 'id_user':
                     $completeWhere .= !empty($v) ? " AND a.id_user = {$v} " : "";
+                    break;
+                case 'type_payment':
+                    $completeWhere .= !empty($v) ? " AND a.type_payment = {$v} " : "";
                     break;
                 case 'status':
                     $completeWhere .= $v != '' ? " AND a.status = {$v} " : "";

@@ -37,6 +37,45 @@ class Order extends Model implements JsonSerializable
         return $vars;
     }
 
+    /**
+     * Verifica se o pedido está criado
+     *
+     * @return boolean
+     */
+    public function isCreated()
+    {
+        return $this->getStatus() == self::STATUS_CREATED;
+    }
+
+    /**
+     * Verifica se o pedido está pago
+     *
+     * @return boolean
+     */
+    public function isPayed()
+    {
+        return $this->getStatus() == self::STATUS_PAYED;
+    }
+
+    /**
+     * Verifica se o pedido está finalizado
+     *
+     * @return boolean
+     */
+    public function isFinish()
+    {
+        return $this->getStatus() == self::STATUS_FINISH;
+    }
+
+    /**
+     * Verifica se o pedido está cancelado
+     *
+     * @return boolean
+     */
+    public function isBlock()
+    {
+        return $this->getStatus() == self::SATTUS_BLOCK;
+    }
 
     /**
      * Retorna o código do pedido
