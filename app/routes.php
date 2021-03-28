@@ -176,7 +176,7 @@
     })->add(new \App\Middlewares\AuthMiddleware);
 
     //APP ORDERS SERVICE
-    $app->group("/pedidos",function(){
+    $app->group("/pedidos",function() use ($app){
 
         $this->get('', \App\Controllers\Orders\IndexController::class . ':index')->setName('orders.index');
         $this->post('/paginate', \App\Controllers\Orders\IndexController::class . ':paginate')->setName('orders.paginate');
@@ -184,6 +184,14 @@
         $this->post('/save', \App\Controllers\Orders\IndexController::class . ':save')->setName('orders.save');
         $this->post('/delete', \App\Controllers\Orders\IndexController::class . ':delete')->setName('orders.delete');
         $this->get('/detalhes/{code}', \App\Controllers\Orders\IndexController::class . ':details')->setName('orders.details');
+
+        $app->group('/produtos', function (){
+            $this->post('/delete', \App\Controllers\Orders\ProductsController::class . ':delete')->setName('orders.products.delete');
+            $this->post('/consultar', \App\Controllers\Orders\ProductsController::class . ':consultar')->setName('orders.products.consultar');
+            $this->post('/update-estoque', \App\Controllers\Orders\ProductsController::class . ':updateEstoque')->setName('orders.products.updateEstoque');
+            $this->post('/search', \App\Controllers\Orders\ProductsController::class . ':search')->setName('orders.products.search');
+            $this->post('/add-many', \App\Controllers\Orders\ProductsController::class . ':addMany')->setName('orders.products.add_many');
+        });
 
     });
 

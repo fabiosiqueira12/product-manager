@@ -8,6 +8,7 @@ use App\Controllers\Controller;
 use App\Models\Order;
 use App\Services\ConsumerService;
 use App\Services\Orders\OrderService;
+use App\Services\Products\ProductService;
 use Exception;
 use Slim\Exception\NotFoundException;
 use Slim\Handlers\NotFound;
@@ -139,7 +140,18 @@ class IndexController extends Controller{
         if (empty($order)){
             throw new NotFoundException($request,$response);
         }
-        dump($order);
+
+        $productService = new ProductService();
+        $products = $productService->paginate([
+            'page' => 1,
+            'forpage' => 10000,
+            'id_order_confirm' => $order->getId()
+        ])['results'];
+
+        return $this->view->render($response,"{$this->folder}/details.twig",[
+            'order' => $order,
+            'products' => $products
+        ]);
     }
 
     public function delete(Request $request, Response $response, $args)

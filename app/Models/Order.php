@@ -20,6 +20,8 @@ class Order extends Model implements JsonSerializable
     private $products;
     private $type_payment;
     private $parcels;
+    private $total;
+    private $qtdProducts;
 
     public const STATUS_CREATED = 0;
     public const STATUS_PAYED = 1;
@@ -274,6 +276,57 @@ class Order extends Model implements JsonSerializable
     public function setParcels($parcels)
     {
         $this->parcels = $parcels;
+        return $this;
+    }
+
+    /**
+     * Retorna a descrição do tipo de pagamento
+     *
+     * @return string 
+     */
+    public function getTypePaymentDesc()
+    {
+        $list_types = \list_type_payment();
+        return $list_types[$this->getTypePayment()];
+    }
+    
+    /**
+     * Retorna o valor total do pedido
+     * @return float
+     */ 
+    public function getTotal()
+    {
+        return $this->total;
+    }
+
+    /**
+     * Define o valor total somando os preços do pedido 
+     * @param float $total
+     * @return  self
+     */ 
+    public function setTotal($total)
+    {
+        $this->total = $total;
+        return $this;
+    }
+
+    /**
+     * Retorna a quantidade de produtos
+     * @return int
+     */ 
+    public function getQtdProducts()
+    {
+        return $this->qtdProducts;
+    }
+
+    /**
+     * Define a quantidade de produtos
+     * @param int qtdProducts
+     * @return self
+     */ 
+    public function setQtdProducts($qtdProducts)
+    {
+        $this->qtdProducts = $qtdProducts;
         return $this;
     }
 }

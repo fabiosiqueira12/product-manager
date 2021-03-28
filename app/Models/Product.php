@@ -19,6 +19,9 @@ class Product extends Model implements JsonSerializable{
     private $price_seller;
     private $specification;
     private $price_money;
+    private $quant_order;
+    private $status_order;
+    private $price_order;
 
     public const STATUS_ACTIVE = 1;
     public const STATUS_BLOCK = 99;
@@ -297,7 +300,67 @@ class Product extends Model implements JsonSerializable{
     {
         return $this->getInventory() > 0;
     }
-    
+
+    /**
+     * Retorna a quantidade de produtos em pedido
+     * @return int
+     */ 
+    public function getQuantOrder()
+    {
+        return $this->quant_order;
+    }
+
+    /**
+     * Define a quantidade de produtos em um pedido
+     * @param int $quant_order
+     * @return self
+     */ 
+    public function setQuantOrder($quant_order)
+    {
+        $this->quant_order = $quant_order;
+        return $this;
+    }
+
+    /**
+     * Retorna o status do produto ao pedido
+     * @return int
+     */ 
+    public function getStatusOrder()
+    {
+        return $this->status_order;
+    }
+
+    /**
+     * Define o status do produto ao pedido
+     * @param int $status_order
+     * @return  self
+     */ 
+    public function setStatusOrder($status_order)
+    {
+        $this->status_order = $status_order;
+        return $this;
+    }
+
+    /**
+     * Retorna o preço do order
+     * @return float
+     */ 
+    public function getPriceOrder()
+    {
+        return $this->price_order;
+    }
+
+    /**
+     * DEfine o preço do produto ao pedido
+     * @param float $price_order
+     * @return self
+     */ 
+    public function setPriceOrder($price_order)
+    {
+        $this->price_order = $price_order;
+        return $this;
+    }
+
 }
 
 ?>

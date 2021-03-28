@@ -122,7 +122,18 @@ class ProductService extends Service{
         $page = isset($body['page']) ? $body['page'] : 1;
         $forpageApi = isset($body['forpage']) && $body['forpage'] != '' ? \intval($body['forpage']) : $this->forpage;
 
-        $paginateResults = $this->genericPaginate($this->fields,$this->innerTables,$completeWhere,$page,$forpageApi,$order);
+        $fieldsFinal = $this->fields;
+        $innerFinal = $this->innerTables;
+        if (isset($body['id_order']) && !empty($body['id_order'])){
+            $innerFinal[] = " LEFT JOIN pedido_product AS d ON d.id_product = a.id AND  d.id_pedido = {$body['id_order']} ";
+            $fieldsFinal .= ", d.price AS price_order, d.quant AS quant_order,d.status AS status_order";
+        }
+        if (isset($body['id_order_confirm']) && !empty($body['id_order_confirm'])){
+            $innerFinal[] = " INNER JOIN pedido_product AS d ON d.id_product = a.id AND  d.id_pedido = {$body['id_order_confirm']} ";
+            $fieldsFinal .= ", d.price AS price_order, d.quant AS quant_order,d.status AS status_order";
+        }
+
+        $paginateResults = $this->genericPaginate($fieldsFinal,$innerFinal,$completeWhere,$page,$forpageApi,$order);
         $paginateResults['results'] = $this->transformResults($paginateResults['results']);
 
         return $paginateResults;
@@ -289,6 +300,18 @@ class ProductService extends Service{
             $product->setCategory($category);
         }
 
+        if (isset($result->quant_order)){
+            $product->setQuantOrder($result->quant_order);
+        }
+
+        if (isset($result->price_order)){
+            $product->setPriceOrder($result->price_order);
+        }
+
+        if (isset($result->status_order)){
+            $product->setStatusOrder($result->status_order);
+        }
+
         return $product;
 
     }
@@ -330,7 +353,7 @@ class ProductService extends Service{
                     break;
                 case 'search':
                     if (!empty($v)){
-                        $completeWhere .= " AND ( a.title LIKE '%{$v}%' OR a.description LIKE '%{$v}%' )";
+                        $completeWhere .= " AND ( a.title LIKE '%{$v}%' OR a.description LIKE '%{$v}%' OR a.code = '%{$v}%' )";
                     }
                     break;
                 case 'id_category':
@@ -351,7 +374,7 @@ class ProductService extends Service{
                     break;
                 case 'specification':
                     $completeWhere .= !empty($v) ? " AND a.specification LIKE '%{$v}%' " : "";
-                    break; 
+                    break;
                 default:
                     break;
             }

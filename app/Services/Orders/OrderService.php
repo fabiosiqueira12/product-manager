@@ -11,7 +11,9 @@ class OrderService extends Service{
     
     private $fields = "a.id,a.code,a.date_insert,a.date_payment,a.date_finish,a.status,a.type_payment,a.parcels,
     b.id as id_consumer,b.token AS token_consumer,b.cpf AS cpf_consumer,b.cnpj AS cnpj_consumer,b.name AS name_consumer,b.phone AS phone_consumer,b.email AS email_consumer,
-    c.id AS id_user,c.login AS login_user,c.token AS token_user,c.nome AS nome_user";
+    c.id AS id_user,c.login AS login_user,c.token AS token_user,c.nome AS nome_user,
+    (SELECT SUM(x.price * x.quant) FROM pedido_product AS x WHERE x.id_pedido = a.id AND x.status = 1) AS total,
+    (SELECT SUM(z.quant) FROM pedido_product AS z WHERE z.id_pedido = a.id AND z.status = 1) AS qtdProducts";
     private $forpage = 20;
     private $innerTables = [];
 
@@ -157,6 +159,14 @@ class OrderService extends Service{
             $order->setProducts([]);
         }else{
             $order->setProducts([]);
+        }
+
+        if (isset($result->qtdProducts)){
+            $order->setQtdProducts($result->qtdProducts);
+        }
+
+        if (isset($result->total)){
+            $order->setTotal($result->total);
         }
 
         return $order;

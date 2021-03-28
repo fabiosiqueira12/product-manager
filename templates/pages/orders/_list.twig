@@ -4,8 +4,8 @@
             <tr>
                 <th width="90" class="text-center vertical-middle">Cód</th>
                 <th class="text-center vertical-middle">Consumidor</th>
-                <th width="180" class="text-center">Qtde Produtos/Forma</th>
-                <th width="200" class="text-center">Valor Produtos/DT Pagamento</th>
+                <th width="180" class="text-center">Qtde Produtos/Valor Total</th>
+                <th width="200" class="text-center">Forma Pagamento/DT Pagamento</th>
                 <th width="160" class="text-center">DT Criação/Status</th>
                 <th width="150" class="text-center">Ações</th>
             </tr>
@@ -25,7 +25,7 @@
                     </strong>
                 </td>
                 <td class="text-center vertical-middle">
-
+                    {{order.getTypePaymentDesc()}}
                 </td>
                 <td class="text-center vertical-middle"></td>
                 <td class="text-center vertical-middle">

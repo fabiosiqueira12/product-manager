@@ -30,8 +30,8 @@
 {% block main %}
 
 {% include "pages/orders/_search.twig" with {
-    list_status: list_status,
-    categories: categories
+    list_status_order: list_status_order,
+    list_type_payment: list_type_payment
 } %}
 
 <div class="content-box-paginate">
@@ -53,6 +53,11 @@
     <script>
         $(document).ready(function(){
             var choiceSelect = new Choices(document.getElementById('choices-single-default'));
+            $(".btn-new").on("click",function(){
+                var target = $(this).data("target");
+                $(target).find(".info-new").fadeIn();
+                $(target).find('[name="id_consumer"]').val("");
+            });
         });
 
         function selectConsumer(el){

@@ -1,0 +1,47 @@
+<div class="table-responsive m-0">
+    <table class="table table-striped table-bordered table-hover m-0">
+        <thead>
+            <tr>
+                <th class="vertical-middle">Produto</th>
+                <th class="text-center vertical-middle" width="120">Estoque</th>
+                <th class="text-center vertical-middle" width="150">Preço Normal/Dinheiro</th>
+                <th class="text-center vertical-middle" width="120">Qtde</th>
+                <th class="text-center vertical-middle" width="120">
+                    <input type="checkbox" onchange="checkAll(this);" name="check_all" style="margin-top: 4px">
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in list %}
+                {% set canAdd = product.getPriceOrder() == null ? true : false %}
+                <tr data-ref="{{product.getId()}}">
+                    <td class="vertical-middle text-uppercase">{{product.getTitle()}}</td>
+                    <td class="vertical-middle text-center">{{product.isInStock() ? product.getInventory() : '--'}}</td>
+                    <td class="vertical-middle text-center">
+                        {{price_format(product.getPriceCost())}}
+                        <br>
+                        {{price_format(product.getPriceMoney())}}
+                    </td>
+                    <td class="text-center vertical-middle">
+                        <input type="number" {{product.isInStock() == false ? 'disabled' : ''}} class="form-control text-center" name="quant" value="0" max="{{product.getInventory()}}" min="0">
+                    </td>
+                    <td class="vertical-middle text-center">
+                        {% if canAdd == false %}
+                            <strong class="text-uppercase">Adicionado</strong>
+                        {% else %}
+                            {% if product.isInStock() == false %}
+                                <strong class="text-uppercase">Sem Estoque</strong>
+                            {% else %}
+                                <input type="checkbox" data-estoque='{{product.getInventory()}}' data-product='{{product|json_encode}}' name="check_produto_{{product.getId()}}" style="margin-top: 4px">
+                            {% endif %}
+                        {% endif %}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    {% include 'helpers/not_found_tr.twig' with {'colspan' : 6} %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

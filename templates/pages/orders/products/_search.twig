@@ -1,0 +1,31 @@
+<div class="modal fade" id="modal-produtos">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Adicionar Produto</h3>
+                <button type="reset" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="ti-close"></i>
+                </button>
+            </div>
+            <div class="modal-body" style="overflow : hidden;padding-bottom : 0px;">
+                <div class="form-group form-group-search">
+                    <input type="text" onkeypress="eventEnter(event);" class="form-control" name="search_add"
+                        placeholder="Buscar por: Título ou Código">
+                    <button type="button" onclick="searchProducts(this);" data-url="pedidos/produtos/search">
+                        <i class="ti-search"></i>
+                    </button>
+                </div>
+                <div class="list-products" style="margin-left: -15px;width : calc(100% + 30px);max-height: 380px;overflow-y: auto">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" onclick="addProducts();" class="btn btn-primary label-left">
+                    <div class="btn-label">
+                        <i class="ti-plus"></i>
+                    </div>
+                    Adicionar Selecionados
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

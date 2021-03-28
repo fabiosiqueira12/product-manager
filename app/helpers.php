@@ -1492,7 +1492,8 @@ function validate_data($key,$value){
         'id',
         'status',
         'type',
-        'tipo'
+        'tipo',
+        'type_payment'
     ];
     if (in_array($key,$keysInt)){
         return empty($value) ? 0 : intval($value);

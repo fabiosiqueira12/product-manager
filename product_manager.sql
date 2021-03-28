@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Tempo de geração: 27/03/2021 às 07:08
+-- Tempo de geração: 28/03/2021 às 07:54
 -- Versão do servidor: 10.1.37-MariaDB
 -- Versão do PHP: 7.3.1
 
@@ -191,6 +191,13 @@ CREATE TABLE `pedido` (
   `parcels` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Despejando dados para a tabela `pedido`
+--
+
+INSERT INTO `pedido` (`id`, `code`, `id_consumer`, `date_insert`, `date_payment`, `date_finish`, `status`, `type_payment`, `id_user`, `parcels`) VALUES
+(3, '301734485620', 1, '2021-03-28 03:42:39', NULL, NULL, 0, 0, 1, NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -203,8 +210,16 @@ CREATE TABLE `pedido_product` (
   `id_product` int(11) DEFAULT NULL,
   `price` float DEFAULT NULL,
   `quant` mediumint(5) DEFAULT NULL,
-  `date_insert` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `status` tinyint(1) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Despejando dados para a tabela `pedido_product`
+--
+
+INSERT INTO `pedido_product` (`id`, `id_pedido`, `id_product`, `price`, `quant`, `status`) VALUES
+(2, 3, 2, 40, 1, 0),
+(3, 3, 3, 18, 2, 1);
 
 -- --------------------------------------------------------
 
@@ -234,7 +249,8 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`id`, `token`, `title`, `description`, `date_insert`, `inventory`, `id_category`, `status`, `image`, `code`, `price_cost`, `price_seller`, `specification`, `price_money`) VALUES
-(2, 'G2rTDjdCIx8AHwDtMbRrxoWUu9jZmL3qjLsszfSeIgTAG2Wkx3CAcbx3NUpT2VjWZlFaSUEfBzihGSTF7ky1vmAarCbRWhalfdc8iTrpvWAzWXVcDihAhZGOCC0aJSr5aXMVQRMaN6yECkNHhuil4N', 'teste', 'dsad', '2021-03-18 04:22:04', 2, 2, 1, NULL, 'EQOEMWFZFM', 20.2, 50, NULL, 40);
+(2, 'G2rTDjdCIx8AHwDtMbRrxoWUu9jZmL3qjLsszfSeIgTAG2Wkx3CAcbx3NUpT2VjWZlFaSUEfBzihGSTF7ky1vmAarCbRWhalfdc8iTrpvWAzWXVcDihAhZGOCC0aJSr5aXMVQRMaN6yECkNHhuil4N', 'teste', 'dsad', '2021-03-18 04:22:04', 2, 2, 1, NULL, 'EQOEMWFZFM', 20.2, 50, NULL, 40),
+(3, 'lHg4ymFtcXSGVT4EfRwXUfGpBYHuXY9tLBHRKcyMGP1r0cjUCfS4GneYKgVWPFSsT8AGh2fbHk6H95y95NA2ItT11sbUxONC69VabsH2NlnjUWxTYdyh0FXDY1EHvRrsXCPVFkD7XNJ8wGfzh7ekTv', 'Produto 02', NULL, '2021-03-28 05:29:27', 8, 2, 1, NULL, 'KY3JVDDZBY', 15, 20, NULL, 18);
 
 -- --------------------------------------------------------
 
@@ -278,7 +294,8 @@ CREATE TABLE `product_history` (
 
 INSERT INTO `product_history` (`id`, `description`, `id_product`, `id_user`, `quant`, `date_insert`) VALUES
 (1, 'O usuário alterou o estoque para: 5', 2, 1, 5, '2021-03-18 04:50:46'),
-(2, 'O usuário alterou o estoque para: -3', 2, 1, -3, '2021-03-18 05:06:59');
+(2, 'O usuário alterou o estoque para: -3', 2, 1, -3, '2021-03-18 05:06:59'),
+(3, 'O usuário alterou o estoque para: 10', 3, 1, 10, '2021-03-28 05:29:32');
 
 -- --------------------------------------------------------
 
@@ -521,19 +538,19 @@ ALTER TABLE `menu`
 -- AUTO_INCREMENT de tabela `pedido`
 --
 ALTER TABLE `pedido`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de tabela `pedido_product`
 --
 ALTER TABLE `pedido_product`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de tabela `product`
 --
 ALTER TABLE `product`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de tabela `product_category`
@@ -545,7 +562,7 @@ ALTER TABLE `product_category`
 -- AUTO_INCREMENT de tabela `product_history`
 --
 ALTER TABLE `product_history`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de tabela `smtp`
