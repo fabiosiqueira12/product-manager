@@ -323,15 +323,14 @@ class OrderService extends Service{
                 case 'exclude_status':
                     $completeWhere .= $v != '' ? " AND a.status != {$v} " : "";
                     break;
-                case 'search':
+                case 'search_consumer':
                     if (!empty($v)){
-                        $search = $v;
-                        if (!preg_match('#[^0-9]#',$search)){
-                            $searchHelper = \mask_cpf($v);
-                        }else{
-                            $searchHelper = $v;
+                        $cpf = $cnpj = "";
+                        if (!preg_match('#[^0-9]#',$v)){
+                            $cpf = \mask_cpf($v);
+                            $cnpj = \mask_cnpj($v);
                         }
-                        $completeWhere .= " AND ( a.nome LIKE '%{$searchHelper}%' OR a.email LIKE '%{$searchHelper}%' )";
+                        $completeWhere .= " AND ( b.name LIKE '%{$v}%' OR b.email LIKE '%{$v}%' OR b.cnpj = '{$cnpj}' OR b.cpf = '{$cpf}' )";
                     }
                     break;
                 case 'date_insert':

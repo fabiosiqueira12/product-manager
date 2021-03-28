@@ -7,7 +7,7 @@
                 <th width="180" class="text-center">Qtde Produtos/Valor Total</th>
                 <th width="200" class="text-center">Forma Paga./DT Finalização</th>
                 <th width="160" class="text-center">DT Criação/Status</th>
-                <th width="150" class="text-center">Ações</th>
+                <th width="200" class="text-center">Ações</th>
             </tr>
         </thead>
         <tbody>
@@ -31,18 +31,20 @@
                 </td>
                 <td class="text-center vertical-middle">
                     {{order.getTypePaymentDesc()}}
+                    <br>
+                    <strong>{{order.getDateFinish() is not empty ? order.getDateFinish()|date("d/m/Y \\à\\s H:i") : "--"}}</strong>
                 </td>
                 <td class="text-center vertical-middle">
                     {{order.getDataInsert()|date("d/m/Y \\à\\s H:i")}}
                     <br>
                     {% if order.isCreated() %}
-                    {% set tagClass = "tag-primary" %}
+                        {% set tagClass = "tag-primary" %}
                     {% endif %}
                     {% if order.isFinish() %}
-                    {% set tagClass = "tag-success" %}
+                        {% set tagClass = "tag-success" %}
                     {% endif %}
                     {% if order.isBlock() %}
-                    {% set tagClass = "tag-danger" %}
+                        {% set tagClass = "tag-danger" %}
                     {% endif %}
                     <span class="tag tag-pill {{tagClass}}">{{order.getStatusDesc()}}</span>
                 </td>
@@ -51,6 +53,14 @@
                         <a href="{{path_for("orders.details",{code: order.getCode()})}}" class="btn btn-primary">
                             <i class="ti-receipt" data-toggle="tooltip" title="Detalhes"></i>
                         </a>
+                        {% if order.isCreated() %}
+                            <button class="btn btn-success" data-action="search" onclick="admin.removeClick(this);" data-textalert="Deseja finalizar o pedido?" data-excluir="{{order.getId()}}" data-link="pedidos/finish" type="button">
+                                <i class="ti-check" data-toggle="tooltip" title="Finalizar"></i>
+                            </button>
+                            <button class="btn btn-danger" data-action="search" onclick="admin.removeClick(this);" data-textalert="Deseja cancelar o pedido?" data-excluir="{{order.getId()}}" data-link="pedidos/cancel" type="button">
+                                <i class="ti-close" data-toggle="tooltip" title="Cancelar"></i>
+                            </button>
+                        {% endif %}
                         {% if order.isFinish() == false %}
                             <button class="btn btn-black" onclick="admin.removeClick(this);" data-excluir="{{order.getId()}}" data-link="pedidos/delete" type="button">
                                 <i class="ti-trash" data-toggle="tooltip" title="Excluir"></i>

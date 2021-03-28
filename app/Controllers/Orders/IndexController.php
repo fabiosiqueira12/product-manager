@@ -8,6 +8,7 @@ use App\Controllers\Controller;
 use App\Models\Order;
 use App\Services\ConsumerService;
 use App\Services\Orders\OrderService;
+use App\Services\Orders\ProductsService;
 use App\Services\Products\ProductService;
 use Exception;
 use Slim\Exception\NotFoundException;
@@ -168,6 +169,8 @@ class IndexController extends Controller{
             throw new Exception("A referência do pedido não foi encontrada");
         }
         $service = new OrderService();
+        $productService = new ProductsService();
+        $cancelProducts = $productService->cancelAllProducts($body['ref']);
         $delete = $service->delete($body['ref']);
 
         return \json(['message' => 'Removido com sucesso','result' => 1,'action' => 'search']);
@@ -190,7 +193,8 @@ class IndexController extends Controller{
         }
         $finish = $service->updateStatus(Order::STATUS_FINISH,$body['ref']);
 
-        return \json(['message' => 'Finalizado com sucesso','result' => 1,'action' => 'new']);
+        $action = isset($body['action']) && !empty($body['action']) ? $body['action'] : 'new';
+        return \json(['message' => 'Finalizado com sucesso','result' => 1,'action' => $action]);
 
     } 
 
@@ -202,7 +206,8 @@ class IndexController extends Controller{
         }
         $service = new OrderService();
         $cancel = $service->updateStatus(Order::STATUS_BLOCK,$body['ref']);
-        return \json(['message' => 'Finalizado com sucesso','result' => 1,'action' => 'new']);
+        $action = isset($body['action']) && !empty($body['action']) ? $body['action'] : 'new';
+        return \json(['message' => 'Finalizado com sucesso','result' => 1,'action' => $action]);
 
     } 
 

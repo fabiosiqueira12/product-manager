@@ -154,6 +154,7 @@ var admin = {
         if (link === undefined || link === null || link === "") {
             return Swal("Erro!", 'Erro inesperado, o link para remover não foi encontrado', "error");
         }
+        var action = $(element).attr("data-action");
         Swal({
             title: 'Atenção!',
             text: textAlert != undefined && textAlert != '' ? textAlert : "Você tem certeza que quer remover esse registro?",
@@ -169,7 +170,8 @@ var admin = {
                     type: "POST",
                     url: BASE_URL + link,
                     data: {
-                        ref: ref
+                        ref: ref,
+                        action: action
                     },
                     beforeSend: function () {
                         $("#loader").show();
