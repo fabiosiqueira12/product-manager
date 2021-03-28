@@ -26,7 +26,7 @@ class Order extends Model implements JsonSerializable
     public const STATUS_CREATED = 0;
     public const STATUS_PAYED = 1;
     public const STATUS_FINISH = 2;
-    public const SATTUS_BLOCK = 3;
+    public const STATUS_BLOCK = 3;
 
     public const TYPE_MONEY = 0;
     public const TYPE_DEPOSIT = 1;
@@ -76,7 +76,7 @@ class Order extends Model implements JsonSerializable
      */
     public function isBlock()
     {
-        return $this->getStatus() == self::SATTUS_BLOCK;
+        return $this->getStatus() == self::STATUS_BLOCK;
     }
 
     /**

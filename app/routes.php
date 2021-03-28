@@ -183,6 +183,8 @@
         $this->post('/search', \App\Controllers\Orders\IndexController::class . ':search')->setName('orders.search');
         $this->post('/save', \App\Controllers\Orders\IndexController::class . ':save')->setName('orders.save');
         $this->post('/delete', \App\Controllers\Orders\IndexController::class . ':delete')->setName('orders.delete');
+        $this->post('/cancel', \App\Controllers\Orders\IndexController::class . ':cancel')->setName('orders.cancel');
+        $this->post('/finish', \App\Controllers\Orders\IndexController::class . ':finish')->setName('orders.finish');
         $this->get('/detalhes/{code}', \App\Controllers\Orders\IndexController::class . ':details')->setName('orders.details');
 
         $app->group('/produtos', function (){

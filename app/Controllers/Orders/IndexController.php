@@ -167,6 +167,31 @@ class IndexController extends Controller{
 
     }
 
+    public function finish(Request $request, Response $response, $args)
+    {
+        $body = $request->getParsedBody();
+        if (!isset($body['ref']) || empty($body['ref'])){
+            throw new Exception("A referência do pedido não foi encontrada");
+        }
+        $service = new OrderService();
+        $finish = $service->updateStatus(Order::STATUS_FINISH,$body['ref']);
+
+        return \json(['message' => 'Finalizado com sucesso','result' => 1,'action' => 'new']);
+
+    } 
+
+    public function cancel(Request $request, Response $response, $args)
+    {
+        $body = $request->getParsedBody();
+        if (!isset($body['ref']) || empty($body['ref'])){
+            throw new Exception("A referência do pedido não foi encontrada");
+        }
+        $service = new OrderService();
+        $cancel = $service->updateStatus(Order::STATUS_BLOCK,$body['ref']);
+        return \json(['message' => 'Finalizado com sucesso','result' => 1,'action' => 'new']);
+
+    } 
+
 }
 
 ?>

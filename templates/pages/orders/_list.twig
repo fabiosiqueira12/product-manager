@@ -3,9 +3,9 @@
         <thead>
             <tr>
                 <th width="90" class="text-center vertical-middle">Cód</th>
-                <th class="text-center vertical-middle">Consumidor</th>
+                <th class="vertical-middle">Consumidor</th>
                 <th width="180" class="text-center">Qtde Produtos/Valor Total</th>
-                <th width="200" class="text-center">Forma Pagamento/DT Pagamento</th>
+                <th width="200" class="text-center">Forma Paga./DT Finalização</th>
                 <th width="160" class="text-center">DT Criação/Status</th>
                 <th width="150" class="text-center">Ações</th>
             </tr>
@@ -25,9 +25,13 @@
                     </strong>
                 </td>
                 <td class="text-center vertical-middle">
+                    {{order.getQtdProducts() is not empty ? order.getQtdProducts() : "--"}}
+                    <br>
+                    <strong>{{order.getTotal() is not empty ? price_format(order.getTotal()) : "--"}}</strong>
+                </td>
+                <td class="text-center vertical-middle">
                     {{order.getTypePaymentDesc()}}
                 </td>
-                <td class="text-center vertical-middle"></td>
                 <td class="text-center vertical-middle">
                     {{order.getDataInsert()|date("d/m/Y \\à\\s H:i")}}
                     <br>

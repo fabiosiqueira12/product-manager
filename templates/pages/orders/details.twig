@@ -11,6 +11,22 @@ Gestor de Pedidos | Detalhes
     </div>
     Voltar
 </a>
+{% if order.isCreated() %}
+    <button type="button" class="btn btn-success ml-1 label-left" data-link="pedidos/finish" onclick="admin.removeClick(this);"
+        data-excluir="{{order.getId()}}" data-textalert="Deseja finalizar esse pedido?">
+        <div class="btn-label">
+            <i class="ti-check"></i>
+        </div>
+        Finalizar
+    </button>
+    <button type="button" class="btn btn-black label-left ml-1" data-link="pedidos/cancel" onclick="admin.removeClick(this);"
+        data-textalert="Deseja cancelar esse pedido?" data-excluir="{{order.getId()}}">
+        <div class="btn-label">
+            <i class="ti-lock"></i>
+        </div>
+        Cancelar
+    </button>
+{% endif %}
 {% endblock %}
 
 {% block breadcrumb %}

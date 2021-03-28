@@ -6,6 +6,7 @@ use App\Models\Consumer;
 use App\Models\Order;
 use App\Models\User;
 use App\Services\Service;
+use Exception;
 
 class OrderService extends Service{
     
@@ -83,6 +84,36 @@ class OrderService extends Service{
     {
         $params = ['id','code'];
         return $this->transformResult($this->genericReturnParan($paran,$value,$this->fields,$params,$this->innerTables),$withProducts);
+    }
+
+    /**
+     * Atualiza o status do pedido
+     *
+     * @param int $status
+     * @param int $id
+     * @return object
+     */
+    public function updateStatus($status,$id)
+    {
+        try {
+            $updateStatus = " status = {$status}";
+            if ($status == Order::STATUS_FINISH){
+                $date = date("Y-m-d H:i:s");
+                $updateStatus .= ", date_finish = '{$date}' ";
+            }
+            $stmt = $this->PDO->prepare(
+                " UPDATE {$this->table} SET {$updateStatus} WHERE id = :id "
+            );
+            $stmt->bindValue(":id",$id);
+            $stmt->execute();
+            if ($status == Order::STATUS_BLOCK){
+                $productService = new ProductsService();
+                $productService->cancelAllProducts($id);
+            }
+            return true;
+        } catch (Exception $ex) {
+            throw new Exception($ex->getMessage());
+        }
     }
 
     /**

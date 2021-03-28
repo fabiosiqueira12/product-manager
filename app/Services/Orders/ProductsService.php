@@ -53,6 +53,27 @@ class ProductsService extends Service{
     }
 
     /**
+     * Cancela todos os produtos do pedido
+     *
+     * @param int $id_order
+     * @return void
+     */
+    public function cancelAllProducts($id_order)
+    {
+        $stmt = $this->PDO->prepare(
+            " SELECT a.* FROM {$this->table} AS {$this->prefix} WHERE a.id_pedido = :id_order AND a.status = 1 "
+        );
+        $stmt->bindValue(":id_order",$id_order);
+        $stmt->execute();
+        $results = $stmt->fetchAll(\PDO::FETCH_OBJ);
+        if (is_array($results) && count($results) > 0){
+            foreach($results as $v){
+                $this->remove($id_order,$v->id_product);
+            }
+        }
+    }
+
+    /**
      * Salva os produtos ao pedido
      *
      * @param array $list

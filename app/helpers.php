@@ -1593,7 +1593,7 @@ function list_status_order(){
     return [
         Order::STATUS_CREATED => "Criado",
         Order::STATUS_FINISH => "Finalizado",
-        Order::SATTUS_BLOCK => "Cancelado"
+        Order::STATUS_BLOCK => "Cancelado"
     ];
 }
 
