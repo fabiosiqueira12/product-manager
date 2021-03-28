@@ -32,12 +32,19 @@ class IndexController extends Controller{
             'forpage' => 10000
         ])['results'];
 
+        $totalsPrice = [
+            'month' => $service->getTotalPrice('month',Order::STATUS_FINISH),
+            'year' => $service->getTotalPrice('year',Order::STATUS_FINISH),
+            'all' => $service->getTotalPrice(null,Order::STATUS_FINISH)
+        ];
+
         return $this->view->render($response,"{$this->folder}/index.twig",[
             'list' => $list,
             'urlPaginate' => $this->urlPaginate,
             'list_type_payment' => \list_type_payment(),
             'list_status_order' => \list_status_order(),
-            'consumers' => $consumers
+            'consumers' => $consumers,
+            'totalsPrice' => $totalsPrice
         ]);
 
     }
@@ -174,6 +181,13 @@ class IndexController extends Controller{
             throw new Exception("A referência do pedido não foi encontrada");
         }
         $service = new OrderService();
+        $order = $service->returnByParan("id",$body['ref']);
+        if (empty($order)){
+            throw new Exception("O pedido não foi encontrado");
+        }
+        if (empty($order->getQtdProducts())){
+            throw new Exception("O pedido não tem produtos para finalizar");
+        }
         $finish = $service->updateStatus(Order::STATUS_FINISH,$body['ref']);
 
         return \json(['message' => 'Finalizado com sucesso','result' => 1,'action' => 'new']);

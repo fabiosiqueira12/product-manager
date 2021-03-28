@@ -6,4 +6,13 @@ Dashboard
 
 {% block main %}
 
+    {% include "helpers/_totais-price.twig" with {
+        finish: true,
+        totals: totalsPrice
+    } %}
+    {% include "helpers/_totais-quant.twig" with {
+        finish: true,
+        totals: totalsQuant
+    } %}
+
 {% endblock %}

@@ -30,6 +30,7 @@
                         <span class="tag tag-pill tag-danger">Indisponível</span>
                     {% endif %}
                 </td>
+                {% if order.isCreated() %}
                 <td class="text-center vertical-middle">
                     <div class="btn-group">
                         {% if product.getStatusOrder() == 1 %}
@@ -46,6 +47,7 @@
                         {% endif %}
                     </div>
                 </td>
+                {% endif %}
             </tr>
             {% endfor %}
         </tbody>

@@ -29,6 +29,11 @@
 
 {% block main %}
 
+{% include "helpers/_totais-price.twig" with {
+    finish: true,
+    totals: totalsPrice
+} %}
+
 {% include "pages/orders/_search.twig" with {
     list_status_order: list_status_order,
     list_type_payment: list_type_payment

@@ -117,6 +117,92 @@ class OrderService extends Service{
     }
 
     /**
+     * Retorna o valor total dos pedidos por periodo ou todo 
+     *
+     * @param string $type
+     * @param int $status
+     * @return float
+     */
+    public function getTotalPrice($type = null,$status = null)
+    {
+        $total = 0;
+        $listTypes = ['month','year'];
+        if ($type != null && !in_array($type,$listTypes)){
+            return $total;
+        }
+        $completeWhere = "";
+        if ($type == 'month'){
+            $monthActual = date('n');
+            $completeWhere .= " AND MONTH(a.date_insert) = '{$monthActual}' ";
+        }
+        if ($type == 'year'){
+            $yearActual = date('Y');
+            $completeWhere .= " AND YEAR(a.date_insert) = '{$yearActual}' ";
+        }
+        
+        if ($status != null){
+            $completeWhere .= " AND a.status = {$status} ";
+        }else{
+            $statusCreated = Order::STATUS_CREATED;
+            $statusFinish = Order::STATUS_FINISH;
+            $completeWhere .= " AND (a.status = {$statusFinish} OR a.status = {$statusCreated}) ";
+        }
+        $stmt = $this->PDO->prepare(
+            " SELECT SUM( (SELECT SUM(x.price * x.quant) FROM pedido_product AS x WHERE x.id_pedido = a.id AND x.status = 1)) AS totalValor FROM {$this->table} AS a ".
+            " WHERE a.id != 0 {$completeWhere} "
+        );
+        $stmt->execute();
+        $result = $stmt->fetch(\PDO::FETCH_OBJ);
+        if ($result != null && $result != false){
+            $total = $result->totalValor;
+        }
+        return $total;
+    }
+
+    /**
+     * Retorna a quantidade de produtos total por periodo
+     *
+     * @param string $type
+     * @param int $status
+     * @return float
+     */
+    public function getTotalQuant($type = null,$status = null)
+    {
+        $total = 0;
+        $listTypes = ['month','year'];
+        if ($type != null && !in_array($type,$listTypes)){
+            return $total;
+        }
+        $completeWhere = "";
+        if ($type == 'month'){
+            $monthActual = date('n');
+            $completeWhere .= " AND MONTH(a.date_insert) = '{$monthActual}' ";
+        }
+        if ($type == 'year'){
+            $yearActual = date('Y');
+            $completeWhere .= " AND YEAR(a.date_insert) = '{$yearActual}' ";
+        }
+        
+        if ($status != null){
+            $completeWhere .= " AND a.status = {$status} ";
+        }else{
+            $statusCreated = Order::STATUS_CREATED;
+            $statusFinish = Order::STATUS_FINISH;
+            $completeWhere .= " AND (a.status = {$statusFinish} OR a.status = {$statusCreated}) ";
+        }
+        $stmt = $this->PDO->prepare(
+            " SELECT COUNT(a.id) AS totalValor FROM {$this->table} AS a ".
+            " WHERE a.id != 0 {$completeWhere} "
+        );
+        $stmt->execute();
+        $result = $stmt->fetch(\PDO::FETCH_OBJ);
+        if ($result != null && $result != false){
+            $total = $result->totalValor;
+        }
+        return $total;
+    }
+
+    /**
      * Transforma o array para array de Users
      *
      * @param array $results

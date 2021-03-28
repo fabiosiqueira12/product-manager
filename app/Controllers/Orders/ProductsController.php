@@ -109,7 +109,7 @@ class ProductsController extends Controller
         
         foreach($produtos as $v){
             $produto = $v['product'];  
-            $valorFinal = $order->getTypePayment() == Order::TYPE_MONEY && !empty($produto['price_money']) ? $produto['price_money'] : $produto['price_cost'];
+            $valorFinal = $order->getTypePayment() == Order::TYPE_MONEY && !empty($produto['price_money']) ? $produto['price_money'] : $produto['price_seller'];
             if ($valorFinal != null && $valorFinal != 0){
                 $addProdutos[] = [
                     'id_product' => $produto['id'],
